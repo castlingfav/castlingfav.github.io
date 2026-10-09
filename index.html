@@ -609,6 +609,23 @@ body.home{padding-bottom:24px}
 .upwv code{font:600 12.5px var(--mono);background:var(--sunk);padding:1px 5px;border-radius:4px}
 @media (max-width:760px){.secnav{order:3;width:100%;margin-right:0}.secnav .sec{flex:1;justify-content:center}.who{display:none}}
 @media (max-width:560px){.bxd{grid-template-columns:auto minmax(0,1fr)}.bxd .bxda{grid-column:1/-1;justify-content:flex-start}.zvhint{display:none}.zvt{flex-basis:100%}}
+/* v29: soltar un expediente en Recientes e informe de lo leído */
+.rcdrop{margin-top:12px;display:flex;flex-direction:column;gap:4px;padding:16px 18px;border:2px dashed var(--line);border-radius:10px;background:var(--sunk);cursor:pointer;text-align:center;transition:border-color .15s,background .15s}
+.rcdrop b{font-size:14.5px}
+.rcdrop .muted{font-size:12.5px;line-height:1.45}
+.rcdrop:hover,.rcdrop.over,.rcdrop:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
+.rcdrop:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.imprep{border-top:5px solid var(--accent)}
+.imprep.bad-b{border-top-color:var(--bad,#c92a2a)}
+.impcs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.impc{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;background:var(--sunk);font-size:12.5px;color:var(--muted);border:1px solid transparent}
+.impc b{color:var(--ink);font:700 12px var(--mono)}
+.impc.on{background:var(--accent-soft);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.impc.rev{background:color-mix(in srgb,#f59f00 18%,var(--surface));color:var(--ink);border-color:color-mix(in srgb,#f59f00 55%,transparent)}
+.impd{margin-top:8px}
+.impd summary{cursor:pointer;font-size:13.5px}
+.imprep .warn ul{margin:4px 0 0;padding-left:18px}
+
 </style>
 
 <meta name="darkreader-lock">
@@ -2544,7 +2561,7 @@ const OR_RULES=[
  {f:"ilo",k:[[/levantamiento de observaciones|\bilo\b/,9]]}];
 const ORG_NAMERULES=[["pozos",/pozo|spat|tierra/],["ext",/extint|\bext\b/],["luces",/luces|luz|emergencia/],["capac",/capacit|constanc|charla/],["daci",/daci|deteccion|alarma/],["aci",/\baci\b|rociador|agua contra/],
   ["glp",/glp|\bgas\b|hermet/],["campana",/campana/],["aire",/aire|hvac/],["vidrios",/vidrio|lamina/],["cortaf",/cortafuego/],["grupo",/electrogeno/],["subest",/subestacion/],["ascen",/ascensor|montacarga/],
-  ["dni",/\bdni\b|carne de ext/],["vig",/vigencia/],["ruc",/\bruc\b/],["lf",/licencia/],["plan",/plan de seg/],["aforo",/aforo/],["memo",/memoria.*extint/],["cargo",/\bcargo\b/],["acta",/\bacta\b/],
+  ["dni",/\bdni\b|carne de ext/],["vig",/vigencia/],["ruc",/\bruc\b/],["lf",/licencia/],["plan",/plan de seg/],["aforo",/aforo/],["memo",/memoria\b[^/]{0,30}extint/],["cargo",/\bcargo\b/],["acta",/\bacta\b/],
   ["pre",/pre ?insp/],["itse",/itse/],["contrato",/contrato|arrend/],["req",/requisito/],["com",/propuesta/],["form",/anexo|carta poder|\bdj\b|declaracion jurada/],["pl",/plano|\blam\b/]];
 const ODATE_KW=/(fecha de (emision|expedicion|medicion|inspeccion|servicio|mantenimiento|prueba|recarga|carga)|emitido|expedido|fecha:?)\s*$/;
 const OMES={enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12};
@@ -2572,6 +2589,7 @@ function orgClassify(x){const n=x.n, head=n.slice(0,900), nm=x.nm, sc={};
   if(sc.capac&&sc.ext&&/capacitacion|constancia|participante/.test(head)) sc.ext=Math.min(sc.ext,sc.capac-1);
   if(sc.form&&/declaracion jurada de capacitacion/.test(head)) sc.capac=0;
   if(sc.memo&&sc.ext) sc.ext=Math.min(sc.ext,sc.memo-1);
+  if(sc.form&&/solicitud de inspeccion tecnica|reporte (del? )?nivel de riesgo|informacion proporcionada por el solicitante|declaracion jurada (de cumplimiento|para (el otorgamiento de )?(la )?licencia)|carta poder/.test(head)){sc.itse=0; sc.res=0}
   if(sc.bombaed&&sc.aci) sc.aci=0;
   if(sc.aterr_est&&sc.aterr_eq&&/estructura/.test(head)) sc.aterr_eq=0;
   if(sc.res&&sc.itse) {sc.itse+=sc.res; sc.res=0}
@@ -2607,7 +2625,7 @@ async function orgAddFiles(list,rel){const o=OR(); let added=0, dup=0;
   ({list,rel}=await oExpandArchives([...list],rel)); // .zip y .rar: se abren y cada archivo va a su carpeta
   for(const file of list){if(!file||OSKIP.test(file.name)||!file.size) continue; const h=await oHash(file);
     if(ORG.files.some(x=>x.h===h)||(ORG.prop&&ORG.prop.h===h)){dup++; continue}
-    ORG.files.push({id:"f"+(++ORG.seq),file,name:file.name,rel:(rel&&rel.get(file))||"",h,st:"cola",f:null,conf:null,ok:false,arc:file._arc||null}); added++}
+    ORG.files.push({id:"f"+(++ORG.seq),file,name:file.name,rel:(rel&&rel.get(file))||"",h,st:"cola",f:null,conf:null,ok:false,arc:file._arc||null,hint:file._hint||null}); added++}
   ORG.total=ORG.files.length; if(o.step==="prop") o.step="files"; persist();
   say(added?`${added} ${added===1?"archivo agregado":"archivos agregados"}${dup?` · ${dup} repetido${dup===1?"":"s"} no se agregó`:""}. Leyendo…`:dup?"Esos archivos ya estaban.":"",added?"":"err");
   render(); orgPump()}
@@ -2616,7 +2634,7 @@ async function orgPump(){if(oPumping) return; oPumping=true;
   try{for(;;){const f=ORG.files.find(x=>x.st==="cola"); if(!f) break; f.st="leyendo"; orgProgress();
     try{const R=await orgRead(f.file,s=>{f.st=s==="OCR"?"ocr":"leyendo"; orgProgress()}); Object.assign(f,{text:R.text,ocr:R.ocr,conf_ocr:R.conf,pages:R.pages,thumb:R.thumb,note:R.note});
       const n=onorm(R.text), nm=onorm(f.name+" "+f.rel), ext=(f.name.split(".").pop()||"").toLowerCase(), dd=orgPickDates(n); f.em=dd.em||null; f.ve=dd.ve||null;
-      const c=orgClassify({n:R.ocr&&R.conf!=null&&R.conf<50?"":n,nm,ext,em:f.em}); f.f=c.f; f.conf=c.conf; f.why=c.why; f.dtype=orgDocType(n.slice(0,900));
+      const c=orgClassify({n:R.ocr&&R.conf!=null&&R.conf<50?"":n,nm,ext,em:f.em}); if(f.hint&&OFI[f.hint]){c.f=f.hint; c.conf="alta"; c.why="reconocido al leer el expediente"} f.f=c.f; f.conf=c.conf; f.why=c.why; f.dtype=orgDocType(n.slice(0,900));
       f.unread=/^(dwg|dxf|rvt|skp)$/.test(ext)?false:(oLetters(R.text)<30||(R.ocr&&R.conf!=null&&R.conf<50)); f.own=R.text&&!f.unread?orgClientIn(n):null;
       if(f.f==="com"&&!ORG.prop&&c.conf==="alta"){ORG.files.splice(ORG.files.indexOf(f),1); await orgSetProp(f.file,R); continue}
       if(f.f==="req"&&ext==="xlsx") orgSisFromText(n,"la lista de requisitos");
@@ -3545,6 +3563,402 @@ async function gdKeepOutput(name,blob){if(!gdReady()||!expHasData(S)||!blob||!bl
   try{if(!GD.map[expUid()]) await gdPut(S); const m=GD.map[S.uid]; await srvUpload({k:"out",sec:"itse",fid:m.fid},blob,name); if(!S.uid) persistLocal(); GD.lastSave=Date.now(); GD.err=""; gdUi()}
   catch(e){console.warn(e); GD.err="No se guardó «"+name+"» en el servidor: "+e.message; gdUi()}}
 
+/* ---------- importar un expediente desde sus documentos (.zip, .rar o archivos sueltos, sin el .json) ---------- */
+// Lee anexos (PDF o Word), carta poder, DJ, plan, memoria y propuesta; llena el expediente y manda el resto a «Organizar archivos».
+const IMP_KINDS=[ // id, nombre del archivo (normalizado), título del documento (normalizado, primeras líneas)
+ ["a0",null,/declaracion jurada para (el otorgamiento de (la )?)?licencia de funcionamiento/],
+ ["a1",null,/solicitud de inspeccion tecnica de seguridad en edificaciones/],
+ ["a2",null,/informacion proporcionada por el solicitante/],
+ ["a3",null,/reporte (del|de) nivel de riesgo/],
+ ["a4",null,/declaracion jurada de cumplimiento de (las )?condiciones de seguridad/],
+ ["carta_poder",/carta\s*(de\s*)?poder/,/\bcarta poder\b|otorgo poder a favor/],
+ ["dj_representacion",/(\bdj\b|declaracion jurada).{0,30}representacion/,/declaracion jurada de representacion legal/],
+ ["dj_capacitacion",/(\bdj\b|declaracion jurada).{0,30}capacitacion/,/declaracion jurada de capacitacion/],
+ ["dj_laminas",/(\bdj\b|declaracion jurada).{0,30}(laminas|vidrio)/,/declaracion jurada de laminas/],
+ ["plan",/plan de (seguridad|contingencia)/,/plan de seguridad( y contingencia)?/],
+ ["memo",/memoria\b[^/]{0,30}extint/,/memoria descriptiva[\s\S]{0,400}extintor|calculo de extintores/]];
+const IMP_NAME=id=>(DOCS.find(d=>d.id===id)||{}).name||({prop:"Propuesta comercial",ruc:"Ficha RUC",vig:"Vigencia de poder"})[id]||id;
+const IMP_SAFETY_RUC="20602648746"; // la consultora: su RUC sale en propuestas y membretes, nunca es el del cliente
+function impKind(name,head){const nm=onorm(name).replace(/[_]+/g," "), h=onorm(head||"").slice(0,700);
+  const m=nm.match(/\banexo\s*(?:n\s*o\.?\s*)?0?([0-4])\b/); if(m) return "a"+m[1];
+  for(const [id,rn] of IMP_KINDS) if(rn&&rn.test(nm)) return id;
+  for(const [id,,rh] of IMP_KINDS) if(rh.test(h)) return id;
+  if(/propuesta/.test(nm)||/propuesta (tecnica|economica|comercial|tecnico)/.test(h)) return "prop";
+  if(/ficha ruc|reporte de ficha ruc/.test(nm+" "+h)) return "ruc";
+  if(/vigencia de poder|certificado de vigencia/.test(nm+" "+h.slice(0,300))) return "vig";
+  return ""}
+const IMP_FORMS=new Set(["a0","a1","a2","a3","a4","carta_poder","dj_representacion","dj_capacitacion","dj_laminas","plan","memo"]);
+
+/* lectura: PDF con posiciones (y OCR si es escaneo), Word con párrafos y celdas */
+const impN1=s=>{let o=""; for(const c of String(s||"")){const d=deacc(c).toLowerCase(); o+=c==="°"||c==="º"?"o":d.length===1?d:(d[0]||" ")} return o}; // misma longitud que el original
+async function impReadPdf(file,opt={}){const lib=await oPdf(); let pdf;
+  try{pdf=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer()),isEvalSupported:false}).promise}catch(e){throw new Error(/password/i.test(e&&e.name||e)?"PDF con contraseña":"PDF dañado")}
+  const pages=[]; let ocr=false, ocrN=0;
+  for(let i=1;i<=Math.min(pdf.numPages,opt.max||8);i++){const pg=await pdf.getPage(i), vp=pg.getViewport({scale:1}), items=[]; let text="";
+    try{const tc=await pg.getTextContent(); for(const it of tc.items){if(!it.str||!it.str.trim()) continue; const t=it.transform, [x,y]=vp.convertToViewportPoint(t[4],t[5]);
+      items.push({s:it.str,x,y,w:it.width||0,z:Math.hypot(t[2],t[3])||Math.abs(t[0])||10})}}catch(_){}
+    if(oLetters(items.map(x=>x.s).join(""))<40&&opt.ocr&&ocrN<2){ocrN++; try{opt.step&&opt.step("OCR"); const cv=await oRenderPage(pg,1700); const r=await oOcrBytes(await oPng(cv)); text=r.t; ocr=true}catch(_){}}
+    pages.push({W:vp.width,H:vp.height,items,text})}
+  return {pages,ocr,n:pdf.numPages}}
+// renglones de una página: piezas cercanas se juntan en «segmentos»; un hueco grande separa columnas
+function impPdfLines(pg){if(!pg.items.length) return (pg.text||"").split(/\n+/).map(t=>t.trim()).filter(Boolean).map(t=>[{t,x0:0,x1:0,y:0,z:10}]);
+  const it=[...pg.items].sort((a,b)=>a.y-b.y||a.x-b.x), rows=[];
+  for(const d of it){const r=rows.find(r=>Math.abs(r.y-d.y)<=Math.max(2,Math.min(r.z,d.z)*0.45)); if(r){r.a.push(d); r.z=Math.max(r.z,d.z)} else rows.push({y:d.y,z:d.z,a:[d]})}
+  rows.sort((a,b)=>a.y-b.y);
+  return rows.map(r=>{r.a.sort((a,b)=>a.x-b.x); const segs=[]; for(const d of r.a){const s=segs[segs.length-1], gap=s?d.x-s.x1:1e9;
+      if(s&&gap<Math.max(d.z,s.z)*1.6){s.t+=(gap>d.z*0.18&&!/\s$/.test(s.t)&&!/^\s/.test(d.s)?" ":"")+d.s; s.x1=Math.max(s.x1,d.x+d.w); s.z=Math.max(s.z,d.z)}
+      else segs.push({t:d.s,x0:d.x,x1:d.x+d.w,y:r.y,z:d.z})}
+    segs.forEach(s=>s.t=s.t.replace(/\s+/g," ").trim()); return segs.filter(s=>s.t)})}
+const IMP_W="http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+function impWText(el){let t=""; for(const n of el.getElementsByTagNameNS(IMP_W,"*")){const k=n.localName; if(k==="t") t+=n.textContent; else if(k==="tab") t+=" "; else if(k==="br"||k==="cr") t+=" "} return t.replace(/\s+/g," ").trim()}
+async function impReadDocx(src){const z=await JSZip.loadAsync(src), e=z.file("word/document.xml"); if(!e) throw new Error("Word sin contenido");
+  const doc=new DOMParser().parseFromString(await e.async("string"),"application/xml"), body=doc.getElementsByTagNameNS(IMP_W,"body")[0], lines=[];
+  const kids=(el,k)=>[...el.children].filter(c=>c.localName===k);
+  const walk=el=>{for(const c of el.children){const k=c.localName;
+    if(k==="p"){const t=impWText(c); if(t) lines.push([{t}])}
+    else if(k==="tbl"){for(const tr of kids(c,"tr")){const segs=kids(tr,"tc").map(tc=>({t:impWText(tc)})); if(segs.some(s=>s.t)) lines.push(segs)}}
+    else if(k==="sdt"){const sc=kids(c,"sdtContent")[0]; if(sc) walk(sc)}}};
+  if(body) walk(body); return lines}
+const impLinesText=L=>L.map(l=>l.map(s=>s.t).filter(Boolean).join("  ")).join("\n");
+
+/* anexos hechos sobre el modelo de este generador: se resta el modelo y lo que queda se ubica en sus casillas */
+const IMP_TPL={};
+async function impTplPdf(doc){if(!IMP_TPL[doc]) IMP_TPL[doc]=impReadPdf(new File([b64(DATA.tpl[doc])],doc+".pdf",{type:"application/pdf"}),{max:8}).catch(e=>{delete IMP_TPL[doc]; throw e}); return IMP_TPL[doc]}
+function impTplDiff(doc,P,T){const L=DATA.layout[doc]; if(!L||!T) return null; let tot=0, hit=0; const added=[], ns=s=>s.replace(/\s+/g,"");
+  for(let p=0;p<P.pages.length;p++){const a=P.pages[p], t=T.pages[p]; if(!t||!a.items.length){added.push([]); continue}
+    const sx=t.W/a.W, sy=t.H/a.H; if(Math.abs(sx/sy-1)>0.04){added.push([]); continue}
+    const di=a.items.map(it=>({s:it.s,n:ns(it.s),x:it.x*sx,y:it.y*sy,w:it.w*sx,z:it.z*sy,used:false}));
+    for(const ti of t.items){const n=ns(ti.s); if(!n) continue; const long=n.length>=3; if(long) tot++;
+      const m=di.find(d=>!d.used&&d.n===n&&Math.abs(d.x-ti.x)<4&&Math.abs(d.y-ti.y)<4); if(m){m.used=true; if(long) hit++}}
+    added.push(di.filter(d=>!d.used))}
+  if(!tot||hit/tot<0.5) return null;
+  const V={}, M=new Set(), bx={};
+  for(let p=0;p<added.length;p++) for(const d of added[p]){const tx=d.s.trim();
+    if(/^[xX✓✔√]$/.test(tx)){const cx=d.x+d.w/2, cy=d.y-d.z*0.36; let best=null, bd=1e9;
+      for(const m of L.marks){if(m.p!==p) continue; const dx=Math.abs(cx-m.x), dy=Math.abs(cy-m.y); if(dx<m.s*0.9&&dy<m.s*0.9&&dx+dy<bd){bd=dx+dy; best=m}}
+      if(best){M.add(best.k); continue}}
+    let best=null, bd=1e9;
+    for(const [fi,f] of L.texts.entries()){if(f.p!==p) continue; const y1=f.y+Math.max(0,f.n-1)*f.s*1.08;
+      if(d.x+d.w*0.5<f.x-6||d.x>f.x+f.w+6||d.y<f.y-f.s*1.1||d.y>y1+f.s*0.6) continue;
+      const dist=Math.abs(d.y-Math.min(Math.max(d.y,f.y),y1))+Math.abs((d.x+d.w/2)-(f.x+f.w/2))*0.05; if(dist<bd){bd=dist; best=fi}}
+    if(best!=null) (bx[best]||(bx[best]=[])).push(d)}
+  for(const fi of Object.keys(bx).map(Number).sort((a,b)=>a-b)){const k=L.texts[fi].k; if(V[k]) continue; const a=bx[fi].sort((u,v)=>u.y-v.y||u.x-v.x); V[k]=a.map(d=>d.s).join(" ").replace(/\s+/g," ").trim()}
+  return {V,M,ratio:hit/tot}}
+
+/* Word del generador (carta poder y DJ): cada párrafo del modelo se vuelve un patrón tolerante (tildes, espacios, N°/No.) */
+const IMP_ACC={a:"aáàäAÁÀÄ",e:"eéèëEÉÈË",i:"iíìïIÍÌÏ",o:"oóòöOÓÒÖ",u:"uúùüUÚÙÜ",n:"nñNÑ"};
+const impEsc=s=>s.replace(/[.*+?^${}()|[\]\\\/]/g,"\\$&");
+function impWordRe(t){return t.replace(/_+/g," ").trim().split(/\s+/).filter(Boolean).map(w=>{
+    if(/^N(?:o\.|°|º|ro\.?)$/i.test(w)) return "(?:N\\s*[°ºoO]\\s*\\.?|Nro\\.?|N[uú]mero|No\\.?)";
+    return [...w].map(c=>{const lc=c.toLowerCase(), b=deacc(lc); if(IMP_ACC[b]&&/[a-zñáéíóúü]/.test(lc)) return "["+IMP_ACC[b]+"]"; if(/[a-z]/i.test(c)) return "["+c.toLowerCase()+c.toUpperCase()+"]"; if(/[.,;:]/.test(c)) return impEsc(c)+"?"; return impEsc(c)}).join("")}).join("\\s*")}
+const IMP_CAP={RUC:"(\\d[\\d ]{9,13}\\d)",REP_DOC:"([A-Za-z]?\\d[\\d-]{6,13})",PARTIDA:"(\\d{5,12})",IDENTIFICADO:"(identificad[oa])",IDENTIFICADO_U:"(identificad[oa])",
+  REP_DOC_TIPO:"(D\\.?\\s?N\\.?\\s?I\\.?|C\\.?\\s?E\\.?|carn[eé] de extranjer[ií]a|pasaporte)",DIA:"(\\d{1,2}|_+)",MES:"([A-Za-zñÑ]{4,10}|_+)",ANIO:"(\\d{4}|_+)",
+  FECHA_LARGA_DEL:"(\\d{1,2}\\s+de\\s+[A-Za-zñÑ]+\\s+de[l]?\\s+\\d{4}|[_ deDEl]{6,})",FECHA_LARGA_U:"(\\d{1,2}\\s+de\\s+[A-Za-zñÑ]+\\s+de[l]?\\s+\\d{4}|[_ deDEl]{6,})",
+  DOM_LEGAL_PROVDEP:"(provincia[^,;\\n]{0,80})",EST_PROVDEP:"(provincia[^,;\\n]{0,80})",CIUDAD:"([A-Za-zÁÉÍÓÚÑáéíóúñ .]{2,40}?)",CIUDAD_U:"([A-Za-zÁÉÍÓÚÑáéíóúñ .]{2,40}?)",REP_NACIONALIDAD:"([A-Za-zÁÉÍÓÚÑáéíóúñ]{4,20})"};
+IMP_CAP.REP_DOC_TIPO_U=IMP_CAP.REP_DOC_TIPO;
+const impCapOf=k=>IMP_CAP[k]||"([\\s\\S]{1,180}?)";
+const IMP_WTPL={};
+async function impWordTpl(id){if(IMP_WTPL[id]) return IMP_WTPL[id];
+  const L=await impReadDocx(b64(DATA.tpl[id])), pats=[];
+  for(const l of L) for(const s of l){const par=s.t; if(!/\{\{[A-Z_]+\}\}/.test(par)) continue; const parts=par.split(/(\{\{[#A-Z_]+\}\})/).filter(x=>x!==""), keys=[]; let src="";
+    parts.forEach((p,i)=>{const m=p.match(/^\{\{([A-Z_]+)\}\}$/); if(m){keys.push(m[1]); src+=(i===0?"(?:^|\\n)[ \\t]*":"")+(i===0?"([^\\n]{1,180}?)":impCapOf(m[1]))} else src+=(i?"\\s*":"")+impWordRe(p)+(i<parts.length-1?"\\s*":"")});
+    const anchors=[]; // si el párrafo entero no calza (redacción algo distinta), cada dato por las palabras que lo rodean
+    parts.forEach((p,i)=>{const m=p.match(/^\{\{([A-Z_]+)\}\}$/); if(!m) return; const prev=i>0&&!/^\{\{/.test(parts[i-1])?parts[i-1].replace(/_+/g," ").trim().split(/\s+/).slice(-3).join(" "):"", next=i<parts.length-1&&!/^\{\{/.test(parts[i+1])?parts[i+1].replace(/_+/g," ").trim().split(/\s+/).slice(0,2).join(" "):"";
+      if(!prev&&!next) return; anchors.push({k:m[1],re:new RegExp((prev?impWordRe(prev)+"\\s*":"(?:^|\\n)[ \\t]*")+(prev?impCapOf(m[1]):"([^\\n]{1,180}?)")+(next?"\\s*"+impWordRe(next):"(?=\\s*(?:\\n|$))"),"i")})});
+    try{pats.push({re:new RegExp(src,"i"),keys,anchors})}catch(e){console.warn("patrón",id,e)}}
+  return IMP_WTPL[id]=pats}
+function impWordVals(pats,text){const W={}; let full=0;
+  for(const p of pats){const m=text.match(p.re); if(m){full++; p.keys.forEach((k,i)=>{if(!(k in W)) W[k]=m[i+1]}); continue}
+    for(const a of p.anchors){if(a.k in W) continue; const mm=text.match(a.re); if(mm) W[a.k]=mm[1]}}
+  for(const k in W){W[k]=String(W[k]).replace(/\s+/g," ").replace(/^[\s,;:]+|[\s,;:]+$/g,"").trim(); if(!W[k]||/^[_\s]+$|^(?:_+\s*de\s*)+_+$/i.test(W[k])) delete W[k]}
+  Object.defineProperty(W,"_full",{value:full,enumerable:false}); return W}
+
+/* lectura por etiquetas (cualquier formato: anexos de otra municipalidad, Word con tablas, escaneos con OCR) */
+const IMP_LBL=[
+ ["razon_social","(?:apellidos y nombres\\s*/\\s*)?razon social|denominacion(?: o razon social)?"],
+ ["ruc","(?:n\\s*o\\.?\\s*)?r\\.?\\s?u\\.?\\s?c\\.?(?:\\s*n\\s*o\\.?)?"],
+ ["rep_nombre","nombres? y apellidos|apellidos y nombres|nombre del (?:solicitante|representante(?: legal)?|poderdante)"],
+ ["rep_doc","(?:n\\s*o\\.?\\s*)?d\\.?\\s?n\\.?\\s?i\\.?(?:\\s*[-/]\\s*(?:carnet de extranjeria\\s*)?(?:n\\s*o\\.?\\s*)?c\\.?\\s?e\\.?)?(?:\\s*n\\s*o\\.?)?|carnet de extranjeria(?:\\s*n\\s*o\\.?)?|documento de identidad"],
+ ["sol_tel","telefonos?|celular|n\\s*o\\.?\\s*(?:de\\s*)?telefono"],
+ ["sol_correo","correo electronico|e-?mail"],
+ ["dom_dir","domicilio(?: legal| fiscal)?"],
+ ["nombre_comercial","nombre comercial"],
+ ["est_dir","direccion\\s*/\\s*ubicacion|direccion del establecimiento|ubicacion del establecimiento"],
+ ["referencia","referencia(?: de (?:la )?direccion)?"],
+ ["localidad","localidad"],["distrito","distrito"],["provincia","provincia|prov\\."],["departamento","departamento|dpto\\."],
+ ["giro","giro o actividad(?:es)?(?: que realiza)?|actividad o giro|giro\\s*/\\s*actividad|giro"],
+ ["horario","horario(?: de atencion)?"],
+ ["area_ocupada","area ocupada(?: total)?(?:\\s*\\(m2\\))?"],
+ ["n_pisos","numero de pisos(?: de la edificacion)?|n\\s*o\\.?\\s*de pisos"],
+ ["piso_ubic","piso donde se encuentra ubicado(?: el establecimiento objeto de inspeccion)?"],
+ ["aforo","aforo(?: total)?|capacidad del establecimiento es de"],
+ ["partida","partida (?:electronica|registral)(?:\\s*n\\s*o\\.?)?"]];
+const IMP_LBLRE=new RegExp("(?:^|[^a-z])("+IMP_LBL.map(x=>x[1]).join("|")+")\\s*[:：.]?","g");
+const impLblKey=lab=>{for(const [k,re] of IMP_LBL) if(new RegExp("^(?:"+re+")$").test(lab.trim())) return k; return ""};
+function impLabels(lines){const out=[]; let ctx="";
+  const isLab=t=>{const n=impN1(t).replace(/^[\s\divx.)-]+/,""); IMP_LBLRE.lastIndex=0; const m=IMP_LBLRE.exec(n); return !!(m&&m.index<=1)};
+  lines.forEach((segs,li)=>{const ln=impN1(segs.map(x=>x.t).join(" ")); if(/datos del solicitante/.test(ln)) ctx="sol"; else if(/(datos (administrativos )?del establecimiento|establecimiento objeto de inspeccion\s*$)/.test(ln)) ctx="est";
+   segs.forEach((s,si)=>{const t=s.t, n=impN1(t), hits=[]; IMP_LBLRE.lastIndex=0; let m;
+    while((m=IMP_LBLRE.exec(n))){const lab=m[1], st=m.index+m[0].indexOf(lab); hits.push({k:impLblKey(lab),st,en:m.index+m[0].length}); if(IMP_LBLRE.lastIndex===m.index) IMP_LBLRE.lastIndex++}
+    hits.forEach((h,i)=>{if(!h.k) return; if(i===0&&h.st>3&&!/[:|]/.test(n.slice(0,h.st))) {/* la etiqueta va a media frase: no es un campo */ if(!/^\s*(i|ii|iii|iv|v|\d)[.)-]/.test(n)) return}
+      let v=t.slice(h.en,i+1<hits.length?hits[i+1].st:t.length);
+      if(!impClean(v)){const nx=segs[si+1]; if(nx&&!isLab(nx.t)) v=nx.t;
+        else {for(let lj=li+1;lj<=Math.min(li+2,lines.length-1)&&!impClean(v);lj++){const c=lines[lj].find(z=>s.x1&&z.x1?(z.x0<s.x1+20&&z.x1>s.x0-20):lines[lj].indexOf(z)===si); if(c&&!isLab(c.t)) v=c.t}}}
+      v=impClean(v); if(v) out.push([ctx==="est"&&h.k==="sol_tel"?"est_tel":ctx==="est"&&h.k==="dom_dir"?"est_dir":h.k,v])})})});
+  return out}
+const impClean=v=>{v=String(v||"").replace(/[_…]{2,}|\.{3,}/g," ").replace(/^[\s:：.\-–|]+/,"").replace(/\s+/g," ").replace(/[\s,;:|\-–]+$/,"").trim(); if(/\.$/.test(v)&&!/\b[A-Za-z]\.$/.test(v)) v=v.slice(0,-1).trim(); return /^[\s.:()\-/]*$/.test(v)||/^(av\.?\/jr\.?|n\s*o\.?$)/i.test(v)?"":v};
+const IMP_OK={ruc:v=>{const d=v.replace(/\D/g,""); const m=d.match(/(?:10|15|17|20)\d{9}/); return m&&m[0]!==IMP_SAFETY_RUC?m[0]:""},
+  rep_doc:v=>{const m=v.replace(/(\d)\s+(?=\d)/g,"$1").match(/\b[A-Z]?\d{8,12}\b/i); return m?m[0]:""},
+  sol_tel:v=>{const m=v.match(/[+(]?\d[\d\s()+-]{5,18}\d/); return m?m[0].trim():""}, est_tel:v=>IMP_OK.sol_tel(v),
+  sol_correo:v=>{const m=v.match(/[\w.+-]+@[\w-]+(\.[\w-]+)+/); return m?m[0].toLowerCase():""},
+  area_ocupada:v=>{const m=v.match(/\d{1,6}(?:[.,]\d{1,3})?/); return m?fmtA(num(m[0])):""},
+  aforo:v=>{const m=v.match(/\b\d{1,5}\b/); return m?m[0]:""}, n_pisos:v=>{const m=v.match(/\b\d{1,2}\b/); return m&&+m[0]>0?m[0]:""},
+  antig_edif:v=>{const m=v.match(/\b\d{1,3}\b/); return m?m[0]:""}, antig_giro:v=>IMP_OK.antig_edif(v),
+  partida:v=>{const m=v.match(/\b\d{5,12}\b/); return m?m[0]:""},
+  rep_nombre:v=>/\d/.test(v)||v.length<5||v.length>90||!/[a-z]{2}/i.test(v)?"":v,
+  razon_social:v=>v.length<2||v.length>160||!/[a-z]{2}/i.test(v)||/^(n\s*o|ruc|dni)\b/i.test(v)?"":v.replace(/\s*,?\s*(identificad[ao]|con\s+r\.?u\.?c|r\.?u\.?c\.?\s*n).*$/i,"").trim(),
+  distrito:v=>oDistrict(v)||(v.length<=40&&/[a-z]{3}/i.test(v)&&!/\d/.test(v)?impTitle(v):""),
+  provincia:v=>v.length<=30&&!/\d/.test(v)?impTitle(v):"", departamento:v=>v.length<=30&&!/\d/.test(v)?impTitle(v):"",
+  localidad:v=>v.length<=80?v:"", referencia:v=>v.length<=160?v:"", piso_ubic:v=>v.length<=40?v:"", horario:v=>v.length<=90?v:"", giro:v=>v.length<=160?v:"", nombre_comercial:v=>v.length<=120?v:"",
+  dom_dir:v=>v.length>=5&&v.length<=200?v:"", est_dir:v=>v.length>=5&&v.length<=200?v:""};
+const impTitle=s=>String(s||"").toLocaleLowerCase("es-PE").replace(/(^|[\s(/-])([a-záéíóúñü])/g,(m,a,b)=>a+b.toLocaleUpperCase("es-PE")).replace(/\b(De|Del|La|Las|Los|Y|El)\b/g,(m,w,i)=>i?w.toLowerCase():w);
+
+/* frases típicas (carta poder, DJ y escaneos) cuando no siguen el modelo */
+function impSentences(text,add){const T=text.replace(/\s+/g," ");
+  let m=T.match(/representad[ao]\s+por\s+(?:su\s+[\wÁÉÍÓÚáéíóúñ ]{0,40}?,?\s*)?(?:el\s+|la\s+)?(?:se[ñn]or(?:a|ita)?\s+|sr\.?\s+|sra\.?\s+)?([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñü' .-]{4,80}?)\s*,?\s*(identificad[ao])?\s*,?\s*con\s+(D\.?\s?N\.?\s?I\.?|C\.?\s?E\.?|carn[eé] de extranjer[ií]a)\s*(?:N[°ºoO.]*\s*|Nro\.?\s*)?:?\s*([A-Z]?\d{8,12})/i);
+  if(m){add("rep_nombre",m[1]); if(m[2]) add("rep_genero",/a$/i.test(m[2])?"F":"M"); add("rep_doc_tipo",/e/i.test(m[3].replace(/[^a-z]/gi,"").slice(0,2))&&!/dni/i.test(m[3])?"CE":"DNI"); add("rep_doc",m[4])}
+  m=T.match(/\bYO\s*,?\s+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ' .-]{4,80}?)\s*,\s*(IDENTIFICAD[OA])\s+CON\s+(D\.?N\.?I\.?|C\.?E\.?|CARN[EÉ] DE EXTRANJER[IÍ]A)\s*(?:N[°ºO.]*\s*)?([A-Z]?\d{8,12})/i);
+  if(m){add("rep_nombre",m[1]); add("rep_genero",/a$/i.test(m[2])?"F":"M"); add("rep_doc_tipo",/dni|d\.n/i.test(m[3])?"DNI":"CE"); add("rep_doc",m[4])}
+  m=T.match(/([A-ZÁÉÍÓÚÑ0-9][^.;:\n]{2,120}?)\s*,?\s*(?:identificad[ao]\s+)?con\s+(?:R\.?U\.?C\.?|Registro [ÚU]nico de Contribuyentes(?:\s*R\.?U\.?C\.?)?)\s*(?:N[°ºoO.]*\s*|Nro\.?\s*)?:?\s*((?:10|15|17|20)\d{9})/);
+  if(m&&m[2]!==IMP_SAFETY_RUC){add("ruc",m[2]); const rz=m[1].replace(/^.*\b(?:CARTA PODER|DECLARACI[OÓ]N JURADA[A-ZÁÉÍÓÚ ]*|RAZ[OÓ]N SOCIAL|LA EMPRESA|EMPRESA)\s*/i,"").trim(); if(rz.length>2) add("razon_social",rz)}
+  m=T.match(/partida\s+(?:electr[oó]nica|registral)\s*(?:N[°ºoO.]*\s*|Nro\.?\s*)?:?\s*(\d{5,12})/i); if(m) add("partida",m[1]);
+  m=T.match(/zona registral\s*(?:N[°ºoO.]*\s*[IVX]+\s*[-–]?\s*)?(?:sede\s+)?(?:de\s+)?([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]{2,20})/i); if(m&&!/^(n|no)$/i.test(m[1])) add("zona_registral",impTitle(m[1]));
+  m=T.match(/ante la\s+(municipalidad\s+[^,.;]{3,80}?)\s+(?:para|,|\.|;)/i); if(m) add("municipalidad",m[1].replace(/^m/,"M"));
+  m=T.match(/domicili[oa]\w*\s+(?:legal\s+|fiscal\s+)?(?:para estos efectos\s+)?en\s+(.{6,180}?)\s*(?:,\s*debidamente|;|\s+DECLARO|\s+debidamente|\.\s)/i); if(m) add("@dom",m[1]);
+  m=T.match(/(\d{1,2})\s+d[ií]as\s+del\s+mes\s+de\s+([a-záéíóú]+)\s+del?\s+(\d{4})/i)||T.match(/\b(\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|se(?:p)?tiembre|octubre|noviembre|diciembre)\s+del?\s+(20\d{2})/i);
+  if(m){const mi=MESES.findIndex(x=>x===m[2].toLowerCase().replace("setiembre","septiembre")); if(mi>=0) add("fecha",`${m[3]}-${String(mi+1).padStart(2,"0")}-${String(+m[1]).padStart(2,"0")}`)}}
+
+/* juntar: cada dato con su fuente y prioridad; si dos documentos dicen cosas distintas, queda para revisar */
+const impCmp=v=>onorm(String(v??"")).replace(/[^a-z0-9]/g,"");
+function impSet(I,k,v,src,pr){if(v==null) return false; if(typeof v==="string"){v=v.replace(/\s+/g," ").trim(); if(!v) return false; if(IMP_OK[k]){v=IMP_OK[k](v); if(!v) return false}}
+  const cur=I.prio[k];
+  if(cur!=null){if(impCmp(I.st[k])===impCmp(v)){if(typeof v==="string"&&/[a-zñáéíóú]/.test(v)&&!/[a-zñáéíóú]/.test(String(I.st[k]))) I.st[k]=v; return false}
+    if(pr<cur||(pr===cur)){if(pr>=3&&!I.conf.some(c=>c.k===k&&impCmp(c.other)===impCmp(v))) I.conf.push({k,keep:I.st[k],ksrc:I.src[k],other:v,src}); return false}
+    if(cur>=3) I.conf.push({k,keep:v,ksrc:src,other:I.st[k],src:I.src[k]})}
+  I.st[k]=v; I.prio[k]=pr; I.src[k]=src; I.got.add(k); return true}
+const IMP_PROV=["Lima","Callao","Huaral","Cañete","Huaura","Barranca","Canta","Huarochirí","Oyón","Cajatambo","Yauyos","Arequipa","Cusco","Trujillo","Piura","Chiclayo","Ica"];
+// «AV. X 123, MIRAFLORES, LIMA, LIMA» → dirección, distrito, provincia, departamento
+function impAddr(s,n){const P=String(s||"").split(/\s*,\s*/).filter(Boolean), out={dir:"",dist:"",prov:"",dep:""}; if(!P.length) return out;
+  const isPD=x=>IMP_PROV.some(p=>impCmp(p)===impCmp(x))||/^(departamento|provincia)\b/i.test(x);
+  if(P.length>=2&&/^provincia\b/i.test(P[P.length-1])){const pd=impProvDep(P.pop()); out.prov=pd.prov||""; out.dep=pd.dep||""}
+  else if(n===4||n==null){if(P.length>=2&&isPD(P[P.length-1])){out.dep=impTitle(P.pop().replace(/^departamento( de)?\s*/i,""))} if(P.length>=2&&isPD(P[P.length-1])){out.prov=impTitle(P.pop().replace(/^provincia( de)?\s*/i,""))}}
+  else if(n===3){if(P.length>=2&&isPD(P[P.length-1])) out.prov=impTitle(P.pop())}
+  if(P.length>=2){const last=P[P.length-1], d=oDistrict(last); if(d&&impCmp(last).length<=impCmp(d).length+3){out.dist=d; P.pop()}}
+  let dir=P.join(", "); const m=dir.match(/^(.*?),?\s*distrito de\s+(.+)$/i); if(m){dir=m[1]; out.dist=oDistrict(m[2])||impTitle(m[2])}
+  out.dir=dir.trim(); if(!out.dist){const d=oDistrict(out.dir.split(/\s+/).slice(-3).join(" ")); if(d&&new RegExp(impEsc(onorm(d))+"\\s*$").test(onorm(out.dir))){out.dist=d; out.dir=out.dir.replace(new RegExp("[\\s,-]*"+impEsc(d)+"\\s*$","i"),"").trim()}}
+  return out}
+function impProvDep(s){const t=String(s||""); let m=t.match(/provincia y departamento de\s+([A-Za-zÁÉÍÓÚÑáéíóúñ ]+)/i); if(m) return {prov:impTitle(m[1].trim()),dep:impTitle(m[1].trim())};
+  m=t.match(/provincia de\s+([A-Za-zÁÉÍÓÚÑáéíóúñ ]+?)\s+y\s+departamento de\s+([A-Za-zÁÉÍÓÚÑáéíóúñ ]+)/i); return m?{prov:impTitle(m[1]),dep:impTitle(m[2].trim())}:{}}
+function impPutAddr(I,which,a,src,pr){const K=which==="dom"?["dom_dir","dom_distrito","dom_provincia","dom_departamento"]:["est_dir","distrito","provincia","departamento"];
+  [a.dir,a.dist,a.prov,a.dep].forEach((v,i)=>{if(v) impSet(I,K[i],i===0?v:impTitle(v),src,pr)})}
+function impDate(s){let m=String(s||"").match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); if(m) return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
+  m=String(s||"").match(/(\d{1,2})\s+de\s+([a-záéíóú]+)\s+del?\s+(\d{4})/i); if(m){const mi=MESES.indexOf(m[2].toLowerCase().replace("setiembre","septiembre")); if(mi>=0) return `${m[3]}-${String(mi+1).padStart(2,"0")}-${m[1].padStart(2,"0")}`} return ""}
+
+/* valores leídos de un anexo PDF del modelo → datos del expediente */
+function impFromV(I,doc,V,M,src){const P=5, set=(k,v)=>impSet(I,k,v,src,P);
+  for(const [k,v] of Object.entries(V)){
+    if(k==="a0_nombre"||k==="razon_social") set("razon_social",v);
+    else if(k==="sol_nombre"||k==="rep_nombre") set("rep_nombre",v);
+    else if(k==="sol_doc"||k==="rep_doc") set("rep_doc",v);
+    else if(k==="dom_full") impPutAddr(I,"dom",impAddr(v,4),src,P);
+    else if(k==="sol_domicilio") impPutAddr(I,"dom",impAddr(v,3),src,P);
+    else if(k==="est_full") impPutAddr(I,"est",impAddr(v,4),src,P);
+    else if(k==="est_dir") set("est_dir",v);
+    else if(k==="distrito"||k==="provincia"||k==="departamento") set(k,impTitle(v));
+    else if(k==="fecha_corta"){const d=impDate(v); if(d){set("fecha",d); I.fechaDocs[doc]=true}}
+    else if(/^det_/.test(k)){if(k==="det_cambio_nombre") set("nombre_comercial",v); else {set("modalidad",k.slice(4)); set("mod_detalle",v)}}
+    else if(k==="area_techada") I.techada=v;
+    else if(k in I.st) set(k,v)}
+  for(const k of M){let m;
+    if((m=k.match(/^mod_(\w+)$/))) set("modalidad",m[1]);
+    else if((m=k.match(/^fn_(\w+)$/))) set("funcion",m[1]);
+    else if((m=k.match(/^r_(\w+)$/))) I.lvl=({bajo:"BAJO",medio:"MEDIO",alto:"ALTO",muyalto:"MUY ALTO"})[m[1]]||I.lvl;
+    else if((m=k.match(/^cond_(\w+)$/))) set("condicion",m[1]);
+    else if((m=k.match(/^mx_(x|nc)_(.+)$/))) (I.mx[doc]||(I.mx[doc]={}))[m[2]]=m[1];
+    else if(k==="lic_si"||k==="lic_no") set("requiere_licencia",k==="lic_si");
+    else if((m=k.match(/^it_(.+)_(si|nc)$/))) I.a4[m[1]]=m[2]}}
+/* valores de la carta poder y las DJ → datos */
+function impFromW(I,W,src){const P=5, set=(k,v)=>impSet(I,k,v,src,P);
+  if(W.RAZON_SOCIAL) set("razon_social",W.RAZON_SOCIAL); else if(W.RAZON_SOCIAL_U) set("razon_social",W.RAZON_SOCIAL_U);
+  ["RUC","PARTIDA"].forEach(k=>W[k]&&set(k.toLowerCase(),W[k])); if(W.ZONA_REGISTRAL) set("zona_registral",W.ZONA_REGISTRAL);
+  if(W.REP_NOMBRE) set("rep_nombre",W.REP_NOMBRE); else if(W.REP_NOMBRE_U) set("rep_nombre",W.REP_NOMBRE_U);
+  const tp=W.REP_DOC_TIPO||W.REP_DOC_TIPO_U; if(tp) set("rep_doc_tipo",/d\.?\s?n\.?\s?i/i.test(tp)?"DNI":"CE"); if(W.REP_DOC) set("rep_doc",W.REP_DOC);
+  const idf=W.IDENTIFICADO||W.IDENTIFICADO_U; if(idf) set("rep_genero",/a$/i.test(idf)?"F":"M");
+  if(W.REP_NACIONALIDAD) set("rep_nacionalidad",/extranj/i.test(W.REP_NACIONALIDAD)?"extranjera":"peruana");
+  if(W.DOM_LEGAL_DIR_DIST){const a=impAddr(W.DOM_LEGAL_DIR_DIST,2); impPutAddr(I,"dom",a,src,P)}
+  if(W.DOM_LEGAL_PROVDEP){const a=impProvDep(W.DOM_LEGAL_PROVDEP); impPutAddr(I,"dom",{dir:"",dist:"",prov:a.prov,dep:a.dep},src,P)}
+  if(W.DOM_LEGAL_CORTO_U) impPutAddr(I,"dom",impAddr(W.DOM_LEGAL_CORTO_U,4),src,P-1);
+  if(W.EST_DIR_DIST) impPutAddr(I,"est",impAddr(W.EST_DIR_DIST,2),src,P); if(W.EST_PROVDEP){const a=impProvDep(W.EST_PROVDEP); impPutAddr(I,"est",{dir:"",dist:"",prov:a.prov,dep:a.dep},src,P)}
+  if(W.CIUDAD||W.CIUDAD_U) set("ciudad",impTitle(W.CIUDAD||W.CIUDAD_U)); if(W.MUNICIPALIDAD) set("municipalidad",W.MUNICIPALIDAD);
+  if(W.DIA&&W.MES&&W.ANIO){const mi=MESES.indexOf(W.MES.toLowerCase().replace("setiembre","septiembre")); if(mi>=0&&/^\d+$/.test(W.DIA)&&/^\d{4}$/.test(W.ANIO)) set("fecha",`${W.ANIO}-${String(mi+1).padStart(2,"0")}-${W.DIA.padStart(2,"0")}`)}
+  const fl=W.FECHA_LARGA_DEL||W.FECHA_LARGA_U; if(fl){const d=impDate(fl); if(d) set("fecha",d)}}
+function impApod(I,text){const m=text.match(/otorgo poder a favor de(?:\s+(?:la|las|los))?(?:\s+siguientes?\s+personas?)?\s*:?\s*([\s\S]{10,2500}?)\s*El presente poder/i); if(!m) return;
+  const L=m[1].split(/\n+|(?<=\d{7,})\s*[;,]?\s+(?=[A-ZÁÉÍÓÚÑ])/).map(s=>s.replace(/^[-•·\s]+/,"").replace(/\s+/g," ").trim()).filter(s=>/identificad|DNI|C\.?E\.?/i.test(s)&&/\d{7,}/.test(s));
+  if(L.length) impSet(I,"apoderados",L.join("\n"),"Carta poder",4)}
+
+/* plan de seguridad y memoria: lo principal */
+function impPlan(I,text,src){const T=text.replace(/[ \t]+/g," "), p=I.st.plan;
+  let m=T.match(/cuenta con\s+([\d.,]+)\s*m(?:²|2)\s+de [aá]rea ocupada/i); if(m){p.area=fmtA(num(m[1])); impSet(I,"area_ocupada",m[1],src,2)}
+  m=T.match(/aforo total de\s+(\d+)\s+personas/i); if(m) impSet(I,"aforo",m[1],src,2);
+  m=T.match(/representante legal,?\s+(?:el |la )?(?:Sr\.?|Sra\.?|señor(?:a)?)\s+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ' .-]{4,80}?),\s+cuenta/i); if(m) impSet(I,"rep_nombre",m[1],src,2);
+  const pe=T.split(/N[uú]mero de empleados\s*:?/i)[1]; if(pe){const L=[]; for(const ln of pe.split(/\n/).slice(0,80)){const mm=ln.match(/^\s*\d{1,3}\.\s+([A-Za-zÁÉÍÓÚÑáéíóúñü' .-]{4,80}?)(?:\s+DNI\s*N?[°ºo.]*\s*(\d{8}))?\s*$/i); if(mm) L.push((mm[1].trim()+" "+(mm[2]||"")).trim()); else if(L.length&&/^\s*[A-ZÁÉÍÓÚ]{4,}/.test(ln)) break}
+    if(L.length){p.personal=L.join("\n"); I.got.add("plan.personal")}}
+  m=T.match(/Local:\s*([^\n]+?)\s*[–-]\s*([A-ZÁÉÍÓÚÑ ]+)\s*$/m); if(m){const a=impAddr(m[1],2); if(a.dir) impPutAddr(I,"est",a,src,2)}}
+
+// ¿de verdad es ese documento? (un certificado llamado «Anexo 1» no debe llenar nada)
+function impLooks(kind,text,lines){const n=onorm(text).slice(0,5000), K=IMP_KINDS.find(x=>x[0]===kind);
+  if(K&&K[2].test(n)) return true;
+  if(/^a[0-4]$/.test(kind)) return /\banexo\b/.test(n)&&impLabels(lines).length>=3;
+  return ({carta_poder:/poder/,dj_representacion:/declaracion jurada/,dj_capacitacion:/declaracion jurada/,dj_laminas:/declaracion jurada/,plan:/plan de/,memo:/extintor/})[kind]?.test(n)||false}
+/* un documento → datos */
+async function impReadForm(I,f,kind,R){const src=IMP_NAME(kind), ext=(f.name.split(".").pop()||"").toLowerCase(), rec={kind,name:f.name,mode:"",n:0};
+  const before=new Set(I.got); let lines=[], text="";
+  try{
+    if(ext==="pdf"){const P=R||await impReadPdf(f,{ocr:true}); lines=P.pages.flatMap(impPdfLines); text=impLinesText(lines); if(P.ocr) rec.mode="OCR";
+      if(/^a[0-4]$/.test(kind)&&DATA.tpl[kind]){const D=impTplDiff(kind,P,await impTplPdf(kind)); if(D){impFromV(I,kind,D.V,D.M,src); rec.mode="modelo"}}}
+    else if(ext==="docx"){lines=await impReadDocx(f); text=impLinesText(lines)}
+    else if(/^(jpe?g|png|webp|jfif)$/.test(ext)){const cv=await oImgCanvas(f,2200), r=await oOcrBytes(await oPng(cv)); text=r.t||""; lines=text.split(/\n+/).map(t=>t.trim()).filter(Boolean).map(t=>[{t}]); rec.mode="OCR"}
+    else {rec.mode="no se lee"; I.recs.push(rec); return rec}
+    if(/^(carta_poder|dj_)/.test(kind)&&DATA.tpl[kind]){const W=impWordVals(await impWordTpl(kind),text); if(Object.keys(W).length){impFromW(I,W,src); if(!rec.mode&&W._full>=2) rec.mode="modelo"}
+      if(kind==="carta_poder") impApod(I,text);
+      const fb=Object.values(W).some(v=>/^_+/.test(v))||/_{4,}\s*d[ií]as del mes|_{4,}\s*DE\s*_{4,}/i.test(text); if(fb) I.fechaDocs[kind]=false; else if(W.DIA||W.FECHA_LARGA_DEL||W.FECHA_LARGA_U) I.fechaDocs[kind]=true}
+    if(rec.mode!=="modelo"&&!impLooks(kind,text,lines)){rec.mode=lines.length?"no parece "+(/^a\d/.test(kind)?"un anexo":kind==="carta_poder"?"una carta poder":/^dj_/.test(kind)?"una declaración jurada":kind==="plan"?"un plan de seguridad":"una memoria de extintores"):"sin texto"; rec.skip=true; I.recs.push(rec); return rec}
+    if(kind==="plan"){impPlan(I,text,src); for(const [k,v] of impLabels(lines)) if(k==="razon_social"||k==="ruc") impSet(I,k,v,src,2)}
+    else if(kind!=="memo"&&rec.mode!=="modelo"){ // la memoria de extintores solo se marca para incluirla: sus datos salen del ITSE
+      impSentences(text,(k,v)=>{if(k==="@dom") impPutAddr(I,"dom",impAddr(v,null),src,3); else impSet(I,k,v,src,3)});
+      for(const [k,v] of impLabels(lines)){if(k==="dom_dir"||k==="est_dir"){const a=impAddr(v,null); impPutAddr(I,k==="dom_dir"?"dom":"est",a,src,2)} else impSet(I,k,v,src,2)}}
+    if(!rec.mode) rec.mode=lines.length?"texto":"sin texto"}
+  catch(e){console.warn(f.name,e); rec.mode="no se pudo leer"; rec.err=e.message}
+  rec.n=[...I.got].filter(k=>!before.has(k)).length; I.recs.push(rec); return rec}
+async function impReadSide(I,f,kind,R){const n=onorm(R&&R.text||""); // ficha RUC y vigencia: solo si falta el dato
+  if(kind==="ruc"){const m=n.match(/numero de ruc:?\s*((?:10|15|17|20)\d{9})\s*-\s*([^\n]{3,120})/); if(m){impSet(I,"ruc",m[1],"Ficha RUC",1); const raw=(R.text.match(new RegExp(m[1]+"\\s*-\\s*([^\\n]{3,120})"))||[])[1]; if(raw) impSet(I,"razon_social",raw.trim(),"Ficha RUC",1)}}
+  if(kind==="vig"){const m=n.match(/partida (?:electronica |registral )?(?:no?\.?\s*)?(\d{8})/); if(m) impSet(I,"partida",m[1],"Vigencia de poder",1)}}
+
+/* datos que se deducen al final: trámite, función, riesgo, matriz, checklist del Anexo 4, documentos que van */
+function impFinish(I){const st=I.st;
+  if(I.kinds.has("a0")||I.prio.modalidad!=null) st.tramite="licencia"; else if(I.kinds.size) st.tramite="itse";
+  const mx2=I.mx.a2||null, mx3=I.mx.a3||null, xs=Object.keys(mx2||mx3||{}).filter(c=>(mx2||mx3)[c]==="x"&&MATRIX[c]);
+  if(xs.length){const fn=FUNCS.find(x=>xs[0].startsWith(x[2]+".")); if(fn&&!st.funcion) st.funcion=fn[0];
+    const res=c=>{const m=MATRIX[c]; return lvl(m[0])>=lvl(m[1])?m[0]:m[1]};
+    const pick=(I.lvl&&xs.find(c=>res(c)===I.lvl))||xs.slice().sort((a,b)=>lvl(res(b))-lvl(res(a)))[0]; st.subcat=pick; st.nivel=MATRIX[pick][0];
+    if(mx2&&!(Object.keys(mx2).length===1&&mx2[pick]==="x")) st.mx2=mx2;
+    if(mx3){const a2x=Object.keys(st.mx2||{[pick]:"x"}).filter(c=>(st.mx2||{[pick]:"x"})[c]==="x").sort().join(), a3x=Object.keys(mx3).filter(c=>mx3[c]==="x").sort().join(); if(a2x!==a3x){st.mx3={}; for(const c in mx3) if(mx3[c]==="x") st.mx3[c]=true}}
+    I.got.add("subcat")}
+  else if(st.funcion&&I.lvl){const fn=FUNCS.find(x=>x[0]===st.funcion), c=fn&&Object.keys(MATRIX).find(k=>k.startsWith(fn[2]+".")&&MATRIX[k][0]===I.lvl); if(c){st.subcat=c; st.nivel=I.lvl; I.got.add("subcat")}}
+  if(!st.funcion&&st.giro){const g=[["comercio",/\b(funcion comercio|tienda|venta de|cafeteria|restaurante|cocinas ocultas|minimarket|bodega)\b/],["oficinas",/\b(oficinas administrativas|funcion oficinas)\b/],["almacen",/\b(almacen|deposito)\b/],["encuentro",/\b(funcion encuentro|discoteca|gimnasio|auditorio)\b/],["educacion",/\b(funcion educacion|colegio|instituto|academia)\b/],["salud",/\b(funcion salud|consultorio|clinica|policlinico)\b/],["hospedaje",/\b(hotel|hostal|hospedaje)\b/],["industrial",/\b(funcion industrial|fabrica|planta industrial)\b/]].find(([,re])=>re.test(onorm(st.giro||"")))||[];
+    if(g[0]) st.funcion=g[0]}
+  if(Object.keys(I.a4).length){const Q={evac_6:"q_aforo100",prot_3:"q_ext_intemperie",prot_5:"q_glp10",prot_6:"q_glp45",ofi_2:"q_ofi_conf5",otr_11:"q_rampas",otr_12:"q_vacio",otr_13:"q_antenas",otr_14:"q_racks",otr_15:"q_aire",otr_16:"q_sotano_co",otr_17:"q_juegos",otr_18:"q_vidrios"};
+    for(const [it,q] of Object.entries(Q)) if(it in I.a4) st[q]=I.a4[it]==="si";
+    const fr=["com_2","enc_2","hos_1"].find(k=>k in I.a4); if(fr) st.q_freidora=I.a4[fr]==="si";
+    const any=(a)=>a.some(k=>I.a4[k]==="si"), has=(a)=>a.some(k=>k in I.a4);
+    if(has(["col_2","col_3","col_4"])) st.est_concreto=any(["col_2","col_3","col_4"]); if(has(["col_5","col_6"])) st.est_albanileria=any(["col_5","col_6"]); if(has(["col_7"])) st.est_adobe=any(["col_7"]);
+    if(has(["col_8","col_9","col_10"])) st.est_madera=any(["col_8","col_9","col_10"]); if(has(["col_11","col_12","col_13"])) st.est_acero=any(["col_11","col_12","col_13"]);
+    const keep=S; S=st; try{st.a4man={}; for(const [k,v] of Object.entries(I.a4)) if(DATA.layout.a4_items.includes(k)&&a4Default(k)!==v) st.a4man[k]=v}finally{S=keep}}
+  // dirección del local: igual que la del solicitante o distinta
+  const same=(a,b)=>!impCmp(st[b])||impCmp(st[a])===impCmp(st[b]);
+  if(st.est_dir&&st.dom_dir){st.est_igual=same("est_dir","dom_dir")&&same("distrito","dom_distrito"); if(st.est_igual){st.est_dir=""; st.distrito=""; st.provincia="Lima"; st.departamento="Lima"}}
+  else if(st.est_dir&&!st.dom_dir){st.est_igual=false} else st.est_igual=true;
+  if(I.techada&&!["area_p1","area_p2","area_p3","area_p4","area_otros"].some(k=>num(st[k])>0)&&!num(st.area_ocupada)) st.area_ocupada=fmtA(num(I.techada));
+  st.fechaDocs=Object.assign({},I.fechaDocs);
+  // documentos encontrados que por defecto no irían: se incluyen
+  const keep=S; S=st; try{st.docs={}; for(const k of I.kinds) if(IMP_FORMS.has(k)&&!docDefault(k)) st.docs[k]=true}finally{S=keep}
+  if(I.kinds.has("plan")) st.plan.vinc=true}
+function impOrgFromItse(st){const o=Object.assign(orgBlank(),st.org||{}); const ea=st.est_igual?{dir:st.dom_dir,dist:st.dom_distrito}:{dir:st.est_dir,dist:st.distrito};
+  if(st.razon_social&&!o.razon){o.razon=st.razon_social; o.cliente=st.razon_social.replace(/\b(S\.?A\.?C\.?|S\.?A\.?A\.?|S\.?A\.?|E\.?I\.?R\.?L\.?|S\.?R\.?L\.?)\s*$/i,"").replace(/[ ,.-]+$/,"")}
+  if(st.nombre_comercial&&!o.local) o.local=st.nombre_comercial; if(ea.dir&&!o.direccion) o.direccion=ea.dir; if(ea.dist&&!o.distrito) o.distrito=ea.dist;
+  const m=MATRIX[st.subcat]; if(m) o.riesgo=/ALTO/.test(lvl(m[0])>=lvl(m[1])?m[0]:m[1])?"AMA":"BM"; o.lf=st.tramite==="itse"; st.org=o}
+
+/* todo junto: archivos (o comprimidos) → expediente nuevo */
+async function impBuild(list,step){const I={st:blank(),prio:{},src:{},got:new Set(),conf:[],recs:[],kinds:new Set(),mx:{},a4:{},lvl:"",techada:"",fechaDocs:{},text:"",json:null,forms:new Set(),fkind:new Map(),prop:null,side:[]};
+  delete I.st.uid; I.st.fecha=today(); I.st.municipalidad=""; I.st.step="inicio";
+  const cand=[];
+  for(const f of list){const ext=(f.name.split(".").pop()||"").toLowerCase();
+    if(/^datos del expediente\.json$/i.test(f.name)||(ext==="json"&&list.length===1)){try{const st=JSON.parse(await f.text()); if(st&&typeof st==="object"&&("razon_social" in st||"org" in st||"plan" in st)){I.json=st; I.forms.add(f)}}catch(_){} continue}
+    if(ext==="pdf"||ext==="docx"||ext==="doc") cand.push(f);
+    else if(/^(jpe?g|png|webp|jfif)$/.test(ext)&&IMP_FORMS.has(impKind(f.name,""))) cand.push(f)}
+  if(I.json) return I;
+  let i=0;
+  for(const f of cand){i++; step&&step(`Leyendo «${f.name}» (${i} de ${cand.length})…`); const ext=(f.name.split(".").pop()||"").toLowerCase();
+    let kind=impKind(f.name+" "+(f._rel||""),""), R=null, head="";
+    if(!kind&&/^(pdf|docx)$/.test(ext)&&f.size<25e6){try{if(ext==="pdf"){R=await impReadPdf(f,{max:3}); head=R.pages.map(p=>impLinesText(impPdfLines(p))).join("\n").slice(0,1500)} else {head=impLinesText(await impReadDocx(f)).slice(0,1500)}}catch(_){} kind=impKind(f.name,head)}
+    else if(kind&&ext==="pdf"&&/^a[0-4]$/.test(kind)) R=null;
+    if(!kind) continue;
+    if(IMP_FORMS.has(kind)){if(ext==="doc"){I.recs.push({kind,name:f.name,mode:"Word antiguo (.doc): guárdalo como .docx para leerlo",n:0}); continue}
+      const rec=await impReadForm(I,f,kind,R&&R.pages&&R.pages.length===R.n&&oLetters(R.pages.map(p=>p.items.map(x=>x.s).join("")).join(""))>40?R:null); if(rec.skip) continue; I.kinds.add(kind); I.forms.add(f); I.fkind.set(f,kind)}
+    else if(kind==="prop"){if(!I.prop) I.prop=f}
+    else if(kind==="ruc"||kind==="vig"){try{const r=await orgRead(f); await impReadSide(I,f,kind,r)}catch(_){}}}
+  impFinish(I); return I}
+
+/* pasos en Recientes: leer, guardar, subir el comprimido original a su carpeta y mandar el resto a Organizar */
+const IMP={busy:false,rep:null};
+async function impRun(files,rel0){if(IMP.busy) return; IMP.busy=true; const step=t=>{GD.busy=t; gdUi()};
+  try{await gdFlush(); const arcs=files.filter(f=>OARC.test(f.name)), loose=files.filter(f=>!OARC.test(f.name)), groups=arcs.map(a=>({arc:a,files:null}));
+    if(loose.length) groups.push({arc:null,files:loose});
+    let last=null;
+    for(const g of groups){let list=g.files, rel=new Map(g.arc?[]:(rel0||[])); if(!g.arc) list.forEach(f=>{const r=rel.get(f); if(r) f._rel=String(r).replace(/^\/+/,"")});
+      if(g.arc){step(`Abriendo «${g.arc.name}»…`); const ents=await oUnpack(g.arc); list=ents.map(e=>{const f=new File([e.data],e.name,{type:oMime(e.name)}); f._rel=e.dir||""; rel.set(f,g.arc.name+(e.dir?"/"+e.dir:"")); return f})}
+      list=list.filter(f=>f&&f.size&&!OSKIP.test(f.name));
+      if(!list.length){IMP.rep={err:`«${g.arc?g.arc.name:"los archivos"}» no trae archivos.`}; continue}
+      const I=await impBuild(list,step); let st;
+      if(I.json){st=Object.assign(blank(),I.json); delete st._example}
+      else {st=I.st; impOrgFromItse(st)}
+      st.uid=I.json&&I.json.uid||("z"+(await oHash(g.arc||list[0])).slice(0,16)+(g.arc?"":list.length));
+      const existed=!!(GD.list||[]).some(x=>x.uid===st.uid);
+      loadState(st); persistLocal();
+      // todos los archivos van a Organizar (también los anexos originales, firmados o no); lo que arman las pestañas queda sin marcar para no repetirlo
+      if(!I.json){const o=OR(), K=I.kinds; if([...K].some(k=>/^(a\d|carta_poder|dj_)/.test(k))) o.gen.itse=false; if(K.has("plan")) o.gen.plan=false; if(K.has("memo")) o.gen.memo=false}
+      for(const f of I.forms) f._hint=I.fkind.get(f)==="plan"?"plan":I.fkind.get(f)==="memo"?"memo":"form";
+      if(I.prop){try{step("Leyendo la propuesta…"); await orgSetProp(I.prop)}catch(e){console.warn(e)}}
+      const restOrg=list.filter(f=>f!==I.prop&&!/^datos del expediente\.json$/i.test(f.name));
+      let saved=false, upl="";
+      if(gdReady()&&expHasData(S)){step("Guardando en el Drive…"); await gdPut(S); saved=true; GD.dirty=false; GD.lastSave=Date.now();
+        const m=GD.map[S.uid], up=g.arc||null;
+        if(m&&up&&up.size>60e6) upl="!pesa "+oSize(up.size)+" y el máximo es 60 MB; sus archivos quedan en Organizar";
+        else if(m&&up){try{step(`Guardando «${up.name}» en la carpeta del expediente…`); await srvUpload({k:"out",sec:"itse",fid:m.fid},up,up.name); upl=up.name}catch(e){console.warn(e); upl="!"+e.message}}}
+      else if(expHasData(S)&&srvMode()) gdQueue(S);
+      if(restOrg.length) await orgAddFiles(restOrg,rel);
+      IMP.rep={title:expTitle(S),src:g.arc?g.arc.name:`${list.length} archivo${list.length===1?"":"s"}`,json:!!I.json,recs:I.recs,got:[...I.got],conf:I.conf,miss:impMissing(S),org:restOrg.length,prop:I.prop?I.prop.name:"",saved,upl,existed,empty:!I.json&&!I.recs.length};
+      last=IMP.rep}
+    return last}
+  catch(e){console.error(e); IMP.rep={err:e.message||String(e)}; return null}
+  finally{IMP.busy=false; GD.busy=""; gdUi(); render()}}
+const IMP_FL={razon_social:"razón social",ruc:"RUC",rep_nombre:"representante",rep_doc:"DNI/CE",partida:"partida",dom_dir:"domicilio",dom_distrito:"distrito del domicilio",nombre_comercial:"nombre comercial",
+  giro:"giro",horario:"horario",area_ocupada:"área ocupada",n_pisos:"n° de pisos",municipalidad:"municipalidad",funcion:"función",subcat:"nivel de riesgo",sol_tel:"teléfono",sol_correo:"correo",aforo:"aforo",
+  est_dir:"dirección del local",distrito:"distrito del local",piso_ubic:"piso",referencia:"referencia",localidad:"localidad",zona_registral:"zona registral",ciudad:"ciudad",fecha:"fecha",
+  antig_edif:"antigüedad de la edificación",antig_giro:"antigüedad del giro",rep_genero:"trato (Sr./Sra.)",rep_doc_tipo:"tipo de documento",condicion:"condición",modalidad:"modalidad",apoderados:"apoderados","plan.personal":"personal del plan",
+  area_p1:"área 1er piso",area_p2:"área 2do piso",area_p3:"área 3er piso",area_p4:"área 4to piso",ext_pqs:"extintores PQS",ext_co2:"extintores CO2",ext_k:"extintores K",ext_agua:"extintores agua",requiere_licencia:"licencia (A4)",
+  est_tel:"teléfono del local",dom_provincia:"provincia",dom_departamento:"departamento",provincia:"provincia del local",departamento:"departamento del local",mod_detalle:"detalle de la modalidad",rep_nacionalidad:"nacionalidad"};
+function impMissing(s){const need=["razon_social","ruc","rep_nombre","rep_doc","partida","dom_dir","nombre_comercial","giro","horario","area_ocupada","n_pisos","municipalidad","funcion","subcat","sol_tel","sol_correo","aforo"];
+  return need.filter(k=>!String(s[k]??"").trim())}
+function impRepHTML(){const r=IMP.rep; if(!r) return "";
+  if(r.err) return `<section class="card imprep bad-b"><h2>No se pudo leer</h2><p class="bad" style="margin:0">${esc(r.err)}</p><div class="acts" style="margin-top:10px"><button type="button" class="btn" data-ract="impclose">Cerrar</button></div></section>`;
+  const code=k=>(DOCS.find(d=>d.id===k)||{}).c||IMP_NAME(k), used=r.recs.filter(x=>!x.skip), skip=r.recs.filter(x=>x.skip);
+  const chips=used.map(x=>{const rv=(x.mode==="OCR"||x.mode==="texto")&&!/^(plan|memo)$/.test(x.kind);const lbl=x.n?`${x.n} dato${x.n===1?"":"s"}`:x.mode==="modelo"||x.mode==="texto"||x.mode==="OCR"?"✓":x.mode, how=x.mode==="modelo"?"leído casilla por casilla (modelo del generador)":x.mode==="OCR"?"escaneado: leído con OCR, revísalo":x.mode==="texto"?"leído por sus etiquetas, revísalo":x.mode;
+    return `<span class="impc${x.n?" on":""}${rv?" rev":""}" title="${esc(IMP_NAME(x.kind)+" · "+x.name+" · "+how+(x.n?"":" · coincide con lo ya leído"))}"><b>${esc(code(x.kind))}</b> ${esc(lbl)}${x.mode==="OCR"?" · OCR":""}</span>`}).join("");
+  const got=r.got.map(k=>IMP_FL[k]).filter(Boolean), miss=r.miss.map(k=>IMP_FL[k]||k), rev=used.some(x=>(x.mode==="OCR"||x.mode==="texto")&&!/^(plan|memo)$/.test(x.kind));
+  return `<section class="card imprep"><h2>${r.json?"Expediente cargado":"Expediente armado desde sus documentos"}</h2>
+    <p style="margin:0"><b>${esc(r.title)}</b> <span class="muted">· de ${esc(r.src)}${r.existed?" · ya existía: se actualizó":""}</span></p>
+    ${r.json?`<p class="muted" style="margin:8px 0 0">Traía «Datos del expediente.json»: se cargó tal cual.</p>`:r.empty?`<p class="warn" style="margin:8px 0 0">No se encontró ningún anexo ni formato (carta poder, DJ, plan o memoria). Los archivos pasaron a «Organizar archivos».</p>`:`<div class="impcs">${chips}</div>${rev?`<p class="muted" style="margin:6px 0 0">En amarillo: leído por etiquetas u OCR (no era el modelo del generador); revisa esos datos.</p>`:""}`}
+    ${skip.length?`<p class="muted" style="margin:8px 0 0">No se usó para llenar: ${skip.map(x=>`«${esc(x.name)}» (${esc(x.mode)})`).join(", ")}. Va${skip.length===1?"":"n"} a Organizar.</p>`:""}
+    ${got.length?`<details class="impd"><summary><b>Se llenaron ${got.length} datos</b></summary><p class="muted" style="margin:6px 0 0">${esc(got.join(", "))}.</p></details>`:""}
+    ${r.conf.length?`<div class="warn" style="margin:8px 0 0"><b>Revisa (dos documentos dicen distinto):</b><ul>${r.conf.slice(0,8).map(c=>`<li>${esc(IMP_FL[c.k]||c.k)}: se dejó «${esc(c.keep)}» (${esc(c.ksrc||"")}); en ${esc(c.src)} dice «${esc(c.other)}».</li>`).join("")}</ul></div>`:""}
+    ${!r.json&&miss.length?`<p style="margin:8px 0 0"><b>Falta llenar:</b> <span class="muted">${esc(miss.join(", "))}.</span></p>`:""}
+    ${r.prop?`<p style="margin:8px 0 0">Propuesta leída: <b>${esc(r.prop)}</b> (código, local y requisitos en «Organizar archivos»).</p>`:""}
+    ${r.org?`<p style="margin:8px 0 0">${r.org===1?"El archivo pasa":`Los ${r.org} archivos pasan`} a <b>Organizar archivos</b>, cada uno a su carpeta${r.recs.length&&!r.json?" (también los anexos originales; los que arman las pestañas quedan sin marcar para no repetirlos)":""}.</p>`:""}
+    ${r.upl&&r.upl[0]!=="!"?`<p class="muted" style="margin:8px 0 0">El comprimido original quedó en la carpeta del expediente.</p>`:r.upl?`<p class="bad" style="margin:8px 0 0">No se guardó el comprimido original: ${esc(r.upl.slice(1))}</p>`:""}
+    ${!r.saved&&srvMode()?`<p class="warn" style="margin:8px 0 0">Aún no se guardó en línea (se guarda al entrar o al primer cambio).</p>`:""}
+    <div class="acts" style="margin-top:12px"><button type="button" class="btn primary" data-app="itse">Revisar los anexos</button><button type="button" class="btn" data-app="org">Organizar archivos</button>${S.docs&&S.docs.plan?`<button type="button" class="btn" data-app="plan">Plan de seguridad</button>`:""}<button type="button" class="btn" data-ract="impclose">Cerrar</button></div></section>`}
+
 /* ---------- banco y datos privados en el servidor ---------- */
 async function gdLoadBank(){if(!canBank()) return; const j=await srv("bank"); if(!j.meta) return; BANKM=j.meta; GD.bankDrive=true; GD.bankRev=j.meta.rev||0; if(SEC==="itse"&&(APP==="org"||APP==="bank")) render()}
 async function gdSaveBankMeta(meta){const j=await srv("bankmeta",{meta,rev:GD.bankRev||0}); GD.bankRev=j.meta.rev||0; GD.bankDrive=true; return j.meta}
@@ -3591,7 +4005,7 @@ function recentStatHTML(){if(!srvMode()) return `<p class="muted" style="margin:
   return `<p style="margin:0">Cada cambio se guarda solo ${where}.${GD.all?` Ves los expedientes de todos los usuarios.`:""}</p>${GD.err?`<p class="bad" style="margin:6px 0 0">${esc(GD.err)} <button type="button" class="btn sm" data-ract="refresh">Reintentar</button></p>`:""}`}
 function recentRows(){const src=GD.list||gdPref().recent||[], q=onorm(GD.q||""), cur=S.uid, own=GD.owner;
   const rows=src.filter(x=>(!q||onorm([x.name,x.cod,x.loc,x.cli,x.owner].join(" ")).includes(q))&&(!own||x.owner===own));
-  if(!rows.length) return `<p class="muted" style="margin:0">${src.length?"Ningún expediente coincide con la búsqueda.":gdReady()?"Aún no hay expedientes guardados. Llena cualquier pestaña y se guarda solo, o sube tus .json antiguos.":"Sin expedientes guardados todavía."}</p>`;
+  if(!rows.length) return `<p class="muted" style="margin:0">${src.length?"Ningún expediente coincide con la búsqueda.":gdReady()?"Aún no hay expedientes guardados. Llena cualquier pestaña y se guarda solo, o suelta el .zip de un expediente.":"Sin expedientes guardados todavía."}</p>`;
   const live=expHasData(S)?expPct(S):null;
   return `<ul class="rcl">${rows.slice(0,GD.allRows?800:60).map(x=>{const isCur=x.uid&&x.uid===cur, pct=isCur&&live?live.pct:x.pct, pp=isCur&&live?live.pp:x.pp, sure=GD.sureDel===x.fid;
     return `<li class="${isCur?"cur":""}"><button type="button" class="rcopen" data-ract="open" data-fid="${esc(x.fid||"")}" data-uid="${esc(x.uid||"")}"${gdReady()&&x.fid?"":" disabled"}>
@@ -3602,8 +4016,9 @@ function recentRows(){const src=GD.list||gdPref().recent||[], q=onorm(GD.q||""),
     ${rows.length>60&&!GD.allRows?`<button type="button" class="btn" data-ract="all" style="margin-top:8px">Ver los ${rows.length}</button>`:""}`}
 function recentListUpd(){const l=document.getElementById("rcList"); if(l) l.innerHTML=recentRows()}
 function renderRecent(){const B=bank(), cur=expHasData(S)?expTitle(S):"", m=S.uid&&GD.map[S.uid];
-  let h=`<section class="card"><h2>Expedientes recientes</h2><div id="rcStat">${recentStatHTML()}</div>
-    <div class="acts rcacts"><button type="button" class="btn primary" data-ract="new">Nuevo expediente</button><button type="button" class="btn" data-ract="pick">Subir .json o .zip antiguos…</button>${gdReady()?`<button type="button" class="btn" data-ract="refresh">Actualizar lista</button>`:""}</div>
+  let h=impRepHTML()+`<section class="card"><h2>Expedientes recientes</h2><div id="rcStat">${recentStatHTML()}</div>
+    <div class="acts rcacts"><button type="button" class="btn primary" data-ract="new">Nuevo expediente</button><button type="button" class="btn" data-ract="pick">Subir expediente (.zip, .rar o archivos)…</button>${gdReady()?`<button type="button" class="btn" data-ract="refresh">Actualizar lista</button>`:""}</div>
+    <div class="rcdrop" id="rcDrop" data-ract="pick" role="button" tabindex="0">${matchMedia("(pointer:coarse)").matches?"<b>Toca aquí para elegir el .zip o .rar de un expediente</b> (o sus archivos)":"<b>Suelta aquí el .zip o .rar de un expediente</b> (o sus archivos, o la carpeta)"}<span class="muted">Se leen los anexos, la carta poder, las DJ, el plan y la propuesta: se llenan solos y el resto va a su carpeta en «Organizar archivos».</span></div>
     ${cur?`<p class="muted" style="margin:10px 0 0">Abierto ahora: <b>${esc(cur)}</b>${m&&driveLink(m.fid)?` · <a href="${driveLink(m.fid)}" target="_blank" rel="noopener">su carpeta ↗</a>`:""}</p>`:""}
     <div class="grid" style="margin-top:12px"><div class="f ${GD.all?"c8":"c12"}"><label for="rcQ">Buscar</label><input type="search" id="rcQ" placeholder="Código, local o cliente" value="${esc(GD.q||"")}" autocomplete="off"></div>
     ${GD.all?`<div class="f c4"><label for="rcOwn">De quién</label><select id="rcOwn"><option value="">Todos</option>${GD.owners.map(o=>`<option value="${esc(o)}"${GD.owner===o?" selected":""}>${esc(o===SRV.me.id?"Míos":whoName(o))}</option>`).join("")}</select></div>`:""}</div>
@@ -3611,7 +4026,7 @@ function renderRecent(){const B=bank(), cur=expHasData(S)?expTitle(S):"", m=S.ui
   if(isAdmin()) h+=`<section class="card"><h2>Banco de documentos (sedes y dueños)</h2>${GD.bankDrive&&B?`<p style="margin:0">En el servidor: <b>${B.sedes.length} sedes</b> y <b>${B.owners.length} dueños</b> (al ${esc(fdmy(bkDate(B.v)))}). Se adjunta solo en «Organizar archivos» y se actualiza en la pestaña <button type="button" class="lnk" data-app="bank">Banco de documentos</button>.</p>`
     :`<p style="margin:0 0 8px">Aún no está en el servidor. Súbelo una vez desde el archivo «Generador ITSE.html» de tu PC (SYSTEM\\BASES): los certificados y documentos del banco y tus datos privados (lista de apoderados y firma) quedan solo en tu Drive.</p><button type="button" class="btn" data-ract="bankpick">Subir el banco…</button>`}
     ${GD.bankDrive&&privNeeded()&&!GD.priv?`<p class="warn" style="margin:8px 0 0">Faltan la lista de apoderados y la firma: vuelve a subir el «Generador ITSE.html» de tu PC. <button type="button" class="btn" data-ract="bankpick">Elegir archivo…</button></p>`:""}</section>`;
-  h+=`<input type="file" id="rcFiles" accept=".json,.zip,application/json,application/zip" multiple hidden><input type="file" id="rcBank" accept=".html,text/html" hidden>`;
+  h+=`<input type="file" id="rcFiles" accept=".json,.zip,.rar,.pdf,.docx,.doc,.xlsx,.jpg,.jpeg,.png,application/json,application/zip" multiple hidden><input type="file" id="rcBank" accept=".html,text/html" hidden>`;
   $("#form").innerHTML=h; $("#exBanner").hidden=true; bar(); schedulePreview(0)}
 function recentBar(){const n=(GD.list||gdPref().recent||[]).length; $("#barRisk").innerHTML=`<b>Recientes</b><span class="muted">· ${n} expediente${n===1?"":"s"}${gdReady()?" guardados":""}</span>`}
 function drawRecent(body){$("#pvTabs").innerHTML=`<button type="button" class="pv-tab" role="tab" aria-selected="true">Expediente abierto</button>`; $("#logoTools").hidden=true; $("#pvNote").innerHTML="Lo que tienes abierto ahora. Ábrelo en cualquier pestaña para seguir trabajando.";
@@ -3627,6 +4042,7 @@ async function recentAction(b){const a=b.dataset.ract;
   if(a==="all"){GD.allRows=true; recentListUpd(); return}
   if(a==="new"){await gdFlush(); loadState(blank()); delete S.uid; persistLocal(); APP="itse"; try{localStorage.setItem("itse-app",APP)}catch(_){} render(); say(gdReady()?"Expediente nuevo: se guarda solo al escribir el primer dato.":"Expediente nuevo.","ok"); window.scrollTo(0,0); return}
   if(a==="pick") return $("#rcFiles").click();
+  if(a==="impclose"){IMP.rep=null; render(); return}
   if(a==="bankpick") return $("#rcBank").click();
   if(a==="del"){const fid=b.dataset.fid; if(!fid) return;
     if(GD.sureDel!==fid){GD.sureDel=fid; recentListUpd(); clearTimeout(GD.sureT); GD.sureT=setTimeout(()=>{GD.sureDel=""; recentListUpd()},5000); return}
@@ -3642,12 +4058,22 @@ document.addEventListener("click",e=>{if(APP!=="recent"||SEC!=="itse") return; c
 document.addEventListener("input",e=>{if(APP==="recent"&&e.target.id==="rcQ"){GD.q=e.target.value; recentListUpd()}});
 document.addEventListener("change",async e=>{const el=e.target;
   if(el.id==="rcOwn"){GD.owner=el.value; recentListUpd(); return}
-  if(el.id==="rcFiles"&&el.files.length){const fs=[...el.files]; el.value=""; GD.busy="Subiendo expedientes…"; gdUi();
-    try{const r=await gdImport(fs); if(r.ok===1&&fs.length===1){loadState(r.last); persistLocal()}
-      say(`${r.ok} expediente${r.ok===1?"":"s"} ${gdReady()?"guardado"+(r.ok===1?"":"s")+" en línea":"guardado"+(r.ok===1?"":"s")+": se suben al entrar a la plataforma"}${r.errs.length?" · "+r.errs.join(" · "):""}.`,r.errs.length?"err":"ok")}
-    finally{GD.busy=""; gdUi(); render()} return}
+  if(el.id==="rcFiles"&&el.files.length){const fs=[...el.files]; el.value=""; await impHandle(fs); return}
   if(el.id==="rcBank"&&el.files.length){const f=el.files[0]; el.value="";
     try{const n=await gdBankImport(f); say(`Banco en el servidor: ${n} documentos.`,"ok")}catch(err){GD.busy=""; say("No se subió el banco: "+err.message,"err")} finally{gdUi(); render()}}});
+// .json sueltos como antes; comprimidos y documentos: se lee todo y se arma el expediente
+async function impHandle(fs,rel){const js=fs.filter(f=>/\.json$/i.test(f.name)), other=fs.filter(f=>!/\.json$/i.test(f.name));
+  if(js.length&&!(js.length===1&&other.length)){GD.busy="Subiendo expedientes…"; gdUi();
+    try{const r=await gdImport(js); if(r.ok===1&&js.length===1&&!other.length){loadState(r.last); persistLocal()}
+      say(`${r.ok} expediente${r.ok===1?"":"s"} ${gdReady()?"guardado"+(r.ok===1?"":"s")+" en línea":"guardado"+(r.ok===1?"":"s")+": se suben al entrar a la plataforma"}${r.errs.length?" · "+r.errs.join(" · "):""}.`,r.errs.length?"err":"ok")}
+    finally{GD.busy=""; gdUi(); render()}}
+  const rest=js.length===1&&other.length?fs:other; if(!rest.length) return;
+  const r=await impRun(rest,rel); if(r) say(r.json?`Cargado: ${r.title}.`:`Listo: ${r.title}. Revisa lo leído.`,"ok"); else if(IMP.rep&&IMP.rep.err) say(IMP.rep.err,"err")}
+document.addEventListener("dragover",e=>{if(SEC!=="itse"||APP!=="recent"||!dtFiles(e)) return; e.preventDefault(); const z=document.getElementById("rcDrop"); if(z) z.classList.add("over")});
+document.addEventListener("dragleave",e=>{if(APP!=="recent") return; const z=document.getElementById("rcDrop"); if(z&&!e.relatedTarget) z.classList.remove("over")});
+document.addEventListener("drop",async e=>{if(SEC!=="itse"||APP!=="recent"||!dtFiles(e)||!e.dataTransfer.files.length) return; e.preventDefault(); const z=document.getElementById("rcDrop"); if(z) z.classList.remove("over");
+  if(IMP.busy){say("Espera a que termine el expediente anterior.","err"); return} const {files,rel}=await oCollect(e.dataTransfer); if(files.length) impHandle(files,rel)});
+document.addEventListener("keydown",e=>{if(e.target&&e.target.id==="rcDrop"&&(e.key==="Enter"||e.key===" ")){e.preventDefault(); $("#rcFiles").click()}});
 document.addEventListener("click",e=>{if(e.target.closest("#btnDrive")){e.preventDefault(); e.stopImmediatePropagation(); if(GD.err&&GD.dirty) gdSave(); SEC="itse"; APP="recent"; try{localStorage.setItem("itse-app",APP)}catch(_){} render()}},true);
 window.addEventListener("beforeunload",e=>{if(GD.dirty||GD.saving){gdSave(); e.preventDefault(); e.returnValue=""}});
 
