@@ -90,7 +90,7 @@ table.items.mxt tr.on td{background:var(--data-soft)}
 .pv-tab{all:unset;cursor:pointer;font:600 11.5px/1 var(--mono);padding:7px 8px;border-radius:5px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted)}
 .pv-tab[aria-selected="true"]{border-color:var(--data);color:var(--data);background:var(--data-soft)}
 .pv-tab.off{opacity:.45}
-.pv-note{font-size:12px;color:var(--muted)}
+.pv-note{font-size:12px;color:var(--muted);margin-top: 5px;}
 .pv-logo{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12.5px;background:var(--data-soft);color:var(--ink);border-radius:6px;padding:6px 8px}
 .pv-logo .btn{padding:6px 9px;font-size:12px}
 .pv-note b{color:var(--data)}
@@ -2506,9 +2506,27 @@ function renderItse(){
       ${F("municipalidad","Municipalidad","c8",{ph:"Municipalidad Distrital de …"})}
       <div class="f c4"><span class="lbl">Logo ${tagsFor("logo")}</span><div class="logo-row"><div class="logo-box">${S.logo?`<img src="${S.logo}" alt="Logo de la municipalidad">`:"Sin logo"}</div>
         <div class="acts"><button type="button" class="btn" id="btnLogo">${S.logo?"Cambiar":"Subir"}</button>${S.logo?`<button type="button" class="btn" id="btnLogoDel">Quitar</button>`:""}</div></div></div></div>`}
+
   else if(step==="fin"){
     const ds=DOCS.filter(d=>d.id!=="plan"&&d.id!=="memo");
+    const r=risk();
+    const extPqs = num(S.ext_pqs), extCo2 = num(S.ext_co2), extAgua = num(S.ext_agua), extK = num(S.ext_k);
+
+    h+=`<div class="card" style="margin-bottom:14px; background:var(--accent-soft); border-color:var(--accent)">
+      <h3 style="margin:0 0 10px; font-size:15px; color:var(--accent)">Resumen de Seguridad</h3>
+      <div class="grid" style="font-size:13.5px">
+        <div class="c4"><b>Aforo:</b> ${num(S.aforo)} personas</div>
+        <div class="c4"><b>Área Total:</b> ${num(S.area_ocupada)} m²</div>
+        <div class="c4"><b>Riesgo:</b> ${r ? r.res : "No definido"}</div>
+        <div class="c12"><b>Extintores:</b> PQS (${extPqs}), CO2 (${extCo2}), Agua (${extAgua}), Acetato K (${extK}) — <b>Total: ${extPqs+extCo2+extAgua+extK}</b></div>
+      </div>
+      <div style="margin-top:10px; text-align:right">
+        <button type="button" class="btn" id="btnReportPdf">Exportar Reporte (PDF)</button>
+      </div>
+    </div>`;
+
     h+=`<p class="muted" style="margin:0 0 10px">Marca los documentos que van en el .zip. También puedes descargar cada uno por separado.</p>
+
       <div class="finlist">${ds.map(d=>{const n=Object.keys(OV(d.id)).length; return `<div class="finrow"><label class="chk"><input type="checkbox" data-doc="${d.id}"${docOn(d.id)?" checked":""}><span><b>${d.c}</b> ${esc(d.name)}${n?` <span class="muted">· ${n} ${n===1?"línea editada":"líneas editadas"} solo ahí</span>`:""}</span></label>
         <span class="acts"><button type="button" class="btn" data-step="${d.id}">Revisar</button><button type="button" class="btn" data-dl="${d.id}">Descargar</button></span></div>`}).join("")}
       ${["plan","memo"].map(id=>{const d=DOCS.find(x=>x.id===id); return `<div class="finrow"><label class="chk"><input type="checkbox" data-doc="${id}"${docOn(id)?" checked":""}><span><b>${d.c}</b> ${esc(d.name)} <span class="muted">(se arma en su pestaña)</span></span></label><span class="acts"><button type="button" class="btn" data-app="${id}">Abrir</button></span></div>`}).join("")}</div>
@@ -3576,6 +3594,7 @@ document.addEventListener("click",e=>{
     pvDoc=id; ACTIVE=null; if(ITSE_STEPS.includes(id)&&S.step!==id){S.step=id; persist(); render(); const top=$("#form").getBoundingClientRect().top; if(top<0||top>window.innerHeight) window.scrollTo(0,Math.max(0,top+window.scrollY-70))} else schedulePreview(0); return}
   if(b.dataset.pv){e.preventDefault(); pvDoc=b.dataset.pv; if(b.dataset.tk){ACTIVE=b.dataset.tk; pvForce=true} if(b.classList.contains("tag")&&window.innerWidth<1180) $("#pv").classList.add("open"); schedulePreview(0); return}
   switch(b.id){
+    case "btnReportPdf": return generateReportPdf();
     case "btnAforoExcel": return generateAforoExcel();
     case "btnZip": return generate();
     case "btnPv": $("#pv").classList.add("open"); schedulePreview(0); return;
@@ -3650,9 +3669,76 @@ async function generateOne(id){
   const d=DOCS.find(x=>x.id===id); try{say("Generando…"); const bytes=d.ext==="pdf"?await fillPdf(id):await fillDocx(id), suf=safe(S.nombre_comercial||S.razon_social).replace(/[. ]+$/,"");
     await saveFile(`${d.file}${suf?" - "+suf:""}.${d.ext}`,new Blob([bytes],{type:d.ext==="pdf"?"application/pdf":"application/vnd.openxmlformats-officedocument.wordprocessingml.document"})); say("Listo: "+d.name+".","ok")}
   catch(err){ if(err&&err.code==="declined") say("Descarga cancelada."); else {console.error(err); say("Error: "+(err&&err.message||err),"err")} }}
+
+
+async function generateReportPdf() {
+  if (typeof PDFLib === "undefined") { say("Librería PDF no cargada.", "err"); return; }
+  say("Generando reporte...");
+  try {
+    const r = risk();
+    const pdfDoc = await PDFLib.PDFDocument.create();
+    const page = pdfDoc.addPage();
+    const { width, height } = page.getSize();
+
+    const fSize = 14;
+    page.drawText("Reporte de Componentes de Seguridad", { x: 50, y: height - 50, size: 20 });
+
+    let y = height - 90;
+    const writeLine = (text) => { page.drawText(text, { x: 50, y, size: fSize }); y -= 20; };
+
+    writeLine(`Expediente: ${safe(S.nombre_comercial || S.razon_social || "Sin Nombre")}`);
+    writeLine(`Nivel de Riesgo: ${r ? r.res : "No definido"}`);
+    writeLine(`Aforo Total: ${num(S.aforo)} personas`);
+    writeLine(`Área Ocupada: ${num(S.area_ocupada)} m2`);
+    y -= 10;
+    writeLine(`Extintores:`);
+    writeLine(`- PQS: ${num(S.ext_pqs)}`);
+    writeLine(`- CO2: ${num(S.ext_co2)}`);
+    writeLine(`- Agua Presurizada: ${num(S.ext_agua)}`);
+    writeLine(`- Acetato K: ${num(S.ext_k)}`);
+
+    const bytes = await pdfDoc.save();
+    await saveFile(`Reporte de Seguridad - ${safe(S.nombre_comercial || S.razon_social)}.pdf`, new Blob([bytes], {type: "application/pdf"}));
+    say("Reporte exportado.", "ok");
+  } catch(e) {
+    say("Error al generar reporte: " + e.message, "err");
+  }
+}
+
+function validateITSE() {
+  const errs = [];
+  if (!S.subcat) errs.push("Falta la clasificación de riesgo (sección 1).");
+
+  // Aforo validation
+  const aforoTotal = num(S.aforo);
+  if (!aforoTotal) errs.push("Falta ingresar el aforo total (sección 2).");
+
+  const areaTotal = num(S.area_ocupada);
+  if (!areaTotal) errs.push("Falta ingresar el área total ocupada (sección 2).");
+
+  const p1 = num(S.area_p1), p2 = num(S.area_p2), p3 = num(S.area_p3), p4 = num(S.area_p4), pO = num(S.area_otros);
+  const sumPisos = p1 + p2 + p3 + p4 + pO;
+  if (sumPisos > 0 && Math.abs(sumPisos - areaTotal) > 1) {
+    errs.push(`La suma de áreas por piso (${sumPisos.toFixed(2)} m²) no coincide con el área total (${areaTotal.toFixed(2)} m²).`);
+  }
+
+  // Extintores validation
+  const r = risk();
+  const extPqs = num(S.ext_pqs), extCo2 = num(S.ext_co2), extAgua = num(S.ext_agua), extK = num(S.ext_k);
+  const totalExt = extPqs + extCo2 + extAgua + extK;
+  if (totalExt === 0) errs.push("Debe registrar al menos un extintor (sección 2).");
+
+  return errs;
+}
+
 async function generate(){
+  const errs = validateITSE();
+  if (errs.length > 0) {
+    say("Faltan datos", "err");
+    alert("Faltan datos o hay errores de validación:\n\n" + errs.map(e => "• " + e).join("\n"));
+    return;
+  }
   const ids=DOCS.filter(d=>docOn(d.id)).map(d=>d.id);
-  if(!S.subcat){say("Falta la clasificación de riesgo (sección 1).","err");return}
   if(!ids.length){say("Marca al menos un documento.","err");return}
   if(typeof PDFLib==="undefined"||typeof JSZip==="undefined"){say("No cargaron las librerías; revisa la conexión y recarga.","err");return}
   try{say("Generando…");
