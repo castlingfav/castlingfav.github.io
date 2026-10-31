@@ -1,5 +1,5 @@
 /* Generador ITSE: funciona sin internet. La versión cambia con cada publicación (la pone build.py). */
-const V="itse-d3fb0da89bda", RT="itse-rt";
+const V="itse-c30a40f0f9d2", RT="itse-rt";
 const CORE=["./","manifest.webmanifest","icon-192.png","icon-512.png","ocr/pdf-lib.min.js","ocr/jszip.min.js"];
 const LAZY=["ocr/pdf.min.js","ocr/pdf.worker.min.js","ocr/tesseract-core-simd-lstm.wasm.js","ocr/spa.traineddata.gz.b64.txt","ocr/docx-preview.min.js","ocr/unrar.js","ocr/unrar.wasm.b64.txt","ocr/html2canvas.min.js"];
 self.addEventListener("install",e=>{e.waitUntil((async()=>{const c=await caches.open(V);

@@ -782,6 +782,220 @@ body.offline [data-ract=refresh]{opacity:.5;pointer-events:none}
 .sumcard .sumacts{margin-top:10px;justify-content:flex-end}
 .valerrs{margin:0;padding-left:20px;line-height:1.5}
 
+/* v32: tutorial de ITSE */
+.apptab.tutab{margin-left:auto;display:inline-flex;align-items:center;gap:6px}
+.apptab.tutab::before{content:"?";display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:800}
+body.tuto-on .layout{grid-template-columns:minmax(0,1fr)!important}
+body.tuto-on .pv{display:none!important}
+.tu-hint{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;border-color:var(--accent);background:var(--accent-soft)}
+.tu-hint>div{flex:1 1 280px;min-width:0}
+.tuto{display:grid;grid-template-columns:270px minmax(0,1fr);gap:18px;align-items:start}
+.tu-nav{position:sticky;top:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 10px;max-height:calc(100vh - 140px);overflow:auto}
+.tu-prog{display:flex;flex-direction:column;gap:4px;padding:0 6px 12px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.tu-prog b{font-size:15px}
+.tu-prog>span:not(.tu-pbar){font-size:12.5px;color:var(--muted)}
+.tu-pbar{display:block;height:6px;border-radius:99px;background:var(--sunk);overflow:hidden;flex:none;width:100%}
+.tu-li2 .tu-pbar{width:60px}
+.tu-pbar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .5s}
+.tu-capg{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.tu-capt{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:4px 6px}
+.tu-lb{all:unset;cursor:pointer;display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:8px;font-size:13.5px;line-height:1.3}
+.tu-lb:hover{background:var(--sunk)}
+.tu-lb:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.tu-lb.on{background:var(--accent-soft);color:var(--ink);font-weight:650}
+.tu-lk{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);font-size:11.5px;font-weight:700;color:var(--muted);background:var(--surface)}
+.tu-lb.on .tu-lk{border-color:var(--accent);color:var(--accent)}
+.tu-lb.done .tu-lk{background:var(--accent);border-color:var(--accent);color:#fff}
+.tu-navm{display:none}
+.tu-main{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 24px;min-width:0}
+.tu-kick{font-size:12.5px;color:var(--muted);font-weight:600}
+.tu-h h2{margin:6px 0 6px;font-size:24px;line-height:1.2}
+.tu-lead{margin:0 0 16px;font-size:15px;line-height:1.55;max-width:75ch}
+.tu-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:start}
+.tu-demo{position:relative;margin:0;padding:16px;border-radius:12px;background:repeating-linear-gradient(45deg,var(--sunk),var(--sunk) 10px,color-mix(in srgb,var(--sunk) 70%,var(--surface)) 10px,color-mix(in srgb,var(--sunk) 70%,var(--surface)) 20px);overflow:hidden;min-width:0}
+.tu-ctl{display:flex;align-items:center;gap:6px;margin-top:12px;flex-wrap:wrap}
+.tu-cb{all:unset;cursor:pointer;display:inline-grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:15px;font-weight:700}
+.tu-cb:hover{border-color:var(--accent);color:var(--accent)}
+.tu-cb:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.tu-dots{display:inline-flex;gap:5px;margin-left:6px}
+.tu-dots i{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s,transform .2s}
+.tu-dots i.on{background:var(--accent);transform:scale(1.3)}
+.tu-mut{color:var(--muted);font-size:12.5px}
+.tu-cur{position:absolute;left:0;top:0;z-index:5;pointer-events:none;opacity:0;transition:transform .55s cubic-bezier(.3,.7,.2,1),opacity .2s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.tu-cur i{position:absolute;left:2px;top:1px;width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);opacity:0}
+.tu-cur.clk i{animation:tuClick .6s ease-out}
+@keyframes tuClick{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(2.4)}}
+.tu-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.tu-steps li{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:10px;border:1px solid transparent;transition:background .25s,border-color .25s}
+.tu-steps li.on{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+.tu-steps li b{display:block;margin:2px 0 3px;font-size:14.5px}
+.tu-steps li p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink)}
+.tu-sn{all:unset;cursor:pointer;flex:none;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--surface);border:2px solid var(--line);font-weight:800;font-size:13px}
+.tu-steps li.on .tu-sn{background:var(--accent);border-color:var(--accent);color:#fff}
+.tu-sn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.tu-tips{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.tu-tip{display:flex;gap:10px;margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--data) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--data) 25%,var(--line));font-size:13.5px;line-height:1.5}
+.tu-tip.ojo{background:var(--warn-bg);border-color:color-mix(in srgb,var(--warn-ink) 30%,var(--line))}
+.tu-acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.tu-acts2{display:flex;flex-wrap:wrap;gap:8px}
+/* pantallas de muestra (no son la página real: una maqueta liviana) */
+.tu-win{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.10);overflow:hidden;font-size:12.5px;color:var(--ink)}
+.tu-wbar{display:flex;align-items:center;gap:5px;padding:7px 10px;background:var(--sunk);border-bottom:1px solid var(--line)}
+.tu-wbar i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.tu-wbar span{margin-left:8px;font-size:11.5px;font-weight:600;color:var(--muted)}
+.tu-wb{padding:12px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.tu-tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow:hidden}
+.tu-tab{padding:5px 8px;font-size:11px;font-weight:650;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tu-tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+.tu-stp{display:flex;gap:4px;flex-wrap:wrap}
+.tu-st{padding:3px 7px;border:1px solid var(--line);border-radius:6px;font:600 10.5px var(--mono,monospace);color:var(--muted);background:var(--surface)}
+.tu-st.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.tu-f{display:flex;flex-direction:column;gap:3px;min-width:0}
+.tu-lab{font-size:11px;color:var(--muted);display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.tu-tag{font:600 9.5px var(--mono,monospace);font-style:normal;padding:0 4px;border-radius:3px;background:var(--data-soft);color:var(--data)}
+.tu-src{font-style:normal;font-size:10px;color:var(--muted);background:var(--sunk);padding:0 4px;border-radius:3px}
+.tu-src.ed{background:var(--warn-bg);color:var(--warn-ink)}
+.tu-in{display:flex;align-items:center;min-height:26px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-size:12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;position:relative}
+.tu-in.ph{color:var(--muted)}
+.tu-ta{white-space:normal;line-height:1.45;align-items:flex-start}
+.tu-ov .tu-in,.tu-f.tu-ov .tu-in{background:var(--sunk)}
+.tu-f.tu-ov.ed .tu-in{background:var(--warn-bg)}
+.tu-reset{margin-left:auto;padding-left:8px;color:var(--muted);font-weight:400}
+.tu-caret{display:inline-block;width:1.5px;height:13px;background:var(--ink);margin-left:2px;animation:tuBlink 1s steps(2) infinite}
+@keyframes tuBlink{50%{opacity:0}}
+.tu-btn{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border:1px solid var(--line);border-radius:7px;background:var(--surface);font-weight:600;font-size:11.5px;white-space:nowrap}
+.tu-btn.p{background:var(--accent);border-color:var(--accent);color:#fff}
+.tu-btn.sm{padding:3px 7px;font-size:10.5px}
+.tu-btn.tu-dash{border-style:dashed;color:var(--accent)}
+.tu-row2{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tu-row2.tu-end{justify-content:space-between}
+.tu-top{justify-content:flex-end}
+.tu-g2,.tu-g3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tu-g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tu-g2s{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px;margin-top:4px}
+.tu-chip{display:inline-flex;align-items:center;padding:2px 7px;border-radius:99px;font-size:10.5px;font-weight:650;background:var(--sunk);white-space:nowrap}
+.tu-chip.on{background:var(--accent-soft);color:var(--accent)}
+.tu-chip.rev{background:var(--warn-bg);color:var(--warn-ink)}
+.tu-chip.bajo{background:color-mix(in srgb,var(--r-bajo) 18%,var(--surface));color:var(--r-bajo)}
+.tu-chips{display:flex;flex-wrap:wrap;gap:4px}
+.tu-res{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:7px 9px;border-radius:7px;background:var(--sunk);font-size:11.5px}
+.tu-logo{display:grid;place-items:center;height:30px;width:46px;border:1px dashed var(--line);border-radius:6px;font-size:16px}
+.tu-list{display:flex;flex-direction:column;gap:5px}
+.tu-li2{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:6px 8px;border:1px solid var(--line);border-radius:7px;flex-wrap:wrap}
+.tu-li2.on{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:color-mix(in srgb,var(--accent) 5%,var(--surface))}
+.tu-li2>span:first-child{display:flex;flex-direction:column;min-width:0;flex:1 1 140px}
+.tu-li2 small,.tu-wb small{color:var(--muted);font-size:10.5px}
+.tu-li2 em{font-style:normal;font-weight:700;font-size:11px}
+.tu-num{display:inline-flex;align-items:center;gap:5px}
+.tu-drop{display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;padding:14px 10px;border:2px dashed color-mix(in srgb,var(--accent) 50%,var(--line));border-radius:9px;background:color-mix(in srgb,var(--accent) 4%,var(--surface));position:relative}
+.tu-drop.sm{padding:8px;font-size:11.5px}
+.tu-file{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--line);font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.tu-file.rev{background:var(--warn-bg)}
+.tu-files{display:flex;flex-direction:column;gap:4px}
+.tu-prog2{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--muted)}
+.tu-prog2 .tu-pbar i.tu-grow{width:100%;animation:tuGrow 2.4s ease-out}
+@keyframes tuGrow{from{width:5%}}
+.tu-rep{display:flex;flex-direction:column;gap:5px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.tu-net{display:flex;gap:6px;align-items:flex-start;padding:7px 9px;border-radius:7px;background:var(--warn-bg);color:var(--warn-ink);font-size:11.5px}
+.tu-net i{width:8px;height:8px;border-radius:50%;background:#e8590c;flex:none;margin-top:4px}
+.tu-net b{margin-left:auto;padding:0 6px;border-radius:99px;background:color-mix(in srgb,var(--warn-ink) 14%,transparent)}
+.tu-toast{align-self:center;padding:7px 11px;border-radius:9px;background:var(--ink);color:var(--bg);font-size:11.5px;border-left:3px solid var(--r-bajo)}
+.tu-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:10px;align-items:start}
+.tu-paper{background:#fff;color:#222;border:1px solid #ddd;border-radius:4px;padding:10px 12px;display:flex;flex-direction:column;gap:5px;font-size:10.5px;box-shadow:0 2px 8px rgba(0,0,0,.08);position:relative;min-height:120px}
+.tu-ptit{font-size:10.5px;text-align:center;letter-spacing:.02em}
+.tu-pl{line-height:1.45}
+.tu-ln{display:block;height:5px;border-radius:3px;background:#e4e4e4}
+.tu-blue{color:#1446c8}
+.tu-on .tu-blue,.tu-blue.tu-on,.tu-pl.tu-on .tu-blue{background:#ffd43b;box-shadow:0 0 0 2px #f08c00;border-radius:2px}
+.tu-logo2{position:absolute;right:8px;top:8px;font-size:8.5px;padding:6px 7px;border:1px dashed #1446c8;color:#1446c8}
+.tu-ord{display:flex;flex-direction:column;gap:5px;padding:8px 10px;border-radius:8px;border:1px solid color-mix(in srgb,var(--warn-ink) 30%,var(--line));background:var(--warn-bg)}
+.tu-ord .q{color:var(--warn-ink)}
+.tu-ol{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;padding-top:4px;border-top:1px dashed var(--line);font-size:11px}
+.tu-ol span{flex:1 1 150px;color:var(--muted)}
+.tu-ol code{font-weight:700;font-size:11px}
+.tu-mx{display:flex;flex-direction:column;gap:4px}
+.tu-mxr{display:flex;align-items:center;gap:8px;padding:5px 8px;border:1px solid var(--line);border-radius:6px}
+.tu-mxr>span:first-child{flex:1;min-width:0}
+.tu-mxr.on{background:var(--data-soft)}
+.tu-ck2{display:inline-flex;align-items:center;gap:5px;font-size:11px;white-space:nowrap}
+.tu-ck2 b{display:inline-grid;place-items:center;width:14px;height:14px;border:1.5px solid var(--line);border-radius:3px;font-size:10px;background:var(--surface)}
+.tu-ck2.on b{background:var(--accent);border-color:var(--accent);color:#fff}
+.tu-chks,.tu-ckw{display:flex;flex-wrap:wrap;gap:6px 12px}
+.tu-acc{padding:6px 9px;border-radius:7px;background:var(--sunk);font-size:11.5px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--accent);font-weight:600}
+.tu-fck{padding:2px 0}
+.tu-sum{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;background:var(--accent-soft);border:1px solid var(--accent)}
+.tu-sum b{color:var(--accent)}
+.tu-mdl{display:flex;flex-direction:column;gap:5px;padding:9px 11px;border-radius:9px;border-top:3px solid var(--accent);background:var(--surface);box-shadow:0 10px 26px rgba(0,0,0,.18)}
+.tu-mdl span{display:flex;gap:6px;justify-content:flex-end}
+.tu-fn{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.tu-fn .tu-in{flex:1 1 90px;color:var(--ink)}
+.tu-pdfs{position:relative;display:flex;align-items:flex-end;gap:0;padding:6px 0 4px 6px;min-height:58px;flex-wrap:wrap}
+.tu-pdfs span{width:34px;height:44px;margin-right:-16px;border:1px solid #ccc;border-radius:3px;background:#fff;color:#1446c8;font-size:9px;font-weight:700;display:grid;place-items:center;box-shadow:0 2px 5px rgba(0,0,0,.12)}
+.tu-pdfs b{margin-left:26px;font-size:11px;align-self:center}
+.tu-fr.vis .tu-pdfs span,.tu-pdfs.vis span{animation:tuStack .5s calc(var(--i)*90ms) both}
+@keyframes tuStack{from{opacity:0;transform:translateY(-14px) rotate(-6deg)}}
+.tu-org{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px}
+.tu-org>div{display:flex;gap:10px}
+.tu-ob{display:flex;flex-direction:column;align-items:center;padding:5px 9px;border:1.5px solid var(--accent);border-radius:7px;font-weight:650;font-size:11px;background:var(--surface)}
+.tu-ob small{font-weight:400}
+.tu-ob.top{background:var(--accent-soft)}
+.tu-tbl{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:11px}
+.tu-tr{display:grid;grid-template-columns:1.3fr .8fr .9fr .8fr;gap:4px;padding:4px 8px;border-top:1px solid var(--line)}
+.tu-tr.th{background:var(--sunk);font-weight:700;border-top:0}
+.tu-tr.tot{background:var(--accent-soft)}
+.tu-cal{display:flex;flex-direction:column;gap:4px}
+.tu-mrow{display:grid;grid-template-columns:110px repeat(12,1fr);gap:2px;align-items:center;font-size:10.5px}
+.tu-mrow i{display:grid;place-items:center;height:16px;border:1px solid var(--line);border-radius:3px;font-style:normal;font-size:9px;color:var(--muted)}
+.tu-mrow i.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.tu-piso{padding:6px 9px;border:1px solid var(--line);border-radius:7px;font-size:11.5px}
+.tu-piso.add{border-style:dashed;border-color:var(--accent)}
+.tu-tree{font:11px/1.6 var(--mono,monospace);padding:7px 9px;background:var(--sunk);border-radius:7px}
+.tu-flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tu-fb{display:flex;flex-direction:column;gap:2px;padding:8px 9px;border:1.5px solid var(--line);border-radius:9px;background:var(--surface);flex:1 1 120px;min-width:0}
+.tu-fb small{font-size:10.5px;color:var(--muted);line-height:1.35}
+.tu-fb.hi{border-color:var(--accent)}
+.tu-arr{color:var(--muted);font-weight:700}
+.tu-phones{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}
+.tu-phone{width:180px;border:6px solid #222;border-radius:22px;background:var(--surface);padding:10px 8px;display:flex;flex-direction:column;gap:7px;box-shadow:0 10px 24px rgba(0,0,0,.2);font-size:11px}
+.tu-ph-top{display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.tu-ph-bar{display:flex;gap:4px;margin-top:6px}
+.tu-ph-bar .tu-btn{flex:1}
+.tu-keys{display:flex;flex-direction:column;gap:8px;font-size:12.5px}
+.tu-keys span{padding:6px 9px;border-radius:7px;background:var(--surface);border:1px solid var(--line)}
+kbd{font:600 11px var(--mono,monospace);padding:1px 5px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;background:var(--surface)}
+/* lo que aparece desde un paso y lo que se ilumina en el paso actual */
+.tu-demo [data-from]{opacity:0;transform:translateY(5px);transition:opacity .35s,transform .35s;pointer-events:none}
+.tu-demo [data-from].vis{opacity:1;transform:none}
+.tu-demo .tu-type[data-from]{display:inline-block}
+.tu-demo .tu-on{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:7px;animation:tuPulse 1.6s ease-out infinite}
+@keyframes tuPulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 45%,transparent)}70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.tu-drop-in{margin-top:6px}
+.tu-drop-in.vis .tu-file{animation:tuDropIn .6s cubic-bezier(.3,.8,.3,1.2)}
+@keyframes tuDropIn{from{transform:translateY(-26px) scale(.9);opacity:0}}
+@media (prefers-reduced-motion:reduce){.tu-demo .tu-on{animation:none}.tu-cur{transition:none}.tu-caret{animation:none}.tu-demo [data-from]{transition:none}}
+/* recorrido guiado sobre la página real */
+.tu-tov{position:fixed;inset:0;z-index:95}
+.tu-spot{position:fixed;border-radius:10px;box-shadow:0 0 0 9999px rgba(8,14,11,.58);outline:3px solid var(--accent);outline-offset:0;transition:left .3s,top .3s,width .3s,height .3s;pointer-events:none}
+.tu-bub{position:fixed;background:var(--surface);color:var(--ink);border-radius:12px;padding:14px 16px;box-shadow:0 16px 40px rgba(0,0,0,.3);border-top:4px solid var(--accent);transition:left .3s,top .3s}
+.tu-bub.dock{left:10px!important;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));top:auto!important;width:auto!important}
+.tu-bk{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.tu-bub p{margin:6px 0 12px;font-size:14.5px;line-height:1.5}
+.tu-bacts{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tu-bacts span{display:flex;gap:6px}
+@media (prefers-reduced-motion:reduce){.tu-spot,.tu-bub{transition:none}}
+/* tablet y celular */
+@media (max-width:1100px){.tu-body{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:900px){
+  .tuto{grid-template-columns:minmax(0,1fr)}
+  .tu-nav{display:none}
+  .tu-navm{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .tu-navm select{flex:1 1 220px;min-width:0}
+  .tu-main{padding:16px 14px}
+  .tu-h h2{font-size:20px}
+  .apptab.tutab{margin-left:0}
+}
+@media (max-width:600px){.tu-demo{padding:10px}.tu-g3{grid-template-columns:minmax(0,1fr)}.tu-split{grid-template-columns:minmax(0,1fr)}.tu-acts .btn{flex:1 1 100%}.tu-acts2{flex:1 1 100%}.tu-mrow{grid-template-columns:80px repeat(12,1fr)}}
+
 </style>
 
 <meta name="darkreader-lock">
@@ -833,7 +1047,7 @@ body.offline [data-ract=refresh]{opacity:.5;pointer-events:none}
     </div>
   </div>
 </div>
-<nav class="apptabs" id="appTabs" aria-label="Sistema"><button type="button" class="apptab" data-app="recent">Recientes</button><button type="button" class="apptab" data-app="itse">Anexos ITSE</button><button type="button" class="apptab" data-app="plan">Plan de seguridad</button><button type="button" class="apptab" data-app="memo">Memoria de extintores</button><button type="button" class="apptab" data-app="org">Organizar archivos</button><button type="button" class="apptab" data-app="bank" hidden>Banco de documentos</button></nav>
+<nav class="apptabs" id="appTabs" aria-label="Sistema"><button type="button" class="apptab" data-app="recent">Recientes</button><button type="button" class="apptab" data-app="itse">Anexos ITSE</button><button type="button" class="apptab" data-app="plan">Plan de seguridad</button><button type="button" class="apptab" data-app="memo">Memoria de extintores</button><button type="button" class="apptab" data-app="org">Organizar archivos</button><button type="button" class="apptab" data-app="bank" hidden>Banco de documentos</button><button type="button" class="apptab tutab" data-app="tuto" title="Cómo se usa ITSE, paso a paso">Tutorial</button></nav>
 <div class="layout">
   <div class="formcol">
     <div class="banner" id="exBanner" hidden><span><b>Ejemplo:</b> empresa ficticia para que veas cómo funciona.</span><button class="btn" type="button" id="btnClearEx">Empezar en blanco</button></div>
@@ -2249,7 +2463,7 @@ let STORE="itse-generador-v3"; const LOGOSTORE="itse-logos-v1";
 try{const raw=localStorage.getItem(STORE)||localStorage.getItem("itse-generador-v2")||localStorage.getItem("itse-generador-v1"); if(raw) S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 if(!S) S=example();
 S.plan=planMigrate(S.plan);
-let APP="itse"; try{const a=localStorage.getItem("itse-app"); APP=a==="plan"||a==="memo"||a==="org"||a==="recent"||a==="bank"?a:"itse"}catch(e){}
+let APP="itse"; try{const a=localStorage.getItem("itse-app"); APP=a==="plan"||a==="memo"||a==="org"||a==="recent"||a==="bank"||a==="tuto"?a:"itse"}catch(e){}
 if(!S.nivel&&MATRIX[S.subcat]) S.nivel=MATRIX[S.subcat][0];
 if(!S.logoAdj) S.logoAdj={};
 if(!S.ov||typeof S.ov!=="object") S.ov={}; if(!S.step) S.step="inicio";
@@ -2530,7 +2744,7 @@ function renderItse(){
   const i=ITSE_STEPS.indexOf(step), prev=ITSE_STEPS[i-1], next=ITSE_STEPS.slice(i+1).find(id=>!isDocStep(id)||docOn(id));
   h+=`<div class="stepnav">${prev?`<button type="button" class="btn" data-step="${prev}">← ${esc(stepName(prev))}</button>`:"<span></span>"}${next?`<button type="button" class="btn primary" data-step="${next}">Siguiente: ${esc(stepTitle(next))} →</button>`:""}</div></section>`;
   if(isDocStep(step)&&pvDoc!==step){pvDoc=step}
-  $("#form").innerHTML=h+(step==="fin"?packHTML()+fmtBoxHTML():"");
+  $("#form").innerHTML=(step==="inicio"?tuHintHTML():"")+h+(step==="fin"?packHTML()+fmtBoxHTML():"");
   if(step==="fin"&&FMTS.lib==null) fmtLibLoad().then(()=>{if(APP==="itse"&&S.step==="fin"&&fmtLibAll().length&&!document.querySelector(".fmtlib")) render()});
   bar(); $("#exBanner").hidden=!S._example; schedulePreview(0);
 }
@@ -3086,6 +3300,355 @@ function validateITSE(){const errs=[];
 async function itseValidateAsk(){const errs=validateITSE(); if(!errs.length) return true;
   const r=await mdlAsk("Faltan datos o hay errores",`<ul class="valerrs">${errs.map(e=>`<li>${esc(e)}</li>`).join("")}</ul>`,[["fix","Revisar",1],["go","Descargar igual"]]);
   if(r==="go") return true; say("Faltan datos.","err"); return false}
+
+/* =====================================================================
+   v32: TUTORIAL DE ITSE — dentro de la sección ITSE (pestaña «Tutorial»).
+   Cada lección: demostración animada (una pantalla de muestra con un puntero que va marcando cada paso),
+   pasos numerados que se iluminan a la vez, consejos y «Muéstrame en la página»: un recorrido guiado
+   sobre la pantalla real, resaltando cada botón o casilla. El avance se recuerda en este equipo.
+   ===================================================================== */
+const TUK="itse-tuto";
+const TU={id:null,k:0,n:0,t:null,play:true,tour:null,from:null};
+function tuSt(){try{return JSON.parse(localStorage.getItem(TUK)||"{}")||{}}catch(_){return {}}}
+function tuSave(o){try{localStorage.setItem(TUK,JSON.stringify(Object.assign(tuSt(),o)))}catch(_){}}
+function tuDone(id){const d=Object.assign({},tuSt().done||{}); d[id]=1; tuSave({done:d})}
+/* --- piezas para dibujar las pantallas de muestra --- */
+const tw=(title,body,cls="")=>`<div class="tu-win ${cls}"><div class="tu-wbar"><i></i><i></i><i></i><span>${title}</span></div><div class="tu-wb">${body}</div></div>`;
+const tk=(k,html,tag="div",cls="")=>`<${tag} class="${cls}" data-k="${k}">${html}</${tag}>`;
+const tfrom=(k,html,cls="")=>`<div class="tu-fr ${cls}" data-from="${k}">${html}</div>`;
+const tin=(lab,val,o={})=>`<div class="tu-f${o.c?" "+o.c:""}"${o.k?` data-k="${o.k}"`:""}><span class="tu-lab">${lab}${o.tags?" "+o.tags.map(t=>`<em class="tu-tag">${t}</em>`).join(""):""}${o.src?` <em class="tu-src">${o.src}</em>`:""}</span><span class="tu-in${o.ph?" ph":""}">${o.from?`<span class="tu-type" data-from="${o.from}">${val}</span>`:val}${o.caret?'<b class="tu-caret"></b>':""}</span></div>`;
+const tbtn=(t,o={})=>`<span class="tu-btn${o.p?" p":""}${o.sm?" sm":""}"${o.k?` data-k="${o.k}"`:""}>${t}</span>`;
+const tchip=(t,c="")=>`<span class="tu-chip ${c}">${t}</span>`;
+const tsteps=(arr,cur)=>`<div class="tu-stp">${arr.map(x=>`<span class="tu-st${x===cur?" on":""}">${x}</span>`).join("")}</div>`;
+const ttabs=cur=>`<div class="tu-tabs">${["Recientes","Anexos ITSE","Plan","Memoria","Organizar","Tutorial"].map(x=>`<span class="tu-tab${x===cur?" on":""}">${x}</span>`).join("")}</div>`;
+const tln=(w=100,cls="")=>`<i class="tu-ln ${cls}" style="width:${w}%"></i>`;
+const tpaper=(html,cls="")=>`<div class="tu-paper ${cls}">${html}</div>`;
+const tck=(on,t,k)=>`<span class="tu-ck2${on?" on":""}"${k?` data-k="${k}"`:""}><b>${on?"✓":""}</b>${t}</span>`;
+const tarrow=`<span class="tu-arr" aria-hidden="true">→</span>`;
+/* --- las lecciones --- */
+const TU_CAPS=[["empezar","Empezar","🧭"],["anexos","Anexos ITSE","📝"],["descargar","Descargar y firmar","📦"],["plan","Plan de seguridad","🛟"],["memo","Memoria de extintores","🧯"],["org","Organizar archivos","🗂️"],["mas","Más","✨"]];
+const tuGo={
+  app(a){if(SEC!=="itse"){SEC="itse"} if(APP!==a){APP=a; render()} else render()},
+  step(s){SEC="itse"; APP="itse"; if(S.step!==s){S.step=s; persistLocal()} render()},
+  ostep(s){SEC="itse"; APP="org"; OR().step=s; persistLocal(); render()},
+  open(sel){const d=document.querySelector(sel); if(d&&d.tagName==="DETAILS") d.open=true}};
+const TU_L=[
+ {id:"mapa",cap:"empezar",t:"Cómo está organizado ITSE",min:2,
+  lead:"Todo un expediente ITSE vive en un solo lugar. Escribes cada dato una vez y aparece en todos los documentos que lo necesitan; lo que haces se guarda solo en el Drive.",
+  demo:()=>tw("Generador ITSE",ttabs("")+`<div class="tu-flow">
+    ${tk(1,`<b>Recientes</b><small>abrir, crear o subir un expediente</small>`,"div","tu-fb")}${tarrow}
+    ${tk(2,`<b>Anexos ITSE</b><small>Inicio → A0…A4 → carta poder y DJ → Descargar</small>`,"div","tu-fb")}${tarrow}
+    ${tk(3,`<b>Plan y Memoria</b><small>se arman con los mismos datos</small>`,"div","tu-fb")}${tarrow}
+    ${tk(4,`<b>Organizar</b><small>cada archivo del cliente a su carpeta</small>`,"div","tu-fb")}${tarrow}
+    ${tk(5,`<b>Descargar</b><small>.zip, Excel de aforo o PDF para firmar</small>`,"div","tu-fb hi")}</div>`),
+  steps:[["Recientes","Es la puerta de entrada: la lista de tus expedientes guardados en el Drive, con su % de avance. Desde aquí abres uno, creas uno nuevo o subes un .zip/.rar de un expediente antiguo."],
+   ["Anexos ITSE","El corazón del sistema. Vas paso a paso: Inicio (trámite y riesgo), cada anexo y Word en orden, y al final Descargar. Arriba de cada casilla, las etiquetas (A0, A1, CP…) te dicen en qué documentos sale ese dato."],
+   ["Plan de seguridad y Memoria de extintores","Usan la razón social, la dirección, el área y los extintores que ya escribiste en ITSE: solo completas lo propio de cada uno (organigramas, aforo, pisos…)."],
+   ["Organizar archivos","Sueltas todos los archivos que mandó el cliente (certificados, DNI, ficha RUC…). Se leen solos y cada uno va a su carpeta del expediente con su nombre ordenado."],
+   ["Descargar","Un .zip con todo, cada documento por separado, el Excel de aforo o un solo PDF para que el cliente firme."]],
+  tips:[["tip","A la derecha siempre tienes la <b>vista previa</b>: muestra el documento tal como saldrá, con tus datos en azul."],["tip","Cada cambio se guarda solo en el Drive a los pocos segundos. Si quieres asegurarlo ya, toca <b>Guardar en Drive</b> o presiona <b>Ctrl+S</b>."]],
+  tour:[{go:()=>tuGo.app("recent"),sel:"#appTabs",t:"Estas son las pestañas de ITSE. Recorren el trabajo de izquierda a derecha: Recientes, Anexos, Plan, Memoria y Organizar."},
+   {sel:'#appTabs [data-app="itse"]',t:"«Anexos ITSE»: aquí llenas los anexos, la carta poder y las DJ, paso a paso."},
+   {sel:'#appTabs [data-app="plan"]',t:"«Plan de seguridad»: se arma con los datos del ITSE más lo propio del plan."},
+   {sel:'#appTabs [data-app="org"]',t:"«Organizar archivos»: ordena todo lo que manda el cliente en las carpetas del expediente."},
+   {sel:"#btnDrive",t:"Este botón dice si lo último ya se guardó en el Drive («Guardado ✓ hora»). Tócalo para ver tus expedientes."},
+   {sel:'#appTabs [data-app="tuto"]',t:"Y aquí vuelves al tutorial cuando quieras."}]},
+ {id:"recientes",cap:"empezar",t:"Recientes: abrir, crear y buscar",min:2,
+  lead:"La lista de expedientes que tienes en el Drive. Cada fila trae el código, el local, el cliente y cuánto le falta.",
+  demo:()=>tw("Recientes",ttabs("Recientes")+`<div class="tu-row2">${tbtn("Nuevo expediente",{p:1,k:1})}${tbtn("Subir expediente (.zip, .rar…)")}</div>
+    ${tin("Buscar","SD26-200",{k:2,from:2,caret:1})}
+    <div class="tu-list">${tk(3,`<span><b>SD26-200RG-031 · Local Acme · Acme</b><small>hoy 10:32 · en este equipo</small></span><span class="tu-pbar"><i style="width:72%"></i></span><em>72 %</em>`,"div","tu-li2")}
+    <div class="tu-li2"><span><b>SD26-180RG-012 · Cafetería Sol</b><small>ayer</small></span><span class="tu-pbar"><i style="width:100%"></i></span><em>100 %</em></div>
+    ${tk(4,`<span><b>SD26-150RG-004 · Tienda Norte</b><small>hace 3 días</small></span>${tbtn("Eliminar",{sm:1})}`,"div","tu-li2")}</div>`),
+  steps:[["Nuevo expediente","Empieza uno en blanco. Se guarda en el Drive apenas escribas el código, el local, el cliente o el RUC."],
+   ["Buscar","Escribe parte del código, del local o del cliente y la lista se filtra al instante. El administrador ve además «De quién»."],
+   ["Abrir y ver el avance","Toca una fila para abrir ese expediente. La barra dice cuánto falta: anexos y DJ, plan y memoria si van, y carpetas organizadas. «en este equipo» = tiene copia aquí (sirve sin internet)."],
+   ["Eliminar","Tócalo dos veces seguidas para confirmar. Va a la papelera del Drive y Google lo borra a los 30 días (se puede recuperar antes)."]],
+  tips:[["tip","La lista se actualiza sola cada minuto y al volver a la pestaña; lo nuevo sale resaltado."]],
+  tour:[{go:()=>tuGo.app("recent"),sel:'[data-ract="new"]',t:"«Nuevo expediente» empieza uno en blanco."},
+   {sel:"#rcQ",t:"Busca por código, local o cliente."},{sel:"#rcList",t:"Aquí están tus expedientes con su % de avance. Toca uno para abrirlo."}]},
+ {id:"importar",cap:"empezar",t:"Subir un expediente desde .zip o .rar",min:3,
+  lead:"¿Tienes los anexos y Word de un expediente pero no el archivo de datos? Suéltalos y el sistema arma el expediente solo.",
+  demo:()=>tw("Recientes",`${tk(1,`<b>Suelta aquí el .zip o .rar de un expediente</b><small>o sus archivos, o la carpeta</small>${tfrom(1,`<span class="tu-file">🗜️ Expediente Acme.zip</span>`,"tu-drop-in")}`,"div","tu-drop")}
+    ${tfrom(2,`<div class="tu-prog2" data-k="2"><span>Leyendo los documentos… 4 de 7</span><span class="tu-pbar"><i class="tu-grow"></i></span></div>`)}
+    ${tfrom(3,`<div class="tu-rep" data-k="3"><b>Expediente armado desde sus documentos</b><div class="tu-chips">${tchip("A0 · 19 datos","on")}${tchip("A1 · 6 datos","on")}${tchip("A2 ✓","on")}${tchip("CP · 5 datos","on")}${tchip("DJ-R · OCR","rev")}</div><small>Formatos nuevos (pestañas): <b>F1</b> Constancia municipal</small></div>`)}
+    ${tfrom(4,`<div class="tu-row2" data-k="4">${tbtn("Revisar los anexos",{p:1})}${tbtn("Organizar archivos")}</div>`)}`),
+  steps:[["Suelta o elige","Arrastra el .zip o .rar (o los archivos, o la carpeta) a la zona punteada de Recientes. En el celular, tócala para elegir."],
+   ["Se lee cada documento","Anexos del generador: casilla por casilla. De otra municipalidad, Word con tablas o escaneos: por sus etiquetas y con OCR. También la propuesta, la ficha RUC y la vigencia."],
+   ["Informe","Un chip por documento con cuántos datos dio. En amarillo lo leído por etiquetas u OCR: revísalo. Si dos documentos dicen distinto, lo avisa. Los Word que no son del modelo y traen datos del cliente se vuelven pestañas (F1, F2…)."],
+   ["Sigue trabajando","El expediente queda abierto y guardado en el Drive (con el comprimido original en su carpeta). Todos los archivos pasan a «Organizar archivos», cada uno a su carpeta."]],
+  tips:[["tip","Si el .zip trae «Datos del expediente.json» (el que da esta página), se carga tal cual."],["ojo","Revisa siempre el orden de nombres y apellidos que propone (lección «Nombres y apellidos»)."]],
+  tour:[{go:()=>tuGo.app("recent"),sel:"#rcDrop",t:"Suelta aquí el .zip o .rar del expediente (o tócalo para elegir el archivo)."},
+   {sel:'[data-ract="pick"]',t:"O usa este botón para elegir los archivos."}]},
+ {id:"guardar",cap:"empezar",t:"Guardado en Drive y trabajo sin internet",min:2,
+  lead:"No tienes que acordarte de guardar: cada cambio se sube solo. Y si se va el internet, sigues trabajando.",
+  demo:()=>tw("Arriba de la página",`<div class="tu-row2 tu-top">${tk(1,tbtn("Guardar en Drive",{p:1}),"span")}${tk(2,`<span class="tu-btn">Guardado ✓ 10:32</span>`,"span")}</div>
+    ${tfrom(3,`<div class="tu-net" data-k="3"><i></i>Sin internet: lo que hagas se guarda en este equipo y se sube solo cuando vuelva la conexión. <b>2</b></div>`)}
+    ${tfrom(4,`<div class="tu-toast" data-k="4">Listo: se subió lo que hiciste sin internet ✓</div>`)}`),
+  steps:[["Guardar en Drive (o Ctrl+S)","Guarda en ese momento, sin descargar nada. En el celular el botón dice «Guardar»."],
+   ["El estado","«Cambios por guardar» → «Guardando…» → «Guardado ✓ hora». Tócalo para ir a tus expedientes."],
+   ["Sin internet","Aparece este aviso. Puedes seguir llenando, importar y descargar: todo queda en una cola en este equipo."],
+   ["Al volver la conexión","Se sube todo solo y te avisa. Si sales con cambios pendientes, te avisa antes."]],
+  tips:[["tip","Puedes instalar la página como app (en Chrome: menú ⋮ → Instalar). Abre aunque no haya internet."],["tip","Cuando se publica una versión nueva, aparece «Hay una versión nueva · Actualizar»."]],
+  tour:[{go:()=>tuGo.step("inicio"),sel:"#btnDriveSave",t:"«Guardar en Drive»: guarda ya mismo (también con Ctrl+S)."},{sel:"#btnDrive",t:"Aquí ves si ya está guardado y a qué hora."}]},
+ {id:"inicio",cap:"anexos",t:"Inicio: trámite, función y nivel de riesgo",min:3,
+  lead:"Lo primero en «Anexos ITSE». Con esto el sistema decide qué documentos van y marca solo la función y el riesgo en los anexos.",
+  demo:()=>tw("Anexos ITSE · Inicio",tsteps(["Inicio","A0","A1","A2","A3","A4","CP","DJ-R","Descargar"],"Inicio")+`
+    ${tin("¿Qué se tramita?","Licencia de funcionamiento nueva",{k:1})}
+    <div class="tu-g3">${tin("Función","Comercio",{k:2})}${tin("Nivel de riesgo","Riesgo bajo",{k:3})}${tin("Tipo","Tiendas",{})}</div>
+    ${tk(4,`${tchip("BAJO","bajo")} <b>ITSE posterior</b> · Van: <b>A0, A1, A2, A3, A4, CP, DJ-R, DJ-C, DJ-L</b>`,"div","tu-res")}
+    <div class="tu-g2">${tin("Municipalidad","Municipalidad Distrital de Miraflores",{k:5})}<div class="tu-f" data-k="6"><span class="tu-lab">Logo</span><span class="tu-logo">🏛️</span></div></div>`),
+  steps:[["Qué se tramita","Licencia nueva (va el Anexo 0) o solo ITSE (el local ya tiene licencia: sin Anexo 0)."],
+   ["Función","Comercio, oficinas, salud, educación, encuentro, hospedaje, almacén o industrial. Se marca sola en el Anexo 1 y en el 4."],
+   ["Nivel de riesgo y tipo","Elige el nivel; si hay varias categorías con ese nivel, elige el tipo. Esto marca la matriz de los Anexos 2 y 3."],
+   ["Qué documentos van","Riesgo bajo o medio = ITSE posterior (va el Anexo 4). Alto o muy alto = ITSE previa (sin Anexo 4). Los Anexos 1, 2 y 3 van siempre. La DJ de láminas va si hay vidrios."],
+   ["Municipalidad","Su nombre sale en la carta poder y en las DJ. Si ya usaste esa municipalidad antes, su logo aparece solo."],
+   ["Logo","Sube el logo (PNG o JPG): se recorta solo y va en los Anexos 0 y 1. En la vista previa lo puedes arrastrar o agrandar."]],
+  tips:[["tip","En «Fecha en los documentos» eliges en cuáles va la fecha: los anexos salen sin fecha (se pone al firmar) y la carta poder y las DJ con fecha, salvo que lo cambies."]],
+  tour:[{go:()=>tuGo.step("inicio"),sel:"#f_tramite",t:"Elige qué se tramita: licencia nueva o solo ITSE."},{sel:"#f_funcion",t:"La función del local."},{sel:"#f_nivel",t:"El nivel de riesgo (y abajo el tipo, si hay varios)."},
+   {sel:".result",t:"Aquí ves el riesgo y qué documentos van en este trámite."},{sel:"#f_municipalidad",t:"La municipalidad: si ya tiene logo guardado, aparece solo."},{sel:"#btnLogo",t:"Sube o cambia el logo de la municipalidad."}]},
+ {id:"llenar",cap:"anexos",t:"Llenar los documentos: un dato, todos los documentos",min:3,
+  lead:"Cada paso de arriba es un documento, en el orden en que se imprime. Un dato se escribe en el primer documento que lo usa y pasa solo a los demás.",
+  demo:()=>tw("Anexos ITSE · A1",tsteps(["Inicio","A0","A1","A2","A3","A4","CP","Descargar"],"A1")+`
+    ${tin("Razón social","ACME SERVICIOS S.A.C.",{k:1,tags:["A0","A1–A3","CP","DJ"]})}
+    <div class="tu-f tu-ov" data-k="2"><span class="tu-lab">RUC N° <em class="tu-src">igual que A0</em></span><span class="tu-in">20123456789<b class="tu-reset">↺</b></span></div>
+    ${tfrom(3,`<div class="tu-f tu-ov ed" data-k="3"><span class="tu-lab">Teléfonos <em class="tu-src ed">editado solo aquí</em></span><span class="tu-in">01 445 1234<b class="tu-reset">↺</b></span></div>`)}
+    <div class="tu-row2 tu-end">${tbtn("← A0")}${tk(4,tbtn("Siguiente: Anexo 2 →",{p:1}),"span")}</div>`),
+  steps:[["Escribes una vez","La casilla normal: lo que escribas sale en todos los documentos de sus etiquetas (A0, A1–A3, CP, DJ…). Toca una etiqueta para ver el documento."],
+   ["«igual que A0»","En los documentos siguientes el mismo dato ya aparece lleno, con el texto «igual que A0». Si cambias el original, cambia aquí también."],
+   ["Editar solo en un documento","Si en un documento debe decir algo distinto, escríbelo ahí: queda «editado solo aquí» y no toca los demás. La flecha ↺ lo vuelve al dato común."],
+   ["Siguiente","El botón de abajo te lleva al próximo documento que va en tu trámite. También puedes saltar tocando los pasos de arriba."]],
+  tips:[["tip","Si un dato común está vacío (por ejemplo, la municipalidad), puedes escribirlo en cualquier documento y llena todos."],["tip","Los pasos en gris son documentos que no van en tu trámite; puedes abrirlos e «Incluirlo igual»."]],
+  tour:[{go:()=>tuGo.step("a1"),sel:"#form .steps",t:"Cada paso es un documento, en orden. Los grises no van en este trámite."},{sel:"#form .ovf, #form .f",t:"Así se ve un dato: su etiqueta, de dónde viene y la casilla."},{sel:"#form .tags",t:"Estas etiquetas dicen en qué documentos sale el dato. Tócalas para verlo en la vista previa."},{sel:"#form .stepnav .btn.primary",t:"«Siguiente» te lleva al próximo documento del trámite."}]},
+ {id:"vista",cap:"anexos",t:"Vista previa: azul, resaltado y clic para ir a la casilla",min:2,
+  lead:"La vista previa muestra el documento real. Te ayuda en los dos sentidos: de la casilla al documento y del documento a la casilla.",
+  demo:()=>tw("Anexos ITSE · vista previa",`<div class="tu-split"><div>${tin("Razón social","ACME SERVICIOS S.A.C.",{k:1,caret:1})}${tin("RUC N°","20123456789",{})}</div>
+    ${tpaper(`<b class="tu-ptit">SOLICITUD DE ITSE</b>${tln(70)}<span class="tu-pl">Razón social: <span class="tu-blue hl1" data-k="2">ACME SERVICIOS S.A.C.</span></span><span class="tu-pl">RUC: <span class="tu-blue" data-k="3">20123456789</span></span>${tln(90)}${tln(60)}<span class="tu-logo2" data-k="4">LOGO</span>`)}</div>`),
+  steps:[["Tocas una casilla…","…y en la vista previa ese dato se resalta en amarillo y la hoja se mueve hasta él."],
+   ["En azul, tus datos","Lo azul es lo que escribiste; en el archivo final todo sale en negro."],
+   ["Clic en un dato azul","Te lleva a su casilla en el formulario (abre el paso y la resalta). Funciona en los anexos, la carta poder, las DJ, tus formatos, el plan y la memoria."],
+   ["Logo","En los Anexos 0 y 1 arrastra el logo para moverlo o jala una esquina para cambiar su tamaño; «Restablecer» lo devuelve."]],
+  tips:[["tip","En el celular o en pantallas chicas, abre la vista previa con el botón «Vista previa» de abajo; al tocar un dato se cierra y te lleva a la casilla."],["tip","Las pestañas de arriba de la vista previa (A0, A1, CP…) cambian el documento que ves y abren su paso."]],
+  tour:[{go:()=>tuGo.step("a1"),sel:"#pvTabs",pv:1,t:"Elige qué documento ver."},{sel:"#pvBody",pv:1,t:"La hoja tal como saldrá: toca cualquier dato azul para ir a su casilla."},{sel:"#pvNote",pv:1,t:"Este texto te lo recuerda."}]},
+ {id:"nombres",cap:"anexos",t:"Nombres y apellidos del representante",min:2,
+  lead:"Unos documentos piden «Apellidos y nombres» y otros «Nombres y apellidos». Por eso el representante se escribe en dos casillas y cada documento lo arma en su orden.",
+  demo:()=>tw("Anexos ITSE · representante",`<div class="tu-g2">${tin("Nombres","Juan Carlos",{k:1})}${tin("Apellidos","Pérez García",{k:1})}</div>
+    <div class="tu-ord" data-k="2"><b class="q">¿Está bien el orden de los nombres?</b>
+      <div class="tu-ol"><span>Piden «Apellidos y nombres» · A0</span><code>PÉREZ GARCÍA JUAN CARLOS</code></div>
+      <div class="tu-ol"><span>Piden «Nombres y apellidos» · A0 firma, A1–A4, CP, DJ</span><code>JUAN CARLOS PÉREZ GARCÍA</code></div>
+      <div class="tu-row2">${tk(3,tbtn("Sí, está bien",{p:1,sm:1}),"span")}${tk(4,tbtn("Están al revés (intercambiar)",{sm:1}),"span")}</div></div>`),
+  steps:[["Dos casillas","Escribe los nombres en una y los apellidos en la otra."],
+   ["Cómo sale en cada documento","El recuadro muestra exactamente cómo quedará en el Anexo 0 (apellidos primero) y en los demás (nombres primero)."],
+   ["Confirmar","«Sí, está bien» lo deja confirmado (el recuadro se pone verde)."],
+   ["Si quedaron al revés","«Están al revés» intercambia las dos casillas. Al descargar, si no lo confirmaste, te lo pregunta una vez."]],
+  tips:[["tip","Los expedientes antiguos (un solo campo) se parten solos, también con «del», «de la», «de los»: «María del Pilar / De la Cruz López»."],["tip","Al importar, si vienen el Anexo 0 y el Anexo 1, el sistema sabe exactamente dónde cortar."]],
+  tour:[{go:()=>tuGo.step(homeStep("rep_nombre")||"a0"),sel:".repblk",t:"El representante: nombres y apellidos por separado."},{sel:"#repOrd",t:"Revisa aquí el orden y confírmalo."}]},
+ {id:"matriz",cap:"anexos",t:"Matriz de riesgo (A2 y A3) y checklist del A4",min:3,
+  lead:"Lo más técnico se marca solo con lo que elegiste en Inicio, y tú solo ajustas lo que haga falta.",
+  demo:()=>tw("Anexos ITSE · A2 y A4",`<div class="tu-mx">${tk(1,`<span>7.1 Tiendas de hasta 750 m²</span>${tck(1,"X")}${tck(0,"No corr.")}`,"div","tu-mxr on")}<div class="tu-mxr"><span>7.2 Tiendas de más de 750 m²</span>${tck(0,"X")}${tk(2,tck(1,"No corr."),"span")}</div></div>
+    <div class="tu-chks">${tk(3,`${tck(1,"Balón GLP 10 kg")}${tck(0,"Freidora")}${tck(1,"Vidrios con lámina")}${tck(0,"Racks")}`,"div","tu-ckw")}</div>
+    ${tfrom(4,`<div class="tu-acc" data-k="4">▸ Checklist III (52 ítems) · 2 cambiados a mano ${tbtn("Volver a lo automático",{sm:1})}</div>`)}`),
+  steps:[["La fila de tu tipo ya está marcada","En los Anexos 2 y 3 la categoría elegida en Inicio sale con X. Puedes marcar otras filas del mismo rango."],
+   ["«No corresponde» (A2)","Marca las filas que no aplican; «Marcar no corresponde en las demás» lo hace de un toque."],
+   ["Lo que tiene el local (A4)","Marca balón de GLP, freidora, vidrios, racks, aire acondicionado, etc., y el material de la edificación: el checklist III se llena solo."],
+   ["Ajustar a mano","Abre «Checklist III» para cambiar cualquier ítem (Sí / No corresponde). «Volver a lo automático» deshace tus cambios."]],
+  tips:[["tip","Marcar «Vidrios con lámina de seguridad» incluye la DJ de láminas automáticamente."]],
+  tour:[{go:()=>tuGo.step("a2"),sel:"#form .mxt, #form table.items, #form .info",t:"La matriz del Anexo 2. Sale cuando ya elegiste la función y el riesgo en Inicio: tu categoría viene marcada con X."},{go:()=>tuGo.step("a4"),sel:"#form .checks",t:"En el Anexo 4 marca lo que tiene el local; el checklist se llena solo."},{sel:"#dChecklist",t:"Aquí ajustas cualquier ítem a mano."}]},
+ {id:"cpdj",cap:"anexos",t:"Carta poder y declaraciones juradas",min:2,
+  lead:"Los Word salen con el mismo texto del modelo y tus datos en su lugar.",
+  demo:()=>tw("Anexos ITSE · Carta poder",`<div class="tu-split">${tk(1,`<span class="tu-lab">Apoderados (uno por línea)</span><span class="tu-in tu-ta">Persona de Prueba, identificada con DNI N° 11111111<br>Otra Persona, identificada con DNI N° 22222222</span>`,"div","tu-f")}
+    ${tpaper(`<b class="tu-ptit">CARTA PODER</b><span class="tu-pl"><span class="tu-blue">ACME Servicios S.A.C.</span>, con RUC <span class="tu-blue">20123456789</span>… otorgo poder a:</span><span class="tu-pl" data-k="2">• <span class="tu-blue">Persona de Prueba…</span><br>• <span class="tu-blue">Otra Persona…</span></span>${tln(80)}<span class="tu-pl" data-k="3">Lima, a los <span class="tu-blue">31</span> días del mes de <span class="tu-blue">octubre</span> de <span class="tu-blue">2026</span></span>`)}</div>
+    ${tk(4,tck(1,"Poner la fecha en este documento"),"div","tu-fck")}`),
+  steps:[["Apoderados","Uno por línea. Cada línea sale como un punto en la carta poder. La lista guardada por el administrador se carga sola."],
+   ["Se arma el texto","Razón social, RUC, domicilio, partida, representante, municipalidad y el objeto del poder van en su lugar."],
+   ["Fecha","Con fecha: «a los 31 días del mes de octubre de 2026». Sin fecha: deja los espacios para escribirla a mano."],
+   ["Casilla de fecha","Junto a la línea Fecha de cada documento: «Poner la fecha en este documento»."]],
+  tips:[["tip","Las DJ de representación, capacitación y láminas usan los mismos datos; solo revisa la zona registral y la ciudad."]],
+  tour:[{go:()=>tuGo.step("carta_poder"),sel:"#f_apoderados, [data-ov^='carta_poder|#APODERADO']",t:"Los apoderados, uno por línea."},{sel:"#form .fechack",t:"Aquí decides si este documento lleva la fecha."}]},
+ {id:"formatos",cap:"anexos",t:"Formatos propios: cualquier Word como pestaña",min:3,
+  lead:"¿Te piden un formato que no es de los preestablecidos? Súbelo y se vuelve una pestaña más del expediente.",
+  demo:()=>tw("Anexos ITSE · ＋ Formato",tsteps(["A4","CP","DJ-L","F1","Descargar"],"F1").replace('<span class="tu-st on">F1</span>','<span class="tu-st on" data-k="2">F1</span>')+`<div class="tu-row2">${tk(1,`<span class="tu-btn tu-dash">＋ Formato</span>`,"span")}${tfrom(1,`<span class="tu-file">📄 Declaración municipal.docx</span>`)}</div>
+    ${tfrom(2,`<div class="tu-chips" data-k="3">${tchip("Razón social · del expediente","on")}${tchip("RUC · del expediente","on")}${tchip("Representante · del expediente","on")}${tchip("Nombre del propietario · para escribir","rev")}</div>`)}
+    ${tfrom(3,`${tin("Nombre del propietario del inmueble","Rosa Elena Quispe",{from:3,k:4})}`)}
+    ${tfrom(4,`<div class="tu-acc">▸ Campos del formato · Convertir un texto del Word en campo</div>`)}`),
+  steps:[["Sube el Word","Toca «＋ Formato» (al final de los pasos) o «Subir formato» en Descargar y elige el .docx."],
+   ["Se vuelve una pestaña","Aparece como F1 (F2, F3…) antes de Descargar, con su vista previa: el Word tal cual, con los datos en azul."],
+   ["Lo que detecta solo","Datos del expediente que ya trae escritos (razón social, RUC, representante, DNI, dirección, teléfono…), espacios «Etiqueta: ____» (también en tablas) y marcas {{así}}. La línea de firma no se toca."],
+   ["Lo que escribes tú","Lo propio del formato sale arriba, en «Para escribir en este formato». Lo común se llena solo («igual que A0»)."]],
+  tips:[["tip","En «Campos del formato» cambias la etiqueta o con qué se llena cada campo, dejas un texto fijo (×) o conviertes un texto del Word en campo (por ejemplo, el nombre de otro cliente que quedó escrito)."],["tip","Queda en tu biblioteca para agregarlo a otros expedientes; el administrador puede «Compartir con todos»."],["tip","Va en el .zip, en el PDF para firmar y en Organizar (1. FORMATOS DE SOLICITUD)."]],
+  tour:[{go:()=>tuGo.step("fin"),sel:"#form .stepb.addf",t:"«＋ Formato»: sube cualquier Word y se vuelve una pestaña."},{sel:"#form .fmtbox",t:"Aquí ves tus formatos, subes otros y abres la biblioteca."}]},
+ {id:"descargar",cap:"descargar",t:"Descargar: .zip, uno por uno y revisión",min:3,
+  lead:"El último paso de «Anexos ITSE». Revisas qué va y descargas todo junto o cada documento.",
+  demo:()=>tw("Anexos ITSE · Descargar",`${tk(1,`<b>Resumen de seguridad</b><small>Aforo 35 · Área 110 m² · Riesgo BAJO · Extintores 3</small>${tbtn("Exportar reporte (PDF)",{sm:1})}`,"div","tu-sum")}
+    <div class="tu-list">${tk(2,`${tck(1,"<b>A1</b> Solicitud ITSE")}<span>${tbtn("Revisar",{sm:1})}${tbtn("Descargar",{sm:1})}</span>`,"div","tu-li2")}<div class="tu-li2">${tck(1,"<b>CP</b> Carta poder")}<span>${tbtn("Revisar",{sm:1})}${tbtn("Descargar",{sm:1})}</span></div>${tk(3,`${tck(1,"<b>AF</b> Solo cálculo de aforo (Excel)")}<span>${tbtn("Descargar",{sm:1})}</span>`,"div","tu-li2")}</div>
+    <div class="tu-row2">${tk(4,tbtn("Descargar todo (.zip)",{p:1}),"span")}</div>${tfrom(4,`<div class="tu-mdl"><b>Faltan datos o hay errores</b><small>• Falta el aforo total.</small><span>${tbtn("Revisar",{p:1,sm:1})}${tbtn("Descargar igual",{sm:1})}</span></div>`)}`),
+  steps:[["Resumen de seguridad","Aforo, área, riesgo y extintores de un vistazo. «Exportar reporte (PDF)» los saca en una hoja."],
+   ["Qué va en el .zip","Marca o desmarca cada documento. «Revisar» abre su paso; «Descargar» baja solo ese documento."],
+   ["Excel de aforo","La fila AF agrega el «Cálculo de aforo» del plan en Excel (con fórmulas)."],
+   ["Descargar todo","Arma un .zip con los documentos marcados y «Datos del expediente.json». Antes revisa los datos: si falta algo te lo dice y eliges «Revisar» o «Descargar igual»."]],
+  tips:[["tip","Los archivos descargados también se guardan en la carpeta del expediente en el Drive."],["ojo","Si no confirmaste el orden de nombres y apellidos, te lo pregunta antes de descargar."]],
+  tour:[{go:()=>tuGo.step("fin"),sel:"#form .sumcard",t:"El resumen de seguridad y su reporte en PDF."},{sel:"#form .finlist",t:"Marca qué va en el .zip; cada documento se puede revisar o descargar solo."},{sel:"#btnZip2",t:"Descarga todo en un .zip."}]},
+ {id:"firma",cap:"descargar",t:"Paquete para firmar: un solo PDF",min:2,
+  lead:"Para llevar al cliente: elige cuántas copias de cada documento y sale un solo PDF listo para imprimir.",
+  demo:()=>tw("Anexos ITSE · Paquete para firmar",`<div class="tu-list">${tk(1,`<span><b>A1</b> Anexo 1 · Solicitud ITSE</span><span class="tu-num">${tbtn("−",{sm:1})}<b>3</b>${tbtn("+",{sm:1})}</span>`,"div","tu-li2 on")}<div class="tu-li2 on"><span><b>CP</b> Carta poder</span><span class="tu-num">${tbtn("−",{sm:1})}<b>3</b>${tbtn("+",{sm:1})}</span></div><div class="tu-li2"><span><b>PS</b> Plan de seguridad</span><span class="tu-num">${tbtn("−",{sm:1})}<b>0</b>${tbtn("+",{sm:1})}</span></div></div>
+    ${tk(2,`<span class="tu-lab">Nombre del PDF</span><span class="tu-fn">Formatos y Anexos - <span class="tu-in">Cliente Acme</span>.pdf</span>`,"div","tu-f")}
+    <div class="tu-row2">${tk(3,tbtn("Descargar PDF para firmar (6 documentos)",{p:1}),"span")}</div>
+    ${tfrom(4,`<div class="tu-pdfs" data-k="4">${["A1","A1","A1","CP","CP","CP"].map((x,i)=>`<span style="--i:${i}">${x}</span>`).join("")}<b>Formatos y Anexos - Cliente Acme.pdf</b></div>`)}`),
+  steps:[["Copias","Con − y + eliges cuántas veces va cada documento (por defecto, 1 de lo que va en el trámite; plan y memoria en 0)."],
+   ["Nombre","Escribe el nombre: el archivo se llama «Formatos y Anexos - ese nombre.pdf»."],
+   ["Descargar","Se arma en este equipo: los anexos tal cual y los Word dibujados como en Word."],
+   ["Un solo PDF","Todo junto, en el orden de la lista, listo para imprimir y que el cliente firme."]],
+  tips:[["tip","Tus formatos propios (F1, F2…) también aparecen en la lista."]],
+  tour:[{go:()=>tuGo.step("fin"),sel:"#packCard",t:"El paquete para firmar: copias, nombre y un solo PDF."},{sel:"#pkName",t:"El nombre del archivo."},{sel:"#btnPack",t:"Arma y descarga el PDF."}]},
+ {id:"plan1",cap:"plan",t:"Plan: empresa, personal y organigramas",min:3,
+  lead:"El plan se arma solo con los datos del ITSE; aquí completas lo propio: el local, el personal y quién es quién.",
+  demo:()=>tw("Plan de seguridad",`${tk(1,tck(1,"Usar los datos del formulario ITSE"),"div","tu-fck")}
+    <div class="tu-g2">${tin("El local se llama","cafetería",{})}${tin("Año del plan","2026",{})}</div>
+    ${tk(2,`<span class="tu-lab">Personal (nombre y DNI, uno por línea)</span><span class="tu-in tu-ta">Lucía Ramos Torres 45123987<br>Jorge Huamán Ríos 70456123</span>`,"div","tu-f")}
+    <div class="tu-org" data-k="3"><span class="tu-ob top">Presidente del Plan<small>Lucía Ramos</small></span><div><span class="tu-ob">Secretario<small>Jorge Huamán</small></span><span class="tu-ob">Jefe de Seguridad<small>Ana Paredes</small></span></div></div>
+    <div class="tu-row2" data-k="4">${tbtn("+",{sm:1})}${tbtn("↑",{sm:1})}${tbtn("↓",{sm:1})}${tbtn("→",{sm:1})}${tbtn("×",{sm:1})}<small>agregar · subir · bajar · meter · quitar · o arrástralo</small></div>`),
+  steps:[["Vinculado al ITSE","Con la casilla marcada usa la razón social, el RUC, la dirección, el área y el representante del ITSE. Desmárcala para escribirlos solo para el plan."],
+   ["Personal","Una persona por línea con su DNI. Esos nombres se ofrecen al llenar el comité y las brigadas."],
+   ["Comité y brigadas","Dos organigramas que se dibujan solos. Toca un recuadro (o el dibujo) para editar el cargo y los nombres."],
+   ["Ordenar el organigrama","Con los botones agregas, subes, bajas, metes o sacas un cargo; también puedes arrastrarlo. «Deshacer» vuelve atrás."]],
+  tips:[["tip","Si una brigada se llama de evacuación, incendios o primeros auxilios, sus funciones se agregan solas al plan."]],
+  tour:[{go:()=>tuGo.app("plan"),sel:'[data-pk="vinc"]',t:"Vincula el plan con los datos del ITSE."},{sel:'[data-orgbox="comite"]',t:"El organigrama del comité: toca un recuadro para editarlo."},{sel:'[data-orgbox="brig"]',t:"Las brigadas: cada recuadro del segundo nivel es una brigada."}]},
+ {id:"plan2",cap:"plan",t:"Plan: equipos, luces, aforo y evacuación",min:3,
+  lead:"Los equipos de seguridad, el cálculo de aforo y los medios de evacuación se calculan solos con lo que escribas.",
+  demo:()=>tw("Plan de seguridad · equipos y aforo",`<div class="tu-g2"><div data-k="1">${tck(1,"Luces de emergencia")}<div class="tu-g2s">${tin("Cant.","4",{})}${tin("Modelo","LED 170 LM SLIM",{})}</div><div class="tu-g2s">${tin("","2",{})}${tin("","RCO 48",{})}</div><small class="tu-mut">Total: 6 luces</small></div>
+    <div data-k="2">${tin("Extintores","PQS 6 kg · 2",{})}${tin("","CO2 5 kg · 1",{})}</div></div>
+    <div class="tu-tbl" data-k="3"><div class="tu-tr th"><span>Ambiente</span><span>Área m²</span><span>m²/persona</span><span>Personas</span></div><div class="tu-tr"><span>Salón</span><span>80</span><span>1.5</span><span><b>53</b></span></div><div class="tu-tr"><span>Cocina</span><span>30</span><span>9.3</span><span><b>3</b></span></div><div class="tu-tr tot"><span>Aforo total</span><span></span><span></span><span><b>56</b></span></div></div>
+    <div class="tu-row2" data-k="4">${tin("Ancho de puerta (m)","1.20",{})}${tin("Distancia más larga (m)","18.50",{})}${tchip("CUMPLE","bajo")}</div>`),
+  steps:[["Luces de emergencia","Agrega una fila por modelo (cantidad + modelo). El plan dice «Se cuenta con un total de 6 luces de emergencia: 4 LED… y 2 RCO 48»."],
+   ["Extintores y riesgos","Cada extintor con su cantidad. En «Evaluación de riesgos» marcas SÍ/NO; ya viene con lo habitual."],
+   ["Aforo","Por nivel y ambiente: personas = área ÷ m²/persona (mínimo 1). Escribe un número en «Personas» para fijarlo a mano (*) y desmarca «Suma» si lo usan las mismas personas (**)."],
+   ["Evacuación","Ancho y número de puertas, escalera y distancia: se calcula la capacidad, el tiempo de evacuación y si CUMPLE."]],
+  tips:[["tip","«Descargar Excel» (junto al aforo total) baja solo el cálculo de aforo, ordenado y con fórmulas."]],
+  tour:[{go:()=>tuGo.app("plan"),sel:"#form .eqs",t:"Los equipos de seguridad: marca lo que tiene el local."},{sel:'[data-pact="addLuz"], #p_equipos_luces',t:"Luces de emergencia: una fila por modelo."},{sel:"#form .aftab",t:"La tabla de aforo de cada nivel."},{sel:"#btnAforoExcel",t:"Baja el cálculo de aforo en Excel."}]},
+ {id:"plan3",cap:"plan",t:"Plan: cronogramas, teléfonos y descarga",min:2,
+  lead:"Lo que cambia poco ya viene lleno; solo revisa y descarga.",
+  demo:()=>tw("Plan de seguridad · cronogramas",`<div class="tu-cal" data-k="1"><span class="tu-lab">Mantenimiento</span><div class="tu-mrow"><span>Extintores</span>${MES3.map((m,i)=>`<i class="${i===5||i===11?"on":""}">${m[0]}</i>`).join("")}</div><div class="tu-mrow"><span>Luces de emergencia</span>${MES3.map((m,i)=>`<i class="${i===5||i===11?"on":""}">${m[0]}</i>`).join("")}</div></div>
+    <div class="tu-g2">${tk(2,`${tin("Capacitación","Primeros auxilios · noviembre",{})}${tin("Simulacro","Sismo e incendio · setiembre",{})}`,"div")}${tk(3,`${tin("Comisaría","Comisaría PNP de Miraflores",{ph:1})}${tin("Teléfono","105",{})}`,"div")}</div>
+    <div class="tu-row2">${tk(4,tbtn("Descargar plan (.docx)",{p:1}),"span")}${tbtn("Solo cálculo de aforo (.xlsx)")}</div>`),
+  steps:[["Mantenimiento","Marca los meses de cada equipo o instalación; agrega o quita filas."],["Capacitaciones y simulacros","Tema o simulacro con su mes; salen en sus tablas del plan."],["Teléfonos de emergencia","Si dejas «Atención» vacío, se escribe solo con el distrito (Comisaría PNP de …)."],["Descargar","El plan sale en Word, con índice, organigramas e imágenes, listo para revisar."]],
+  tips:[["tip","También puedes incluir el plan en el .zip del ITSE marcando «PS Plan de seguridad» en Descargar."]],
+  tour:[{go:()=>tuGo.app("plan"),sel:"#dMant",t:"El cronograma de mantenimiento."},{sel:"#dTel",t:"Los teléfonos de emergencia."},{sel:"#btnPlanDoc",t:"Descarga el plan en Word."}]},
+ {id:"memo",cap:"memo",t:"Memoria de extintores",min:3,
+  lead:"Calcula cuántos extintores necesita cada piso y arma la memoria descriptiva.",
+  demo:()=>tw("Memoria de extintores",`<div class="tu-g2">${tin("Pisos y áreas","Del ITSE",{k:1})}${tin("Cantidad de extintores","Del plan de seguridad",{k:1})}</div>
+    <div class="tu-piso" data-k="2"><b>Piso 1</b> · 120 m² <span class="tu-mut">(del ITSE)</span> · PQS 2 · CO2 1</div>${tfrom(2,`<div class="tu-piso add"><b>Azotea</b> · 45 m² <span class="tu-mut">· piso adicional</span> · PQS 1</div>`)}
+    <div class="tu-row2">${tk(3,`${tchip("Clase A: mínimo 1 · tiene 3 ✓","bajo")} ${tchip("Clase C: mínimo 1 · tiene 1 ✓","bajo")}`,"span")}</div>
+    <div class="tu-row2">${tbtn("+ Piso")}${tk(4,tbtn("Descargar memoria (.docx)",{p:1}),"span")}</div>`),
+  steps:[["De dónde salen los datos","Pisos y áreas: del ITSE, del plan o escribiéndolos aquí. Lo mismo con la cantidad de extintores."],
+   ["Pisos","Cada piso con su área, sus extintores y los ambientes con equipos eléctricos. «+ Piso» agrega pisos adicionales aunque los pisos vengan del ITSE o del plan."],
+   ["Cálculo","Clase A: mínimo = área ÷ 560 m² (redondeado hacia arriba); cuentan PQS y agua. Clase C: uno por ambiente energizado; cuentan los CO2."],
+   ["Descargar","La memoria sale en Word con la ubicación, los cálculos y las conclusiones."]],
+  tips:[["tip","En «Otros datos» cambias la empresa que elabora, el logo, la versión y la firma."]],
+  tour:[{go:()=>tuGo.app("memo"),sel:"#m_area_src",t:"De dónde salen los pisos y sus áreas."},{sel:'[data-mact="addPiso"]',t:"Agrega un piso adicional."},{sel:"#form .pres",t:"El resultado de Clase A y C de cada piso."},{sel:"#btnMemoDoc",t:"Descarga la memoria."}]},
+ {id:"org",cap:"org",t:"Organizar archivos: de la propuesta a las carpetas",min:3,
+  lead:"Cuatro pasos para dejar la carpeta del expediente lista, con cada archivo en su lugar y con su nombre.",
+  demo:()=>tw("Organizar archivos",`<div class="tu-stp">${["1. Propuesta","2. Archivos","3. Consulta","4. Descargar"].map((x,i)=>`<span class="tu-st" data-k="${i+1}">${x}</span>`).join("")}</div>
+    ${tfrom(1,`<div class="tu-drop sm">📄 Propuesta SD26-200RG-031.pdf · código, local y requisitos leídos</div>`)}
+    ${tfrom(2,`<div class="tu-files"><span class="tu-file">DNI.pdf → <b>DNI</b></span><span class="tu-file">pozo tierra.pdf → <b>POZOS A TIERRA</b></span><span class="tu-file">scan001.jpg → <b>EXTINTORES</b> (OCR)</span></div>`)}
+    ${tfrom(3,`<div class="tu-files"><span class="tu-file rev">IMG_2231.jpg → ¿a qué carpeta va?</span></div>`)}
+    ${tfrom(4,`<div class="tu-tree">📁 EXPEDIENTE<br>&nbsp;&nbsp;📁 1. FORMATOS DE SOLICITUD ✓<br>&nbsp;&nbsp;📁 DNI ✓ · 📁 POZOS A TIERRA ✓ · 📁 LUCES ✗ falta</div>`)}`),
+  steps:[["Propuesta","Suelta la propuesta comercial: lee el código, el local, el cliente y los requisitos, y crea la estructura de carpetas. También puedes «Traer datos de la pestaña ITSE»."],
+   ["Archivos","Suelta todo lo que mandó el cliente (o una carpeta, o .zip/.rar). Se lee en tu equipo (texto u OCR) y cada archivo va a su carpeta, con su vigencia."],
+   ["Consulta","Lo que no se pudo identificar: lo ves en grande y eliges a qué carpeta va."],
+   ["Descargar","Revisa la verificación (✓ completa, ✗ falta, ! vencido) y descarga el .zip o guárdalo directo en una carpeta de tu PC."]],
+  tips:[["tip","Los anexos, el plan y la memoria que armaste también se agregan solos a sus carpetas."],["tip","Si el cliente ya está en el banco de documentos (sede o dueño), se adjuntan sus documentos."]],
+  tour:[{go:()=>tuGo.ostep("prop"),sel:"#form .steps",t:"Los cuatro pasos de Organizar."},{sel:'#form [data-drop="prop"]',t:"Suelta aquí la propuesta."},{go:()=>tuGo.ostep("files"),sel:'#form [data-drop="files"]',t:"Y aquí todos los archivos del cliente."}]},
+ {id:"banco",cap:"org",t:"Banco de documentos",min:2,when:()=>canBank(),
+  lead:"Los documentos que se repiten (de sedes y de dueños) se guardan una vez y se reutilizan en cada expediente.",
+  demo:()=>tw("Banco de documentos",`<div class="tu-split"><div class="tu-list">${tk(1,`<span><b>Sede Surquillo</b><small>8 documentos</small></span>`,"div","tu-li2 on")}<div class="tu-li2"><span><b>Acme S.A.C.</b><small>DNI · vigencia · ficha RUC</small></span></div></div>
+    <div>${tk(2,`<span>Pozos a tierra</span>${tchip("Vence 12/2026","bajo")}`,"div","tu-li2")}${tfrom(3,`<div class="tu-drop sm" data-k="3">Suelta el certificado nuevo · «Va en lugar de: Pozos a tierra»</div>`)}${tfrom(4,`<div class="tu-li2" data-k="4"><span>Respaldo: pozos 2025</span>${tbtn("Volver a usar",{sm:1})}</div>`)}</div></div>`),
+  steps:[["Sedes y dueños","A la izquierda la lista (con buscador y vencidos); a la derecha la ficha con sus documentos."],["Vigencia","Cada documento dice cuándo vence."],["Reemplazar","Suelta el nuevo en la ficha: se reconoce y propone qué reemplaza."],["Respaldo","El anterior queda como respaldo y puedes «Volver a usar»."]],
+  tour:[{go:()=>tuGo.app("bank"),sel:"#form",t:"El banco de documentos: sedes y dueños."}]},
+ {id:"celular",cap:"mas",t:"Celular, tablet y atajos",min:2,
+  lead:"Funciona igual en la PC, la tablet y el celular. Estos atajos te ahorran tiempo.",
+  demo:()=>`<div class="tu-phones"><div class="tu-phone" data-k="1"><div class="tu-ph-top">Generador ITSE ${tbtn("Guardar",{sm:1})}</div>${tin("Nombres","Juan Carlos",{})}${tin("Apellidos","Pérez García",{})}<div class="tu-ph-bar">${tbtn("Vista previa",{sm:1,k:2})}${tbtn("Descargar",{p:1,sm:1})}</div></div>
+    <div class="tu-keys"><span data-k="3"><kbd>Ctrl</kbd> + <kbd>S</kbd> guardar en el Drive</span><span data-k="4">👆 clic en un dato azul → su casilla</span><span>⎋ <kbd>Esc</kbd> cierra avisos y visores</span></div></div>`,
+  steps:[["Celular","Todo cabe en la pantalla; los botones son grandes para el dedo y al escribir no se hace zoom."],["Vista previa en el celular","Ábrela con el botón de abajo; al tocar un dato se cierra y te lleva a la casilla."],["Ctrl+S","Guarda en el Drive en cualquier momento (en la PC)."],["Clic en la vista previa","La forma más rápida de corregir algo: tocas el dato en el documento y vas directo a la casilla."]],
+  tips:[["tip","Instala la página como app (Chrome: menú ⋮ → Instalar; iPhone: Compartir → Agregar a inicio)."]]}
+];
+function tuList(){return TU_L.filter(l=>!l.when||l.when())}
+function tuFromHere(){if(APP==="recent") return "recientes"; if(APP==="plan") return "plan1"; if(APP==="memo") return "memo"; if(APP==="org") return "org"; if(APP==="bank") return "banco";
+  if(APP==="itse"){const s=curStep(); return s==="inicio"?"inicio":s==="fin"?"descargar":/^xf/.test(s)?"formatos":s==="carta_poder"||/^dj_/.test(s)?"cpdj":"llenar"} return null}
+/* --- pantalla del tutorial --- */
+function renderTuto(){const L=tuList(), st=tuSt(), done=st.done||{};
+  // primera vez: desde el comienzo; si vienes de otra pestaña, la lección de esa pestaña; si no, donde te quedaste
+  if(!st.seen) TU.id=L[0].id; else if(TU.from&&L.some(l=>l.id===TU.from)) TU.id=TU.from; else if(!TU.id||!L.some(l=>l.id===TU.id)) TU.id=st.last&&L.some(l=>l.id===st.last)?st.last:L[0].id;
+  TU.from=null; tuSave({last:TU.id,seen:1});
+  const i=L.findIndex(l=>l.id===TU.id), l=L[i], cap=TU_CAPS.find(c=>c[0]===l.cap), nd=L.filter(x=>done[x.id]).length, prev=L[i-1], next=L[i+1];
+  const nav=`<nav class="tu-nav" aria-label="Lecciones del tutorial"><div class="tu-prog"><b>Tutorial de ITSE</b><span>${nd} de ${L.length} lecciones vistas</span><span class="tu-pbar"><i style="width:${Math.round(nd/L.length*100)}%"></i></span></div>
+    ${TU_CAPS.filter(c=>L.some(x=>x.cap===c[0])).map(c=>`<div class="tu-capg"><span class="tu-capt">${c[2]} ${esc(c[1])}</span>${L.filter(x=>x.cap===c[0]).map(x=>`<button type="button" class="tu-lb${x.id===l.id?" on":""}${done[x.id]?" done":""}" data-tu="${x.id}"${x.id===l.id?' aria-current="page"':""}><span class="tu-lk">${done[x.id]?"✓":L.indexOf(x)+1}</span><span>${esc(x.t)}</span></button>`).join("")}</div>`).join("")}</nav>
+    <div class="tu-navm"><label for="tuSel" class="tu-capt">Lección</label><select id="tuSel">${TU_CAPS.filter(c=>L.some(x=>x.cap===c[0])).map(c=>`<optgroup label="${esc(c[2]+" "+c[1])}">${L.filter(x=>x.cap===c[0]).map(x=>`<option value="${x.id}"${x.id===l.id?" selected":""}>${done[x.id]?"✓ ":""}${L.indexOf(x)+1}. ${esc(x.t)}</option>`).join("")}</optgroup>`).join("")}</select><span class="tu-mut">${nd} de ${L.length} vistas</span></div>`;
+  const main=`<article class="tu-main" id="tuMain" aria-labelledby="tuTitle"><header class="tu-h"><span class="tu-kick">${cap[2]} ${esc(cap[1])} · Lección ${i+1} de ${L.length} · ⏱ ${l.min} min</span><h2 id="tuTitle">${esc(l.t)}</h2><p class="tu-lead">${l.lead}</p></header>
+    <div class="tu-body"><figure class="tu-demo" id="tuDemo" aria-label="Demostración animada de: ${esc(l.t)}">${l.demo()}<span class="tu-cur" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 2l15 9-6.5 1.6L16 20l-3 1.4-3.4-7.4L4 18z" fill="#111" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg><i></i></span>
+      <figcaption class="tu-ctl"><button type="button" class="tu-cb" data-tuc="prev" aria-label="Paso anterior">‹</button><button type="button" class="tu-cb" data-tuc="play" aria-label="Pausar o reproducir">${TU.play&&!calm()?"❚❚":"▶"}</button><button type="button" class="tu-cb" data-tuc="next" aria-label="Paso siguiente">›</button><span class="tu-dots">${l.steps.map((_,k)=>`<i data-tudot="${k+1}"></i>`).join("")}</span><span class="tu-mut" id="tuStepTxt"></span></figcaption></figure>
+      <ol class="tu-steps">${l.steps.map((s,k)=>`<li data-tus="${k+1}"><button type="button" class="tu-sn" data-tuk="${k+1}" aria-label="Ver el paso ${k+1}">${k+1}</button><div><b>${esc(s[0])}</b><p>${s[1]}</p></div></li>`).join("")}</ol></div>
+    ${(l.tips||[]).length?`<div class="tu-tips">${l.tips.map(t=>`<p class="tu-tip ${t[0]}"><span aria-hidden="true">${t[0]==="ojo"?"⚠️":"💡"}</span><span>${t[1]}</span></p>`).join("")}</div>`:""}
+    <div class="tu-acts">${prev?`<button type="button" class="btn" data-tu="${prev.id}">← ${esc(prev.t)}</button>`:"<span></span>"}<span class="tu-acts2">${l.tour?`<button type="button" class="btn primary" data-tutour="${l.id}">▶ Muéstrame en la página</button>`:""}${next?`<button type="button" class="btn" data-tu="${next.id}" data-tudone="${l.id}">Entendido, siguiente →</button>`:`<button type="button" class="btn" data-tudone="${l.id}" data-tuend="1">Terminar ✓</button>`}</span></div></article>`;
+  $("#form").innerHTML=`<div class="tuto">${nav}${main}</div>`; $("#exBanner").hidden=true; bar();
+  TU.n=l.steps.length; TU.k=0; tuStep(1); tuPlay(TU.play&&!calm())}
+function tuBar(){const L=tuList(), nd=L.filter(x=>(tuSt().done||{})[x.id]).length; $("#barRisk").innerHTML=`<b>Tutorial de ITSE</b><span class="muted">· ${nd} de ${L.length} lecciones vistas</span>`}
+// la demostración: cada paso ilumina su parte, mueve el puntero y muestra lo que aparece desde ese paso
+function tuStep(k){const demo=document.getElementById("tuDemo"); if(!demo){tuPlay(false); return} TU.k=((k-1+TU.n)%TU.n)+1; k=TU.k;
+  demo.querySelectorAll("[data-k]").forEach(e=>e.classList.toggle("tu-on",+e.dataset.k===k));
+  demo.querySelectorAll("[data-from]").forEach(e=>e.classList.toggle("vis",+e.dataset.from<=k));
+  document.querySelectorAll("#tuMain [data-tus]").forEach(e=>e.classList.toggle("on",+e.dataset.tus===k));
+  demo.querySelectorAll("[data-tudot]").forEach(e=>e.classList.toggle("on",+e.dataset.tudot===k));
+  const tx=document.getElementById("tuStepTxt"); if(tx) tx.textContent=`Paso ${k} de ${TU.n}`;
+  requestAnimationFrame(()=>{const cur=demo.querySelector(".tu-cur"), tg=demo.querySelector(`[data-k="${k}"]`); if(!cur) return;
+    if(!tg){cur.style.opacity="0"; return} const r=demo.getBoundingClientRect(), t=tg.getBoundingClientRect();
+    cur.style.opacity="1"; cur.style.transform=`translate(${Math.round(t.left-r.left+Math.min(t.width*0.6,t.width-8))}px,${Math.round(t.top-r.top+t.height*0.55)}px)`;
+    cur.classList.remove("clk"); void cur.offsetWidth; setTimeout(()=>cur.classList.add("clk"),calm()?0:560)})}
+function tuPlay(on){clearInterval(TU.t); TU.play=!!on; const b=document.querySelector('[data-tuc="play"]'); if(b) b.textContent=on?"❚❚":"▶";
+  if(on) TU.t=setInterval(()=>{if(!document.getElementById("tuDemo")||document.hidden){if(!document.getElementById("tuDemo")) clearInterval(TU.t); return} tuStep(TU.k+1)},3200)}
+/* --- recorrido guiado sobre la pantalla real --- */
+function tuTour(id){const l=TU_L.find(x=>x.id===id); if(!l||!l.tour) return; tuPlay(false); TU.tour={l,i:0}; tuTourShow(0)}
+function tuTourEnd(fin){const T=TU.tour; TU.tour=null; const ov=document.getElementById("tuOv"); if(ov) ov.remove(); window.removeEventListener("resize",tuTourPos); window.removeEventListener("scroll",tuTourPos,true);
+  if(window.innerWidth<1180) $("#pv").classList.remove("open");
+  if(fin&&T){tuDone(T.l.id); toast(`Lección «${T.l.t}» vista ✓`,{kind:"ok",act:"Volver al tutorial",fn:()=>{TU.id=T.l.id; SEC="itse"; APP="tuto"; render(); window.scrollTo(0,0)},ms:7000})}}
+function tuTourShow(dir){const T=TU.tour; if(!T) return; const steps=T.l.tour;
+  for(;;){if(T.i<0) T.i=0; if(T.i>=steps.length) return tuTourEnd(true); const s=steps[T.i];
+    try{if(s.go) s.go()}catch(e){console.warn(e)}
+    if(window.innerWidth<1180) $("#pv").classList.toggle("open",!!s.pv);
+    const el=[...document.querySelectorAll(s.sel)].find(e=>e.getClientRects().length&&getComputedStyle(e).visibility!=="hidden");
+    if(el){T.el=el; break}
+    T.i+=dir<0?-1:1; if(dir<0&&T.i<0){T.i=0; dir=1}}
+  let ov=document.getElementById("tuOv");
+  if(!ov){ov=document.createElement("div"); ov.id="tuOv"; ov.className="tu-tov"; ov.innerHTML=`<div class="tu-spot"></div><div class="tu-bub" role="dialog" aria-modal="true" aria-labelledby="tuBubT"><span class="tu-bk" id="tuBubK"></span><p id="tuBubT"></p><div class="tu-bacts"><button type="button" class="btn sm" data-tut="exit">Salir</button><span><button type="button" class="btn sm" data-tut="back">← Atrás</button><button type="button" class="btn sm primary" data-tut="next">Siguiente →</button></span></div></div>`;
+    document.body.appendChild(ov); window.addEventListener("resize",tuTourPos); window.addEventListener("scroll",tuTourPos,true)}
+  const s=steps[T.i]; ov.querySelector("#tuBubK").textContent=`${T.l.t} · paso ${T.i+1} de ${steps.length}`; ov.querySelector("#tuBubT").textContent=s.t;
+  ov.querySelector('[data-tut="back"]').disabled=T.i===0; ov.querySelector('[data-tut="next"]').textContent=T.i===steps.length-1?"Terminar ✓":"Siguiente →";
+  for(let d=T.el.closest("details");d;d=d.parentElement&&d.parentElement.closest("details")) d.open=true;
+  T.el.scrollIntoView({block:"center",behavior:calm()?"auto":"smooth"}); setTimeout(tuTourPos,calm()?0:380); tuTourPos();
+  setTimeout(()=>{const b=ov.querySelector('[data-tut="next"]'); if(b) b.focus({preventScroll:true})},60)}
+function tuTourPos(){const T=TU.tour, ov=document.getElementById("tuOv"); if(!T||!ov||!T.el) return;
+  if(!T.el.isConnected){const s=T.l.tour[T.i], el=s&&[...document.querySelectorAll(s.sel)].find(e=>e.getClientRects().length); if(el) T.el=el; else return} const r=T.el.getBoundingClientRect(), pad=6, sp=ov.querySelector(".tu-spot"), bub=ov.querySelector(".tu-bub");
+  const x=Math.max(4,r.left-pad), y=Math.max(4,r.top-pad), w=Math.min(window.innerWidth-8,r.width+pad*2), h=Math.min(window.innerHeight-8,r.height+pad*2);
+  Object.assign(sp.style,{left:x+"px",top:y+"px",width:w+"px",height:h+"px"});
+  if(window.innerWidth<600){bub.classList.add("dock"); bub.style.left=bub.style.top=""; return} bub.classList.remove("dock");
+  const bw=Math.min(380,window.innerWidth-24), bh=bub.offsetHeight||140; let bx=Math.min(Math.max(12,x),window.innerWidth-bw-12), by=y+h+12;
+  if(by+bh>window.innerHeight-12) by=y-bh-12; if(by<12) by=Math.min(window.innerHeight-bh-12,Math.max(12,y+h-bh));
+  Object.assign(bub.style,{left:bx+"px",top:by+"px",width:bw+"px"})}
+/* --- aviso para quien entra por primera vez --- */
+function tuHintHTML(){const st=tuSt(); if(st.seen||st.hide) return "";
+  return `<section class="card tu-hint"><div><b>¿Primera vez aquí?</b><span class="muted"> El tutorial explica ITSE paso a paso, con demostraciones y un recorrido por la pantalla real.</span></div><span class="acts"><button type="button" class="btn primary" data-app="tuto">Abrir el tutorial</button><button type="button" class="btn" data-tuhide="1">Ahora no</button></span></section>`}
+/* --- eventos --- */
+document.addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.tuhide){tuSave({hide:1}); const c=b.closest(".tu-hint"); if(c) c.remove(); return}
+  if(b.dataset.tut){const T=TU.tour; if(!T) return; if(b.dataset.tut==="exit") return tuTourEnd(false); if(b.dataset.tut==="back"){T.i--; return tuTourShow(-1)} T.i++; return tuTourShow(1)}
+  if(!document.getElementById("tuMain")) return;
+  if(b.dataset.tutour){e.preventDefault(); return tuTour(b.dataset.tutour)}
+  if(b.dataset.tudone){tuDone(b.dataset.tudone); if(b.dataset.tuend){toast("¡Terminaste el tutorial! Puedes volver a cualquier lección cuando quieras.",{kind:"ok"}); render(); return}}
+  if(b.dataset.tu){e.preventDefault(); TU.id=b.dataset.tu; render(); const m=document.getElementById("tuMain"); if(m&&m.getBoundingClientRect().top<0) m.scrollIntoView({block:"start"}); return}
+  if(b.dataset.tuk){tuPlay(false); tuStep(+b.dataset.tuk); return}
+  if(b.dataset.tuc){const c=b.dataset.tuc; if(c==="play") tuPlay(!TU.play); else {tuPlay(false); tuStep(TU.k+(c==="next"?1:-1))}}});
+document.addEventListener("change",e=>{if(e.target.id==="tuSel"){TU.id=e.target.value; render()}});
+document.addEventListener("keydown",e=>{if(!TU.tour) return; if(e.key==="Escape"){e.preventDefault(); tuTourEnd(false)} else if(e.key==="ArrowRight"){e.preventDefault(); TU.tour.i++; tuTourShow(1)} else if(e.key==="ArrowLeft"&&TU.tour.i>0){e.preventDefault(); TU.tour.i--; tuTourShow(-1)}},true);
+window.addEventListener("resize",()=>{if(document.getElementById("tuDemo")) tuStep(TU.k||1)});
 
 /* =====================================================================
    ORGANIZAR ARCHIVOS
@@ -3905,13 +4468,14 @@ function renderCore(){secUi(); fmtSync();
   document.querySelectorAll(".apptab").forEach(b=>b.setAttribute("aria-selected",b.dataset.app===APP));
   if(APP==="plan"){$("#btnZip").hidden=false; $("#btnPv").hidden=false; return renderPlan()}
   if(APP==="memo"){$("#btnZip").hidden=false; $("#btnPv").hidden=false; return renderMemo()}
-  const rc=APP==="recent"||APP==="bank"; $("#btnZip").hidden=rc; $("#btnPv").hidden=rc;
+  const rc=APP==="recent"||APP==="bank"||APP==="tuto"; $("#btnZip").hidden=rc; $("#btnPv").hidden=rc;
+  if(APP==="tuto") return renderTuto();
   if(APP==="bank") return renderBank();
   if(APP==="recent") return renderRecent();
   if(APP==="org") return renderOrg();
   return renderItse();
 }
-function bar(){if(SEC!=="itse") return secBar(); if(APP==="bank") return bankBar(); if(APP==="recent") return recentBar(); if(APP==="plan") return planBar(); if(APP==="memo") return memoBar(); if(APP==="org") return orgBar(); $("#btnZip").textContent="Descargar todo (.zip)"; const r=risk(), t=tipo(), nd=DOCS.filter(d=>docOn(d.id)).length;
+function bar(){if(SEC!=="itse") return secBar(); if(APP==="tuto") return tuBar(); if(APP==="bank") return bankBar(); if(APP==="recent") return recentBar(); if(APP==="plan") return planBar(); if(APP==="memo") return memoBar(); if(APP==="org") return orgBar(); $("#btnZip").textContent="Descargar todo (.zip)"; const r=risk(), t=tipo(), nd=DOCS.filter(d=>docOn(d.id)).length;
   $("#barRisk").innerHTML=r?`<span class="pill" data-l="${r.res}">${r.res}</span><b>ITSE ${t}</b><span class="muted">· ${nd} documentos</span>`:`<span class="muted">Sin clasificar · ${nd} documentos</span>`}
 
 /* ---------- shared text layout (used by the PDF and by the preview) ---------- */
@@ -3979,7 +4543,7 @@ function getLogoImg(){if(!S.logo){logoImg=null;logoSrc="";return null} if(logoSr
 function schedulePreview(ms=200){clearTimeout(pvTimer); pvTimer=setTimeout(drawPreview,ms)}
 function renderTabs(){$("#pvTabs").innerHTML=DOCS.map(d=>`<button type="button" class="pv-tab${docOn(d.id)?"":" off"}" role="tab" aria-selected="${d.id===pvDoc}" data-pv="${d.id}" title="${esc(d.name)}">${d.c}</button>`).join("")}
 function drawPreview(){
-  if(SEC!=="itse"||APP==="bank") return;
+  if(SEC!=="itse"||APP==="bank"||APP==="tuto") return;
   if(APP==="recent") return drawRecent($("#pvBody"));
   if(APP==="org") return drawOrg($("#pvBody"));
   if(APP==="memo"||(APP==="itse"&&pvDoc==="memo")) return drawMemo($("#pvBody"));
@@ -4133,7 +4697,7 @@ document.addEventListener("click",e=>{
   if(b.dataset.msec){e.preventDefault(); MST.act=b.dataset.mfield; MST.goto=b.dataset.msec; if(window.innerWidth<1180) $("#pv").classList.add("open"); schedulePreview(0); return}
   if(b.id==="btnMemoDoc"||(b.id==="btnZip"&&APP==="memo")) return generateMemo();
   if(b.dataset.psec){e.preventDefault(); planAct=b.dataset.pfield; planGoto=b.dataset.psec; if(window.innerWidth<1180) $("#pv").classList.add("open"); schedulePreview(0); return}
-  if(b.dataset.app){APP=b.dataset.app; SEC="itse"; try{localStorage.setItem("itse-app",APP); localStorage.setItem("itse-sec",SEC)}catch(_){} render(); window.scrollTo(0,0); return}
+  if(b.dataset.app){if(b.dataset.app==="tuto"&&APP!=="tuto") TU.from=tuFromHere(); APP=b.dataset.app; SEC="itse"; try{localStorage.setItem("itse-app",APP); localStorage.setItem("itse-sec",SEC)}catch(_){} render(); window.scrollTo(0,0); return}
   if(b.dataset.pact) return planAction(b);
   if(b.id==="btnPlanDoc"||(b.id==="btnZip"&&APP==="plan")) return generatePlan();
   if(b.id==="btnAforoX") return aforoDownload();
@@ -4927,7 +5491,7 @@ function recentRows(){const src=GD.list||gdPref().recent||[], q=onorm(GD.q||""),
     ${rows.length>60&&!GD.allRows?`<button type="button" class="btn" data-ract="all" style="margin-top:8px">Ver los ${rows.length}</button>`:""}`}
 function recentListUpd(){const l=document.getElementById("rcList"); if(l) l.innerHTML=recentRows()}
 function renderRecent(){const B=bank(), cur=expHasData(S)?expTitle(S):"", m=S.uid&&GD.map[S.uid];
-  let h=impRepHTML()+`<section class="card"><h2>Expedientes recientes</h2><div id="rcStat">${recentStatHTML()}</div>
+  let h=tuHintHTML()+impRepHTML()+`<section class="card"><h2>Expedientes recientes</h2><div id="rcStat">${recentStatHTML()}</div>
     <div class="acts rcacts"><button type="button" class="btn primary" data-ract="new">Nuevo expediente</button><button type="button" class="btn" data-ract="pick">Subir expediente (.zip, .rar o archivos)…</button>${gdReady()?`<button type="button" class="btn" data-ract="refresh">Actualizar lista</button>`:""}</div>
     <div class="rcdrop" id="rcDrop" data-ract="pick" role="button" tabindex="0">${matchMedia("(pointer:coarse)").matches?"<b>Toca aquí para elegir el .zip o .rar de un expediente</b> (o sus archivos)":"<b>Suelta aquí el .zip o .rar de un expediente</b> (o sus archivos, o la carpeta)"}<span class="muted">Se leen los anexos, la carta poder, las DJ, el plan y la propuesta: se llenan solos y el resto va a su carpeta en «Organizar archivos».</span></div>
     ${cur?`<p class="muted" style="margin:10px 0 0">Abierto ahora: <b>${esc(cur)}</b>${m&&driveLink(m.fid)?` · <a href="${driveLink(m.fid)}" target="_blank" rel="noopener">su carpeta ↗</a>`:""}</p>`:""}
@@ -5277,7 +5841,7 @@ function secUi(){secFix(); const home=SEC==="home"||SEC==="none"; $("#secNav").h
   document.querySelectorAll("#secNav [data-sec]").forEach(b=>{const k=b.dataset.sec; b.hidden=k==="home"?(!isAdmin()&&secCount()<2):k==="users"?!isAdmin():k==="itse"?!canItse():!canSunarp(); b.setAttribute("aria-selected",String(k===SEC))});
   $("#appTabs").hidden=SEC!=="itse"; const bt=document.querySelector('.apptab[data-app="bank"]'); if(bt) bt.hidden=!canBank();
   const nav=$("#appTabs"), cur=nav.querySelector(`[data-app="${APP}"]`); if(SEC==="itse"&&cur&&nav.scrollWidth>nav.clientWidth){const r=cur.getBoundingClientRect(), n=nav.getBoundingClientRect(); if(r.left<n.left) nav.scrollLeft-=n.left-r.left+24; else if(r.right>n.right) nav.scrollLeft+=r.right-n.right+24}
-  document.body.classList.toggle("wide",SEC!=="itse"||APP==="bank"); document.body.classList.toggle("home",home); document.body.classList.toggle("sec-itse",SEC==="itse");
+  document.body.classList.toggle("wide",SEC!=="itse"||APP==="bank"||APP==="tuto"); document.body.classList.toggle("tuto-on",SEC==="itse"&&APP==="tuto"); if(!(SEC==="itse"&&APP==="tuto")) clearInterval(TU.t); document.body.classList.toggle("home",home); document.body.classList.toggle("sec-itse",SEC==="itse");
   const w=$("#whoAmI"); if(w){w.hidden=!(srvMode()&&SRV.me); if(SRV.me) w.innerHTML=`<b>${esc(SRV.me.name||SRV.me.id)}</b><span class="muted">${SRV.me.admin?"Administrador":esc(SRV.me.email)}</span>`}
   $("#btnAccount").hidden=!(srvMode()&&SRV.me); ["#btnNew","#btnLoad","#btnSave"].forEach(s=>{const b=$(s); if(b) b.hidden=SEC!=="itse"}); gdUi()}
 function renderSec(){$("#exBanner").hidden=true;
@@ -5293,7 +5857,7 @@ function renderHome(){const n=(USR.list||[]).filter(u=>u.status==="pending").len
     ${isAdmin()?`<p class="home-adm"><button type="button" class="btn" data-sec="users">Administrar usuarios${n?` <span class="cnt q">${n}</span>`:""}</button></p>`:""}
     ${!secCount()?`<p class="muted">Tu cuenta aún no tiene secciones asignadas.</p>`:""}</section>`; bar()}
 function secBar(){$("#barRisk").innerHTML=`<b>${SEC==="users"?"Usuarios":SEC==="sunarp"?"SUNARP":"Generador ITSE"}</b>`; $("#btnZip").hidden=true; $("#btnPv").hidden=true}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-sec]"); if(!b||!(b.closest("#secNav")||b.closest(".home-s"))) return; e.preventDefault(); SEC=b.dataset.sec; if(SEC==="itse"&&!/^(recent|itse|plan|memo|org|bank)$/.test(APP)) APP="recent"; try{localStorage.setItem("itse-sec",SEC)}catch(_){} if(SEC==="users"&&!USR.busy) usrLoad(); render(); window.scrollTo(0,0)});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-sec]"); if(!b||!(b.closest("#secNav")||b.closest(".home-s"))) return; e.preventDefault(); SEC=b.dataset.sec; if(SEC==="itse"&&!/^(recent|itse|plan|memo|org|bank|tuto)$/.test(APP)) APP="recent"; try{localStorage.setItem("itse-sec",SEC)}catch(_){} if(SEC==="users"&&!USR.busy) usrLoad(); render(); window.scrollTo(0,0)});
 document.addEventListener("click",e=>{if(e.target.closest(".top .brand")&&document.body.classList.contains("authed")&&(isAdmin()||secCount()>1)){SEC="home"; render(); window.scrollTo(0,0)}});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-sec]"); if(!b||!b.closest("#secNav")) return; e.preventDefault(); SEC=b.dataset.sec; try{localStorage.setItem("itse-sec",SEC)}catch(_){} if(SEC==="users"&&!USR.busy) usrLoad(); render(); window.scrollTo(0,0)});
 
