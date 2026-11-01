@@ -104,7 +104,7 @@
 <script>
 /* Generador ITSE — entrada. El programa va cifrado (app.enc) y solo se abre con la clave que da el servidor al entrar. */
 (()=>{"use strict";
-const $=s=>document.querySelector(s), TOKK="itse-tok", MEK="itse-me-last", VER="e50a25a8c6a1";
+const $=s=>document.querySelector(s), TOKK="itse-tok", MEK="itse-me-last", VER="570552252030";
 let API=String(window.ITSE_API||""); try{const loc=/^(localhost|127\.0\.0\.1)$/.test(location.hostname), qp=new URLSearchParams(location.search).get("api"); if(loc&&qp) localStorage.setItem("itse-api",qp); if(loc) API=localStorage.getItem("itse-api")||API}catch(_){}
 const ls=(k,v)=>{try{if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v)}catch(_){return null}};
 // este equipo: un código propio guardado aquí, su nombre y su IP pública (la pide a un servicio público; el servidor de Google no la ve)
@@ -178,7 +178,7 @@ $("#regForm").addEventListener("submit",async e=>{e.preventDefault(); const er=$
   go.disabled=true; go.textContent="Creando tu cuenta…"; er.textContent="";
   try{const j=await srv("register",{name,email,pass:p1,code}); $("#lgUser").value=email;
     // cuenta creada: se entra de una vez (el correo se confirma con el código)
-    if(j.active){$("#regForm").reset(); try{await doLogin(email,p1,`¡Cuenta creada! Tienes ${j.days} días de acceso gratis.`)}catch(x){$("#regDoneMsg").textContent=j.msg; show("done")} return}
+    if(j.active){$("#regForm").reset(); try{await doLogin(email,p1,j.free?"¡Tu cuenta Free está creada!":`¡Cuenta creada! Tienes ${j.days} días de acceso gratis.`)}catch(x){$("#regDoneMsg").textContent=j.msg; show("done")} return}
     $("#regDoneMsg").textContent=j.msg; $("#regForm").reset(); show("done")}
   catch(err){er.textContent=err.message} finally{go.disabled=false; go.textContent="Crear cuenta"}});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-lg]"); if(!b||!document.body.classList.contains("ld")) return; e.preventDefault(); $("#lgErr").textContent=""; $("#rgErr").textContent=""; show(b.dataset.lg)});
@@ -196,7 +196,8 @@ document.querySelectorAll('.ld input[type="password"]').forEach(i=>{const w=docu
   const b=document.createElement("button"); b.type="button"; b.className="pw-eye"; b.innerHTML=EYE; b.setAttribute("aria-label","Mostrar contraseña"); b.setAttribute("aria-pressed","false"); b.title="Mostrar contraseña"; w.appendChild(b);
   b.addEventListener("click",()=>{const sh=i.type==="password"; i.type=sh?"text":"password"; b.innerHTML=sh?EYEX:EYE; b.setAttribute("aria-pressed",String(sh)); b.setAttribute("aria-label",sh?"Ocultar contraseña":"Mostrar contraseña"); b.title=sh?"Ocultar contraseña":"Mostrar contraseña"; i.focus()})});
 // días de prueba gratis (los fija el administrador)
-srv("hello").then(j=>{if(j.trial>0&&j.open!==false){const t=$("#lgTrial"); t.textContent=j.trial+" días gratis"; t.hidden=false; $("#rgNote").textContent=`Entras al momento con ${j.trial} días gratis para probar todo. Después eliges un plan (se paga cada mes y cancelas cuando quieras).`}
+srv("hello").then(j=>{if(j.free&&j.open!==false){const t=$("#lgTrial"); t.textContent="cuenta Free gratis"; t.hidden=false; $("#rgNote").textContent="Tu cuenta Free es gratis y no vence: entras al momento con lo básico. Para tener todo, eliges el plan Pro (se paga cada mes y cancelas cuando quieras)."}
+  else if(j.trial>0&&j.open!==false){const t=$("#lgTrial"); t.textContent=j.trial+" días gratis"; t.hidden=false; $("#rgNote").textContent=`Entras al momento con ${j.trial} días gratis para probar todo. Después eliges un plan (se paga cada mes y cancelas cuando quieras).`}
   else if(j.open===false) $("#rgNote").textContent="Tu solicitud le llega al administrador por correo. Podrás entrar cuando la apruebe."}).catch(()=>{});
 if(!window.crypto||!crypto.subtle||typeof DecompressionStream==="undefined"){show("login"); $("#lgErr").textContent="Este navegador es muy antiguo para la plataforma. Usa Chrome, Edge, Firefox o Safari actualizados."; return}
 start()})();
