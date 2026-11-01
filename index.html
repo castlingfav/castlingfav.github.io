@@ -3,14 +3,18 @@
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex,notranslate,noai,noimageai">
 <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet"><meta name="bingbot" content="noindex,nofollow,noarchive">
 <meta name="color-scheme" content="light dark"><meta name="darkreader-lock"><meta name="referrer" content="no-referrer">
-<title>Generador ITSE</title>
+<title>Generador ITSE · castlingfav</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 32 32&quot;%3E%3Cstyle%3E.b{fill:#0f6b45}.l{stroke:#fff}%40media (prefers-color-scheme:dark){.b{fill:#3fbf83}.l{stroke:#0b1510}}%3C/style%3E%3Cpath class=&quot;b&quot; d=&quot;M5 6.5V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8v1.7h3.5V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8v1.7h3.5V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8V24a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z&quot;/%3E%3Cpath class=&quot;l&quot; d=&quot;M15.4 14.6A4.8 4.8 0 1 0 15.4 21.4M19.2 22.8V13.2h5.2M19.2 18h4.2&quot; fill=&quot;none&quot; stroke-width=&quot;2.3&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/%3E%3C/svg%3E">
+<script>try{var t=localStorage.getItem("itse-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <meta name="theme-color" content="#0f6b45"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Generador ITSE"><script>window.ITSE_API="https://script.google.com/macros/s/AKfycbyjnDv1nuT26T9S_Scg9R8Bg8p_ZT06GCzbPqbb0yatwGHZYJzlVyHsP_A80Qzjz25L/exec";window.ITSE_SW=1</script>
 <style>
-:root{--bg:#f3f5f2;--surface:#fff;--sunk:#e6ebe5;--line:#d3d9d2;--ink:#18221d;--muted:#5b6a61;--accent:#0f6b45;--accent-soft:#dcefe4;--focus:#1f8f5f;--bad:#c0392b;--warn-bg:#fff4d6;--warn-ink:#6b4d00;--on-accent:#fff;
+:root{--bg:#f3f5f2;--surface:#fff;--sunk:#e6ebe5;--line:#d3d9d2;--ink:#18221d;--muted:#5b6a61;--accent:#0f6b45;--accent-soft:#dcefe4;--focus:#1f8f5f;--bad:#c0392b;--warn-bg:#fff4d6;--warn-ink:#6b4d00;--on-accent:#fff;--accent-ink:#fff;
   --display:"Archivo","Arial Narrow",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",Roboto,Arial,sans-serif;--mono:"IBM Plex Mono",Consolas,monospace;color-scheme:light dark}
-@media (prefers-color-scheme:dark){:root{--bg:#111814;--surface:#18211c;--sunk:#0c120f;--line:#2f3d35;--ink:#e4ece6;--muted:#9aaba0;--accent:#3fbf83;--accent-soft:#1d3a2b;--focus:#5fd69b;--bad:#ff7b6b;--warn-bg:#3a3010;--warn-ink:#f3dc8f;--on-accent:#06130c}}
+:root[data-theme="light"]{color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111814;--surface:#18211c;--sunk:#0c120f;--line:#2f3d35;--ink:#e4ece6;--muted:#9aaba0;--accent:#3fbf83;--accent-soft:#1d3a2b;--focus:#5fd69b;--bad:#ff7b6b;--warn-bg:#3a3010;--warn-ink:#f3dc8f;--on-accent:#06130c;--accent-ink:#0b1510;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111814;--surface:#18211c;--sunk:#0c120f;--line:#2f3d35;--ink:#e4ece6;--muted:#9aaba0;--accent:#3fbf83;--accent-soft:#1d3a2b;--focus:#5fd69b;--bad:#ff7b6b;--warn-bg:#3a3010;--warn-ink:#f3dc8f;--on-accent:#06130c;--accent-ink:#0b1510;color-scheme:dark}
 *{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);min-height:100vh}
 .ld .login{display:grid;place-items:center;min-height:100vh;min-height:100dvh;padding:24px 16px}
 .ld .login-card{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px rgba(0,0,0,.07)}
@@ -39,11 +43,22 @@
 .ld .cd-keep{align-items:flex-start;font-size:14px}.ld .cd-keep input{margin-top:3px}.ld .cd-keep small{display:block;color:var(--muted);font-weight:400;font-size:12px}
 .ld .mv-msg{margin:0;padding:10px 12px;border-radius:8px;background:var(--warn-bg);color:var(--warn-ink);font-size:14px;font-weight:500}
 .ld .mv-mail{display:block;text-align:center;text-decoration:none;line-height:22px}
+.ld .lg-head{display:flex;align-items:center;gap:12px}.ld .lg-head .cf-logo{width:42px;height:42px;flex:none}.ld .lg-ht{display:flex;flex-direction:column;min-width:0}
+.cf-b{fill:var(--accent)}.cf-l{fill:none;stroke:var(--accent-ink);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.ld .thm{position:fixed;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);display:grid;place-items:center;cursor:pointer;padding:0;z-index:5}
+.ld .thm:hover{color:var(--ink)}.ld .thm svg{width:19px;height:19px}.ld .thm:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.ld .pw{position:relative;display:block}.ld .pw>input{padding-right:44px}
+.ld .pw-eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:6px;background:transparent;color:var(--muted);display:grid;place-items:center;cursor:pointer;padding:0}
+.ld .pw-eye:hover{color:var(--ink);background:var(--sunk)}.ld .pw-eye svg{width:20px;height:20px}.ld .pw-eye:focus-visible{outline:2px solid var(--focus)}
+.ld .lg-trial{display:inline-block;font:600 11.5px var(--mono);color:var(--accent);background:var(--accent-soft);padding:3px 7px;border-radius:99px;margin-left:6px;vertical-align:1px}
+.ld .lg-code summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600}.ld .lg-code[open] summary{margin-bottom:6px}
+.ld .lg-code input{text-transform:uppercase;font-family:var(--mono)}
 @media (prefers-reduced-motion:reduce){.ld .spin{animation:none}}
 </style>
 </head><body class="ld">
+<button type="button" class="thm" id="thm" aria-label="Usar tema oscuro"></button>
 <div class="login" id="login"><div class="login-card">
-  <div class="lg-head"><span class="eyebrow">By: Favio Arrese</span><h1>Generador ITSE</h1></div>
+  <div class="lg-head"><svg class="cf-logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path class="cf-b" d="M5 6.5V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8v1.7h3.5V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8v1.7h3.5V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8V24a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path class="cf-l" d="M15.4 14.6A4.8 4.8 0 1 0 15.4 21.4M19.2 22.8V13.2h5.2M19.2 18h4.2"/></svg><div class="lg-ht"><span class="eyebrow">castlingfav · By: Favio Arrese</span><h1>Generador ITSE</h1></div></div>
   <p class="lg-wait" id="lgWait" role="status"><span class="spin" aria-hidden="true"></span><span id="lgWaitT">Cargando…</span></p>
   <form id="loginForm" class="lgform" autocomplete="on" hidden>
     <div class="f"><label for="lgUser" id="lgUserL">Usuario o correo</label><input type="text" id="lgUser" name="username" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
@@ -51,7 +66,7 @@
     <p class="lg-err" id="lgErr" role="alert"></p>
     <button class="btn primary" type="submit" id="lgGo">Ingresar</button>
     <p class="lg-sec">Por seguridad, cada cuenta funciona en un solo equipo. La primera vez te enviamos un código a tu correo y queda registrado el equipo desde el que entras.</p>
-    <div class="lg-reg" id="lgReg"><span class="muted">¿Primera vez?</span><button type="button" class="btn" data-lg="reg">Crear cuenta</button></div>
+    <div class="lg-reg" id="lgReg"><span class="muted">¿Primera vez?<span class="lg-trial" id="lgTrial" hidden></span></span><button type="button" class="btn" data-lg="reg">Crear cuenta</button></div>
   </form>
   <form id="codeForm" class="lgform" autocomplete="off" hidden>
     <p class="lg-sub">Confirma este equipo</p>
@@ -72,24 +87,24 @@
   </div>
   <form id="regForm" class="lgform" autocomplete="on" hidden>
     <p class="lg-sub">Crear cuenta</p>
-    <p class="muted lg-note">Tu solicitud le llega al administrador por correo. Podrás entrar cuando la apruebe.</p>
+    <p class="muted lg-note" id="rgNote">Entras al momento con días gratis para probar todo. Después eliges un plan.</p>
     <div class="f"><label for="rgName">Nombre y apellido</label><input type="text" id="rgName" autocomplete="name"></div>
     <div class="f"><label for="rgEmail">Correo</label><input type="email" id="rgEmail" autocomplete="email" autocapitalize="none" spellcheck="false"></div>
     <div class="f"><label for="rgPass">Contraseña <span class="muted">(mínimo 6 caracteres)</span></label><input type="password" id="rgPass" autocomplete="new-password"></div>
     <div class="f"><label for="rgPass2">Repite la contraseña</label><input type="password" id="rgPass2" autocomplete="new-password"></div>
     <p class="muted lg-note2">El administrador podrá ver la contraseña que elijas: usa una que no uses en otro lado.</p>
-    <fieldset class="lg-want"><legend>Quiero acceder a</legend><label class="chk"><input type="checkbox" id="rgItse" checked><span>ITSE</span></label><label class="chk"><input type="checkbox" id="rgSunarp"><span>SUNARP</span></label></fieldset>
+    <details class="lg-code"><summary>¿Tienes un código de acceso?</summary><input type="text" id="rgCode" placeholder="Por ejemplo: CURSO2026" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Código de acceso"></details>
     <p class="lg-err" id="rgErr" role="alert"></p>
-    <button class="btn primary" type="submit" id="rgGo">Pedir acceso</button>
+    <button class="btn primary" type="submit" id="rgGo">Crear cuenta</button>
     <button type="button" class="btn lg-back" data-lg="login">Ya tengo cuenta: iniciar sesión</button>
   </form>
-  <div id="regDone" class="lgform" hidden><p class="lg-sub">Solicitud enviada</p><p class="lg-ok" id="regDoneMsg" role="status"></p><button type="button" class="btn primary" data-lg="login">Volver a iniciar sesión</button></div>
+  <div id="regDone" class="lgform" hidden><p class="lg-sub">Listo</p><p class="lg-ok" id="regDoneMsg" role="status"></p><button type="button" class="btn primary" data-lg="login">Volver a iniciar sesión</button></div>
 </div></div>
 <noscript><p style="text-align:center">Esta página necesita JavaScript.</p></noscript>
 <script>
 /* Generador ITSE — entrada. El programa va cifrado (app.enc) y solo se abre con la clave que da el servidor al entrar. */
 (()=>{"use strict";
-const $=s=>document.querySelector(s), TOKK="itse-tok", MEK="itse-me-last", VER="8c6c72ad6b6b";
+const $=s=>document.querySelector(s), TOKK="itse-tok", MEK="itse-me-last", VER="e50a25a8c6a1";
 let API=String(window.ITSE_API||""); try{const loc=/^(localhost|127\.0\.0\.1)$/.test(location.hostname), qp=new URLSearchParams(location.search).get("api"); if(loc&&qp) localStorage.setItem("itse-api",qp); if(loc) API=localStorage.getItem("itse-api")||API}catch(_){}
 const ls=(k,v)=>{try{if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v)}catch(_){return null}};
 // este equipo: un código propio guardado aquí, su nombre y su IP pública (la pide a un servicio público; el servidor de Google no la ve)
@@ -135,15 +150,16 @@ async function start(){const lost=sessionStorage.getItem("itse-lost"); if(lost){
   try{const j=await srv("me",{t,dev:devId(),ip:await ipNow(800),self:API,app:location.origin+location.pathname}); await enter({tok:j.tok||t,me:j.me,ak:j.ak,tmp:j.tmp})}
   catch(e){if(e.code==="net"){let me=null; try{me=JSON.parse(ls(MEK)||"null")}catch(_){} const ak=me&&await kv(me.id+":ak"); if(me&&ak){try{await boot(ak,{me,tok:t,off:true})}catch(x){show("login"); $("#lgErr").textContent=x.message} return} show("login"); $("#lgErr").textContent=e.message; return}
     if(e.code==="auth"){ls(TOKK,null); $("#lgErr").textContent=e.message} else $("#lgErr").textContent=e.message; show("login")}}
+async function doLogin(u,p,pre){const j=await srv("login",{user:u,pass:p,dev:devId(),dn:devName(),ip:await ipNow(),self:API,app:location.origin+location.pathname}); $("#lgPass").value="";
+  if(j.need==="admin"){$("#mvMsg").textContent=j.msg; $("#mvMail").href="mailto:"+j.contact+"?subject="+encodeURIComponent("Generador ITSE: quiero usar mi cuenta en otro equipo")+"&body="+encodeURIComponent("Hola, soy "+u+". Quiero usar mi cuenta del Generador ITSE en un equipo nuevo ("+devName()+")."); $("#mvMail").textContent="Escribir a "+j.contact; show("mv"); return}
+  if(j.need==="code"){PEND=j; $("#cdMsg").textContent=(pre||`Es la primera vez que entras desde este equipo (${devName()}).`)+` Te enviamos un código de 6 dígitos a ${j.mail}. Revisa también «Spam».`; $("#cdKeepL").hidden=!j.admin; $("#cdKeep").checked=true;
+    const box=$("#cdDevs"); box.hidden=!j.full; box.innerHTML=j.full?`<p>Ya usas tu cuenta en ${j.max} equipos. Para entrar aquí, elige cuál sale:</p>`+j.devs.map((d,i)=>`<label class="cd-dev"><input type="radio" name="cdRep" value="${d.id.replace(/"/g,"")}"${i===0?" checked":""}><span>${esc(d.name)}<small>${d.ip?"IP "+esc(d.ip)+" · ":""}último uso ${d.last?new Date(d.last).toLocaleString("es-PE",{dateStyle:"short",timeStyle:"short"}):"—"}</small></span></label>`).join(""):"";
+    $("#cdCode").value=""; $("#cdErr").textContent=""; show("code"); return}
+  await enter(j)}
 $("#loginForm").addEventListener("submit",async e=>{e.preventDefault(); const u=$("#lgUser").value.trim(), p=$("#lgPass").value, er=$("#lgErr"), go=$("#lgGo");
   if(!u||!p){er.textContent="Escribe tu usuario y tu contraseña."; return}
   go.disabled=true; go.textContent="Entrando…"; er.textContent="";
-  try{const j=await srv("login",{user:u,pass:p,dev:devId(),dn:devName(),ip:await ipNow(),self:API,app:location.origin+location.pathname}); $("#lgPass").value="";
-    if(j.need==="admin"){$("#mvMsg").textContent=j.msg; $("#mvMail").href="mailto:"+j.contact+"?subject="+encodeURIComponent("Generador ITSE: quiero usar mi cuenta en otro equipo")+"&body="+encodeURIComponent("Hola, soy "+u+". Quiero usar mi cuenta del Generador ITSE en un equipo nuevo ("+devName()+")."); $("#mvMail").textContent="Escribir a "+j.contact; show("mv"); return}
-    if(j.need==="code"){PEND=j; $("#cdMsg").textContent=`Es la primera vez que entras desde este equipo (${devName()}). Te enviamos un código de 6 dígitos a ${j.mail}. Revisa también «Spam».`; $("#cdKeepL").hidden=!j.admin; $("#cdKeep").checked=true;
-      const box=$("#cdDevs"); box.hidden=!j.full; box.innerHTML=j.full?`<p>Ya usas tu cuenta en ${j.max} equipos. Para entrar aquí, elige cuál sale:</p>`+j.devs.map((d,i)=>`<label class="cd-dev"><input type="radio" name="cdRep" value="${d.id.replace(/"/g,"")}"${i===0?" checked":""}><span>${esc(d.name)}<small>${d.ip?"IP "+esc(d.ip)+" · ":""}último uso ${d.last?new Date(d.last).toLocaleString("es-PE",{dateStyle:"short",timeStyle:"short"}):"—"}</small></span></label>`).join(""):"";
-      $("#cdCode").value=""; $("#cdErr").textContent=""; show("code"); return}
-    await enter(j)}
+  try{await doLogin(u,p)}
   catch(err){er.textContent=err.message; $("#lgPass").focus()}
   finally{go.disabled=false; go.textContent="Ingresar"}});
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -156,17 +172,32 @@ $("#codeForm").addEventListener("submit",async e=>{e.preventDefault(); const er=
   finally{go.disabled=false; go.textContent="Confirmar y entrar"}});
 $("#cdCode").addEventListener("input",e=>{const v=e.target.value.replace(/\D/g,"").slice(0,6); if(v!==e.target.value) e.target.value=v; if(v.length===6&&!$("#cdGo").disabled) $("#codeForm").requestSubmit()});
 $("#regForm").addEventListener("submit",async e=>{e.preventDefault(); const er=$("#rgErr"), go=$("#rgGo");
-  const name=$("#rgName").value.trim(), email=$("#rgEmail").value.trim(), p1=$("#rgPass").value, p2=$("#rgPass2").value, want={itse:$("#rgItse").checked,sunarp:$("#rgSunarp").checked};
+  const name=$("#rgName").value.trim(), email=$("#rgEmail").value.trim(), p1=$("#rgPass").value, p2=$("#rgPass2").value, code=$("#rgCode").value.trim();
   if(name.length<2){er.textContent="Escribe tu nombre."; return} if(!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)){er.textContent="Escribe un correo válido."; return}
   if(p1.length<6){er.textContent="La contraseña debe tener al menos 6 caracteres."; return} if(p1!==p2){er.textContent="Las contraseñas no coinciden."; return}
-  if(!want.itse&&!want.sunarp){er.textContent="Marca a qué quieres acceder: ITSE, SUNARP o ambos."; return}
-  go.disabled=true; go.textContent="Enviando…"; er.textContent="";
-  try{const j=await srv("register",{name,email,pass:p1,want}); $("#regDoneMsg").textContent=j.msg; $("#regForm").reset(); $("#rgItse").checked=true; $("#lgUser").value=email; show("done")}
-  catch(err){er.textContent=err.message} finally{go.disabled=false; go.textContent="Pedir acceso"}});
+  go.disabled=true; go.textContent="Creando tu cuenta…"; er.textContent="";
+  try{const j=await srv("register",{name,email,pass:p1,code}); $("#lgUser").value=email;
+    // cuenta creada: se entra de una vez (el correo se confirma con el código)
+    if(j.active){$("#regForm").reset(); try{await doLogin(email,p1,`¡Cuenta creada! Tienes ${j.days} días de acceso gratis.`)}catch(x){$("#regDoneMsg").textContent=j.msg; show("done")} return}
+    $("#regDoneMsg").textContent=j.msg; $("#regForm").reset(); show("done")}
+  catch(err){er.textContent=err.message} finally{go.disabled=false; go.textContent="Crear cuenta"}});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-lg]"); if(!b||!document.body.classList.contains("ld")) return; e.preventDefault(); $("#lgErr").textContent=""; $("#rgErr").textContent=""; show(b.dataset.lg)});
 // sin clic derecho, sin «ver código» ni herramientas de desarrollo (disuade a quien quiera copiar la página)
 document.addEventListener("contextmenu",e=>{if(!e.target.closest("input,textarea")) e.preventDefault()});
 document.addEventListener("keydown",e=>{const k=String(e.key).toLowerCase(); if(e.key==="F12"||(e.ctrlKey||e.metaKey)&&(k==="u"||e.shiftKey&&/^[ijc]$/.test(k))){e.preventDefault(); e.stopPropagation()}},true);
+// tema claro / oscuro (se recuerda en este equipo; lo mismo dentro de la plataforma)
+const MOON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>', SUN='<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg>';
+const thmCur=()=>document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+function thmUi(){const b=$("#thm"); if(!b) return; const d=thmCur()==="dark"; b.innerHTML=d?SUN:MOON; b.setAttribute("aria-label",d?"Usar tema claro":"Usar tema oscuro"); b.title=d?"Tema claro":"Tema oscuro"}
+$("#thm").addEventListener("click",()=>{const t=thmCur()==="dark"?"light":"dark"; document.documentElement.dataset.theme=t; ls("itse-theme",t); thmUi()}); thmUi();
+// ver la contraseña que se escribe
+const EYE='<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></svg>', EYEX='<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 5.6A10 10 0 0 1 12 5.5c6.4 0 10 6.5 10 6.5a17 17 0 0 1-2.8 3.6M6.6 6.6A17 17 0 0 0 2 12s3.6 6.5 10 6.5a10 10 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18"/></g></svg>';
+document.querySelectorAll('.ld input[type="password"]').forEach(i=>{const w=document.createElement("span"); w.className="pw"; i.parentNode.insertBefore(w,i); w.appendChild(i);
+  const b=document.createElement("button"); b.type="button"; b.className="pw-eye"; b.innerHTML=EYE; b.setAttribute("aria-label","Mostrar contraseña"); b.setAttribute("aria-pressed","false"); b.title="Mostrar contraseña"; w.appendChild(b);
+  b.addEventListener("click",()=>{const sh=i.type==="password"; i.type=sh?"text":"password"; b.innerHTML=sh?EYEX:EYE; b.setAttribute("aria-pressed",String(sh)); b.setAttribute("aria-label",sh?"Ocultar contraseña":"Mostrar contraseña"); b.title=sh?"Ocultar contraseña":"Mostrar contraseña"; i.focus()})});
+// días de prueba gratis (los fija el administrador)
+srv("hello").then(j=>{if(j.trial>0&&j.open!==false){const t=$("#lgTrial"); t.textContent=j.trial+" días gratis"; t.hidden=false; $("#rgNote").textContent=`Entras al momento con ${j.trial} días gratis para probar todo. Después eliges un plan (se paga cada mes y cancelas cuando quieras).`}
+  else if(j.open===false) $("#rgNote").textContent="Tu solicitud le llega al administrador por correo. Podrás entrar cuando la apruebe."}).catch(()=>{});
 if(!window.crypto||!crypto.subtle||typeof DecompressionStream==="undefined"){show("login"); $("#lgErr").textContent="Este navegador es muy antiguo para la plataforma. Usa Chrome, Edge, Firefox o Safari actualizados."; return}
 start()})();
 </script>
